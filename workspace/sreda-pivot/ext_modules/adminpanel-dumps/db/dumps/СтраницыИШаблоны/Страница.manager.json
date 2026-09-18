@@ -1,0 +1,52 @@
+{
+    "current": [
+        {
+            "Page": [
+                {
+                    "id": "84610bbc-3dc8-4c2a-883d-2522bdba7412",
+                    "code": 14,
+                    "markdel": 0,
+                    "name": "manager",
+                    "description": "manager",
+                    "rank": 0,
+                    "uri": "manager",
+                    "urifind": "manager",
+                    "parent": "00000000-0000-0000-0000-000000000000",
+                    "active": 1,
+                    "link": "00000000-0000-0000-0000-000000000000",
+                    "content_type": "application/json",
+                    "template": "7c6aad07-eed3-4ab7-a965-7b29eb70fef2",
+                    "updatedAt": "2026-06-09T18:43:49.785Z",
+                    "createdAt": "2026-06-09T18:42:05.762Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                }
+            ]
+        }
+    ],
+    "before": [
+        {
+            "current": [
+                {
+                    "Template": [
+                        {
+                            "id": "7c6aad07-eed3-4ab7-a965-7b29eb70fef2",
+                            "code": 15,
+                            "parent": "00000000-0000-0000-0000-000000000000",
+                            "markdel": 0,
+                            "name": "adminpanel",
+                            "description": "",
+                            "type": "text",
+                            "data": "<Components.Header position=\"fixed\" jsonFileName={\"/dynpage/settings/main.json\"}/>\r\n\r\n<div style={{display: 'flex', height: 'calc(100vh - 60px)'}}>\r\n    <div style={{width: '20%', minWidth: '300px'}}>\r\n        <ModuleFederationCMP\r\n            remoteModuleInfo={{\r\n                remoteUrl: this.REMOTEURL,\r\n                containerName: 'ADMINPANEL_UI_COMPONENTS',\r\n                module: 'MetadataWindow',\r\n            }}\r\n            remoteComponentProps = {{\r\n                setServer: this.setServer,\r\n                serverList: ['Metadata', 'Engine', 'Mdm'],\r\n                children: <ModuleFederationCMP \r\n        remoteModuleInfo={{\r\n            remoteUrl: this.REMOTEURL,\r\n            containerName: 'ADMINPANEL_UI_COMPONENTS',\r\n            module: 'MetadataHier',\r\n        }}\r\n        \r\n        remoteComponentProps = {{\r\n            server: \"\"\r\n        }}\r\n        loader={<div>loading micro-frontend...</div>}\r\n    />\r\n                \r\n                \r\n                \r\n                // api: this.api,\r\n                \r\n            }}\r\n        />\r\n    </div>\r\n    \r\n    <ModuleFederationCMP \r\n        remoteModuleInfo={{\r\n            remoteUrl: this.REMOTEURL,\r\n            containerName: 'ADMINPANEL_UI_COMPONENTS',\r\n            module: 'InspectorWindow',\r\n        }}\r\n        \r\n        remoteComponentProps = {{\r\n            server: \"\"\r\n        }}\r\n        loader={<div>loading micro-frontend...</div>}\r\n    />\r\n\r\n    \r\n    <ModuleFederationCMP \r\n        remoteModuleInfo={{\r\n            remoteUrl: this.REMOTEURL,\r\n            containerName: 'ADMINPANEL_UI_COMPONENTS',\r\n            module: 'AccessMatrixDrawer',\r\n        }}\r\n        \r\n        remoteComponentProps = {{\r\n            server: \"\"\r\n        }}\r\n        loader={<div>loading micro-frontend...</div>}\r\n    />\r\n</div>",
+                            "script": "function setServer (name) {\n    this.setState({server: name});\n}\n\nconst REMOTEURL = 'http://localhost:3370/remoteEntry.js'\nfunction componentDidMount() {\n    console.log(1123123)\n    \n}",
+                            "updatedAt": "2026-06-09T18:48:16.436Z",
+                            "createdAt": "2026-06-09T18:41:31.388Z",
+                            "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                            "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

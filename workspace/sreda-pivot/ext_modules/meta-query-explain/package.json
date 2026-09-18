@@ -1,0 +1,60 @@
+{
+    "name": "meta-query-explain",
+    "version": "1.0.0",
+    "description": "Модуль для формирования истории запросов",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "InfoserviceClass.console.decorate": {
+            "class": "/services/MetaQueryExplain.service.js",
+            "function": "addConsole"
+        },
+        "InfoServiceFlatGuidClass.console.decorate": {
+            "class": "/services/MetaQueryExplain.service.js",
+            "function": "addConsole"
+        },
+        "InfoServiceGuidClass.console.decorate": {
+            "class": "/services/MetaQueryExplain.service.js",
+            "function": "addConsole"
+        },
+        "PivotTableService.console.decorate": {
+            "class": "/services/MetaQueryExplain.service.js",
+            "function": "addConsole"
+        },
+        "PivotTableService._get.decorate": {
+            "class": "/services/MetaQueryExplain.service.js",
+            "function": "init"
+        },
+        "ReportService.console.decorate": {
+            "class": "/services/MetaQueryExplain.service.js",
+            "function": "addConsole"
+        },
+        "CubeQueryBuilderClass.console.decorate": {
+            "class": "/services/MetaQueryExplain.service.js",
+            "function": "addConsole"
+        },
+        "CalcFieldAggregateClass.console.decorate": {
+            "class": "/services/MetaQueryExplain.service.js",
+            "function": "addConsole"
+        },
+        "ReportService._get.decorate": {
+            "class": "/services/MetaQueryExplain.service.js",
+            "function": "init"
+        }
+    },
+    "routes": {
+        "/metadata/query-explain": {
+            "router": "MetaQueryExplain.router.js"
+        }
+    }
+}

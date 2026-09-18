@@ -1,0 +1,22 @@
+{
+    "name": "store",
+    "version": "1.5.19",
+    "enabled": true,
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "dependencies": {
+        "sequelize": "^6.26.0"
+    },
+    "routes": {
+        "/users": {
+            "router": "Store.router.js"
+        }
+    },
+    "typeSBR": "NodeCMS",
+    "dependenciesNodeCMS": {},
+    "description": "Модуль **store** представляет собой сервис для хранения произвольных данных пользователя в базе данных. Он позволяет устанавливать, получать и удалять значения по уникальным ключам, привязанным к конкретному пользователю. Сервис также предоставляет возможность получения всех сохранённых данных пользователя за один запрос."
+}

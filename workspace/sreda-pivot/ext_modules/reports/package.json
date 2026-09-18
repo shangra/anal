@@ -1,0 +1,38 @@
+{
+    "name": "reports",
+    "version": "1.0.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --coverage --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "middleware-rest-decimal": "^1.0.2",
+        "metadata-reports": "^1.0.2",
+        "utils": "^1.0.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "routes": {
+        "/reports": {
+            "router": "Reports.router.js"
+        }
+    }
+}

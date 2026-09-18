@@ -1,0 +1,59 @@
+.modalSidebar {
+    background: var(--tile-bg-color-op);
+    overflow-x: hidden;
+    position: fixed;
+    z-index: 10;
+    overflow-y: auto;
+}
+
+.modalSidebarLeft {
+    height: 100%;
+    overflow-y: auto;
+    left: 0;
+    bottom: 0;
+}
+
+.modalSidebarRight {
+    height: 100%;
+    overflow-y: auto;
+    right: 0;
+    bottom: 0;
+}
+
+.modalSidebarBottom {
+    height: 60px;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: unset;
+    z-index: 11;
+}
+
+.sidebarTabs {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: var(--ui-kit-spacing-4);
+    display: flex;
+    gap: var(--ui-kit-spacing-4);
+}
+
+.sidebarTabsBottom {
+    flex-direction: row;
+    width: 100%;
+}
+
+.settingButton {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    background-color: rgb(124, 137, 171);
+    cursor: pointer;
+    padding: 4px;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+}

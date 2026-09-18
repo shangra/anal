@@ -1,0 +1,91 @@
+{
+  "product": "Sreda Analytics",
+  "version": "1.0.0",
+  "root": "workspace",
+  "logsDir": "logs",
+  "clearLogs": true,
+  "fastStart": true,
+  "preferStatic": false,
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "ui": {
+    "enabled": false,
+    "mode": "launcher",
+    "port": 9090,
+    "openOnStart": true,
+    "apps": [
+      {
+        "id": "analytics",
+        "title": "Аналитика",
+        "subtitle": "Отчёты и таблицы",
+        "module": "spreadsheet"
+      },
+      {
+        "id": "admin",
+        "title": "Админка",
+        "subtitle": "Управление системой",
+        "module": "admin"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "id": "migrations",
+      "path": "sreda-analytics-migrations",
+      "kind": "oneshot",
+      "start": "npm start",
+      "optional": true,
+      "enabled": true
+    },
+    {
+      "id": "pivot",
+      "path": "sreda-pivot",
+      "kind": "service",
+      "start": "node server.js",
+      "dependsOn": ["migrations"],
+      "restart": "on-failure",
+      "port": 3391,
+      "enabled": true,
+      "env": {
+        "REDIS_DISABLED": "true",
+        "ESB_DISABLED": "true"
+      },
+      "envFile": ".env",
+      "ready": {
+        "url": "http://127.0.0.1:3391/",
+        "timeoutMs": 300000,
+        "probeTimeoutMs": 1500,
+        "intervalMs": 1000
+      }
+    },
+    {
+      "id": "spreadsheet",
+      "path": "sreda-analytics-spreadsheet-frontend",
+      "kind": "service",
+      "start": "node ../../scripts/box-start-frontend.mjs",
+      "buildInstallFlags": "--legacy-peer-deps",
+      "dist": "bi_ui_build",
+      "port": 3380,
+      "enabled": true,
+      "env": {
+        "HOST": "127.0.0.1"
+      }
+    },
+    {
+      "id": "admin",
+      "path": "frontend-adm",
+      "kind": "service",
+      "start": "node ../../scripts/box-start-frontend.mjs",
+      "buildInstallFlags": "--legacy-peer-deps",
+      "dist": "build",
+      "port": 3372,
+      "enabled": true,
+      "dependsOn": ["pivot"],
+      "envFile": ".env",
+      "env": {
+        "HOST": "127.0.0.1"
+      }
+    }
+  ]
+}

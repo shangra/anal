@@ -1,0 +1,13 @@
+.accessList {
+    height: 100%;
+}
+
+.listComponent {
+    height: 100%;
+    max-height: none !important;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 12px;
+}

@@ -1,0 +1,408 @@
+const { parse } = require('@babel/parser');
+const fs = require('fs');
+/*
+const formCode = `React.createElement(React.Fragment, null, React.createElement(HeaderCMP, {
+  jsonFileName: "/dynpage/settings/main.json"
+}), React.createElement("div", {
+  className: "DesktopContainer"
+}, React.createElement("input", {
+  type: "button",
+  onClick: this.clickbutton,
+  value: \`TEST \$\{this.state.test\}\`
+}), React.createElement("div", {
+  className: "row pb-2 ms-2 me-2"
+}, React.createElement(MetadataPivot, {
+  infoserviceId: "c8aaab58-9f7e-498d-b614-582e9af1c12e"
+}, React.createElement("div", {
+  className: "pb-2 d-flex align-items-center flex-column col-md-12 p-0"
+}, React.createElement("div", {
+  className: "row ColoredBlocks mt-0 w-100",
+  style: {
+    minHeight: '85px',
+    padding: '5px'
+  }
+}, React.createElement("div", {
+  className: "col-3"
+}, React.createElement(PivotMenu.RoundingColumns, null)), React.createElement("div", {
+  className: "col-8"
+}, React.createElement("div", {
+  className: "flex flex-row px-2"
+}, React.createElement(StyleEditorCMP, {
+  onChange: this.onChangeStyleOptions,
+  styleOptions: this.state.currentStyleOptions.erer
+}))), React.createElement("div", {
+  className: "col-1 flex flex-row-reverse"
+}, React.createElement(PivotMenu.MenuIcon, null)))), React.createElement(PivotTable, {
+  styleEditorOptions: this.state.styleEditorOptions,
+  setStyleEditorOptions: this.setStyleEditorOptions,
+  className: "d-flex align-items-center flex-column col-md-12 p-0",
+  placeholder: "ui.SberCat"
+})))));`;
+*/
+const formCode = fs.readFileSync('./test_bjs.js').toString('utf8');
+
+// const script = 'Перем ГГГ;';
+// new BabelParseCodeClass().scriptParse(script || '').then((res) => {
+//     console.log(res);
+// });
+
+const ast = parse(formCode, {
+    allowAwaitOutsideFunction: true,
+});
+
+const React = {
+    createElement: (...args) => {
+        console.log('React.createElement', args);
+        return `React.createElement(${args.join(' , ')})`;
+    },
+    Fragment: (...args) => {
+        console.log('React.Fragment', args);
+        return `React.Fragment(${args.join(' , ')})`;
+    },
+};
+
+const Components = {
+    GetComponent: (componentName) => {
+        console.log('GetComponent', componentName);
+        let result = '';
+        if (componentName === 'Components.PivotMenu') {
+            result = {
+                RoundingColumns: 'RoundingColumns',
+            };
+        }
+        if (componentName === 'Components.PivotMenu.RoundingColumns') {
+            result = 'PivotMenu__RoundingColumns';
+        }
+        return result;
+    },
+};
+
+const owner = {
+    clickbutton: () => {},
+    state: {
+        test: 11,
+    },
+};
+
+class babelConverter {
+    constructor(Context) {
+        this.Context = Context ?? {};
+    }
+
+    getComponent(componentName) {
+        let result = this.Context.CMP.GetComponent(
+            `Components.${componentName}`
+        );
+        if (result === '') {
+            result = this.Context.CMP.GetComponent(`${componentName}`);
+        }
+        return result === '' ? undefined : result;
+    }
+
+    parseIdentifier(Node, getText = false) {
+        let result = this.Context[Node.name];
+        if (!getText) {
+            result = result ?? this.getComponent(Node.name);
+        }
+        return result ?? Node.name;
+    }
+
+    parseMemberExpression(callee, level = 0) {
+        //
+        let Obj;
+        switch (callee.object.type) {
+            case 'ThisExpression': {
+                Obj = this.Context.owner;
+                break;
+            }
+            case 'MemberExpression': {
+                Obj = this.parseMemberExpression(callee.object, level + 1);
+                break;
+            }
+            case 'Identifier': {
+                Obj = this.parseIdentifier(callee.object, true);
+                break;
+            }
+            case 'ArrayExpression': {
+                Obj = this.parseArrayExpression(callee.object);
+                break;
+            }
+        }
+
+        const Func = callee.property.name;
+        let func;
+        if (level === 0 && typeof Obj === 'string') {
+            func = this.getComponent(`${Obj}.${Func}`);
+        } else if (level === 0 && Array.isArray(Obj)) {
+            func = Obj && Obj[Func];
+        } else {
+            func =
+                Obj && typeof Obj === 'string' ? `${Obj}.${Func}` : Obj[Func];
+            func =
+                typeof func === 'function'
+                    ? func.bind(this.Context.owner)
+                    : func;
+        }
+        return func;
+    }
+
+    parseCallExpression(expression) {
+        let result;
+        switch (expression.callee.type) {
+            case 'MemberExpression': {
+                const functionLink = this.parseMemberExpression(
+                    expression.callee
+                );
+                const args = this.parseNode(expression.arguments);
+                if (typeof functionLink === 'function') {
+                    if (typeof args === 'function') {
+                        result = functionLink(args);
+                    } else {
+                        result = functionLink(...args);
+                    }
+                } // , this.Context.React, this.Context.CMP
+                break;
+            }
+        }
+        return result;
+    }
+
+    parseObjectExpression(Node) {
+        const result = this.parseNode(Node.properties, { returnObject: true });
+        return result;
+    }
+
+    parseArrayExpression(Node) {
+        const result = this.parseNode(Node.elements);
+        return result;
+    }
+
+    parseObjectProperty(Node) {
+        let name = Node.key.name ?? Node.key.value;
+        name = this.Context?.pkeyTransform?.(name) ?? name;
+        const result = {
+            [name]: this.parseExpressionStatement(Node.value),
+        };
+        return result;
+    }
+
+    parseBinaryExpression(Node) {
+        let result;
+        const left = this.parseExpressionStatement(Node.left);
+        const right = this.parseExpressionStatement(Node.right);
+
+        switch (Node.operator) {
+            case '>': {
+                result = left > right;
+                break;
+            }
+            case '<': {
+                result = left < right;
+                break;
+            }
+            case '>=': {
+                result = left >= right;
+                break;
+            }
+            case '<=': {
+                result = left <= right;
+                break;
+            }
+            case '==': {
+                result = left == right;
+                break;
+            }
+            case '===': {
+                result = left === right;
+                break;
+            }
+            case '!=': {
+                result = left != right;
+                break;
+            }
+            case '!==': {
+                result = left !== right;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    parseLogicalExpression(Node) {
+        let result;
+        const left = this.parseExpressionStatement(Node.left);
+        const right = this.parseExpressionStatement(Node.right);
+
+        switch (Node.operator) {
+            case '&&': {
+                // AND
+                result = left && right;
+                break;
+            }
+            case '||': {
+                result = left || right;
+                break;
+            }
+            case '??': {
+                result = left ?? right;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    parseTemplateLiteral(Node) {
+        function sortNodes(a, b) {
+            return a.start - b.start;
+        }
+
+        const result = [];
+        const elements = [...Node.expressions, ...Node.quasis].sort(sortNodes);
+        for (const expression of elements) {
+            result.push(this.parseExpressionStatement(expression));
+        }
+        return result.join('');
+    }
+
+    parseTemplateElement(Node) {
+        return Node.value.raw;
+    }
+
+    parseArrowFunctionExpression(Node) {
+        const args = this.parseNode(Node.params);
+        const bodycall = this.parseExpressionStatement(Node.body);
+        return ''; // new ArrowFunctionExpression(args, bodycall);
+    }
+
+    UnaryExpression(Node) {
+        //
+        const argument = this.parseExpressionStatement(Node.argument);
+
+        let result = argument;
+        switch (Node.operator) {
+            case '!': {
+                result = !result;
+                break;
+            }
+        }
+        return result;
+    }
+
+    ConditionalExpression(Node) {
+        const test = this.parseExpressionStatement(Node.test);
+        const consequent = this.parseExpressionStatement(Node.consequent);
+        const alternate = this.parseExpressionStatement(Node.alternate);
+
+        let result = test ? consequent : alternate;
+        return result;
+    }
+
+    parseExpressionStatement(Node) {
+        //
+        let result;
+        switch (Node.type) {
+            case 'CallExpression': {
+                result = this.parseCallExpression(Node);
+                break;
+            }
+            case 'MemberExpression': {
+                result = this.parseMemberExpression(Node);
+                break;
+            }
+            case 'NullLiteral': {
+                result = null;
+                break;
+            }
+            case 'StringLiteral': {
+                result = Node.value;
+                break;
+            }
+            case 'TemplateLiteral': {
+                result = this.parseTemplateLiteral(Node);
+                break;
+            }
+            case 'TemplateElement': {
+                result = this.parseTemplateElement(Node);
+                break;
+            }
+            case 'BooleanLiteral': {
+                result = Node.value;
+                break;
+            }
+            case 'NumericLiteral': {
+                result = Node.value;
+                break;
+            }
+            case 'ObjectExpression': {
+                result = this.parseObjectExpression(Node);
+                break;
+            }
+            case 'ObjectProperty': {
+                result = this.parseObjectProperty(Node);
+                break;
+            }
+            case 'Identifier': {
+                // Это реакт компонент или класс
+                result = this.parseIdentifier(Node);
+                break;
+            }
+            case 'LogicalExpression': {
+                result = this.parseLogicalExpression(Node);
+                break;
+            }
+            case 'BinaryExpression': {
+                result = this.parseBinaryExpression(Node);
+                break;
+            }
+            case 'ArrayExpression': {
+                result = this.parseArrayExpression(Node);
+                break;
+            }
+            case 'ArrowFunctionExpression': {
+                result = this.parseArrowFunctionExpression(Node);
+                break;
+            }
+            case 'ConditionalExpression': {
+                result = this.ConditionalExpression(Node);
+                break;
+            }
+            case 'UnaryExpression': {
+                result = this.UnaryExpression(Node);
+                break;
+            }
+        }
+        return result;
+    }
+
+    parseNode(Nodes, options = {}) {
+        let result = options.returnObject ? {} : [];
+        for (const Node of Nodes) {
+            switch (Node.type) {
+                case 'ExpressionStatement': {
+                    const res = this.parseExpressionStatement(Node.expression);
+                    if (options.returnObject) {
+                        result = { ...result, ...res };
+                    } else result.push(res);
+                    break;
+                }
+                default: {
+                    const res = this.parseExpressionStatement(Node);
+                    if (options.returnObject) {
+                        result = { ...result, ...res };
+                    } else result.push(res);
+                }
+            }
+        }
+
+        return result;
+    }
+}
+
+const result = new babelConverter({
+    React,
+    CMP: Components,
+    owner: owner,
+}).parseNode(ast.program.body);
+console.log(result);

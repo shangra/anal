@@ -1,0 +1,4 @@
+.inspector {
+    height: 100%;
+    padding: var(--ui-kit-spacing-8);
+}

@@ -1,0 +1,25 @@
+{
+    "name": "meta-aggregate-calc-field",
+    "version": "1.0.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `meta-aggregate-calc-field` предназначен для работы с виртуальными полями и вычислениями в NodeCMS проекте. Он предоставляет функциональность для расчета агрегированных значений (сумма, среднее, минимум, максимум и т.д.) на основе заданных параметров и настроек. Модуль также поддерживает группировку данных и расчет итогов для таблиц, позволяя динамически генерировать дополнительные поля и выполнять сложные операции над данными.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "homepage": "",
+    "dependenciesNodeCMS": {
+        "metadata-cmp": "^1.0.2",
+        "utils": "^1.0.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {}
+}

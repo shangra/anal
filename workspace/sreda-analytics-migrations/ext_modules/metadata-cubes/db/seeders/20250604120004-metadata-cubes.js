@@ -1,0 +1,40 @@
+module.exports = {
+    up: async (queryInterface, Sequelize) => {
+        // Кубы
+        await queryInterface.bulkInsert(
+            {
+                tableName: 'Metadata',
+                schema: process.env.DB_SCHEMA,
+            },
+            [
+                {
+                    id: '4d0cb622-60fc-40db-97d6-be103b26051e',
+                    markdel: 0,
+                    parent: '00000000-0000-0000-0000-000000000000',
+                    class_id: '4d0cb622-60fc-40db-97d6-be103b26051e',
+                    class: 'Cubes',
+                    name: 'Кубы',
+                    description: 'Кубы',
+                    manifest: '{}',
+                    rank: 3,
+                },
+            ],
+            {},
+        );
+    },
+
+    down: async (queryInterface, Sequelize) => {
+        await queryInterface.bulkDelete(
+            {
+                tableName: 'Metadata',
+                schema: process.env.DB_SCHEMA,
+            },
+            null,
+            {
+                where: {
+                    id: '4d0cb622-60fc-40db-97d6-be103b26051e',
+                },
+            },
+        );
+    },
+};

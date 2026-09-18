@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(github.com)",
+      "run_shell_command"
+    ]
+  },
+  "$version": 3
+}

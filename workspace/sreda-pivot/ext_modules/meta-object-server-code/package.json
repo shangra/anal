@@ -1,0 +1,30 @@
+{
+    "name": "meta-object-server-code",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `meta-object-server-code` предоставляет функционал для выполнения серверного кода объектов системы NodeCMS. Он реализует методы обработки событий жизненного цикла объекта (`onBeforeLoad`, `onAfterLoad`, `onBeforeSave` и т.д.), которые могут содержать пользовательский серверный код. Модуль использует сервис интерпретации кода (`CodeService`), который позволяет выполнять этот код динамически, при этом обеспечивая возможность перехвата сообщений консоли (`log`, `error`, `warn`) во время исполнения.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "code-manager": "^1.5.0",
+        "Application": "^1.5.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "routes": {}
+}

@@ -1,0 +1,1 @@
+export { DatePicker } from 'components/MetadataForms/Inputs/DateInput/components/DatePicker/DatePicker';

@@ -1,0 +1,46 @@
+{
+    "name": "meta-new-cube-page",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `meta-new-cube-page` добавляет новые страницы в систему NodeCMS для отображения OLAP-куба и отчётов. Он расширяет функциональность системы за счет добавления новых маршрутов и контроллеров, а также предоставляет сервис для обработки запросов и формирования данных страниц. Модуль настраивается через параметры конфигурации среды (`OLAP_PARENT`, `REPORTS_PARENT`), где указываются родительские папки и шаблоны для страниц.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "metadata-cmp": "^1.5.4",
+        "wrapper": "1.5.5"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "CubesService.form.after": {
+            "class": "/services/metaNewCubePage.service.js",
+            "function": "formAfter"
+        },
+        "ReportsService.form.after": {
+            "class": "/services/metaNewCubePage.service.js",
+            "function": "formReportsAfter"
+        }
+    },
+    "routes": {
+        "/metadata/metanewcubepage": {
+            "router": "metaNewCubePage.router.js"
+        },
+        "/metadata/metanewreportspage": {
+            "router": "metaNewReportPage.router.js"
+        }
+    }
+}

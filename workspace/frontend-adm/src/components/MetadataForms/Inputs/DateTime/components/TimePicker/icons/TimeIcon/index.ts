@@ -1,0 +1,1 @@
+export { TimeIcon } from 'components/MetadataForms/Inputs/DateTime/components/TimePicker/icons/TimeIcon/Time'

@@ -1,0 +1,27 @@
+{
+    "name": "auth",
+    "version": "1.5.97",
+    "description": "Модуль, отвечающий за авторизацию, регистрацию, ограничение по правам на работу с пользователем и его доступами",
+    "enabled": true,
+    "dependencies": {
+        "sequelize": "^6.26.0",
+        "axios": "^1.2.1",
+        "express-validator": "^6.14.2",
+        "form-data": "^4.0.0"
+    },
+    "extensions": {},
+    "routes": {
+        "/auth": {
+            "router": "Auth.router.js"
+        },
+        "/usersui": {
+            "router": "UsersUi.router.js"
+        }
+    },
+    "typeSBR": "NodeCMS",
+    "dependenciesNodeCMS": {
+        "middleware-rest-upload-file": "^1.0.0",
+        "middleware-rest-validate": "^1.0.0",
+        "middleware-rest-check-access": "^1.0.0"
+    }
+}

@@ -1,0 +1,68 @@
+{
+    "current": [
+        {
+            "URule": [
+                {
+                    "id": "79ac697d-2559-4a43-8279-bf12fc1c4ffc",
+                    "markdel": 0,
+                    "name": "MetadataAdmin",
+                    "details": "Администратор метаданных"
+                },
+                {
+                    "id": "6ca8cd55-d548-4a5c-ba0f-be34d01f8072",
+                    "markdel": 0,
+                    "name": "UpdateSelfMetadata",
+                    "details": "Доступ к записи только своих метаданных"
+                },
+                {
+                    "id": "ecb07a38-d00c-4093-ba31-1dafde72fd00",
+                    "markdel": 0,
+                    "name": "MetadataRead",
+                    "details": "Чтение метаданных"
+                },
+                {
+                    "id": "232a43fb-ed52-414e-8562-75a814a1e8d1",
+                    "markdel": 0,
+                    "name": "MetadataWrite",
+                    "details": "Редактирование метаданных"
+                },
+                {
+                    "id": "2158f2d9-d42b-4860-b4c2-a5f60e3d434d",
+                    "markdel": 0,
+                    "name": "MetadataAccessRead",
+                    "details": "Просмотр доступа к метаданным"
+                },
+                {
+                    "id": "b5397f7f-94a2-4780-8aec-d899105bc6bf",
+                    "markdel": 0,
+                    "name": "MetadataAccessWrite",
+                    "details": "Редактирование доступа к метаданным"
+                },
+                {
+                    "id": "0e4a560f-b60e-445a-9f52-db1c7250d910",
+                    "markdel": 0,
+                    "name": "MetadataDataWrite",
+                    "details": "Редактирование данных метаданных"
+                },
+                {
+                    "id": "4a1ab32e-109a-43f7-bdae-8710dacc8c72",
+                    "markdel": 0,
+                    "name": "MetadataDataRead",
+                    "details": "Чтение данных метаданных"
+                },
+                {
+                    "id": "a72c80fc-6d9d-4a6c-bb3a-34c71cd88e53",
+                    "markdel": 0,
+                    "name": "MetadataDataDelete",
+                    "details": "Удаление данных метаданных"
+                },
+                {
+                    "id": "71280ff3-3932-4169-a744-f486e8be54dc",
+                    "markdel": 0,
+                    "name": "MetadataDelete",
+                    "details": "Удаление метаданных"
+                }
+            ]
+        }
+    ]
+}

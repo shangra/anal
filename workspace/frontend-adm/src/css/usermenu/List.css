@@ -1,0 +1,42 @@
+/* COLORED */
+.listGroupItemDark,
+.SubDropDownMenu {
+    color: var(--main-text-color, #7c95ab);
+    background-color: var(--second-bg-color, #131824);
+}
+
+.listGroupItemDark:hover,
+.SubDropDownMenu {
+    color: var(--main-active-color, #ffff);
+    background-color: var(--second-bg-color, #131824);
+    cursor: pointer;
+}
+
+/* STYLE */
+@media screen and (max-width: 767px) {
+    .SubDropDownMenu {
+        position: inherit;
+        margin-top: 10px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .SubDropDownMenu {
+        position: absolute;
+        right: 360px;
+    }
+}
+
+.SubDropDownMenu {
+    box-shadow: 0 0 6px var(--main-text-color);
+    padding: 10px;
+    width: max-content;
+}
+
+.submenuName {
+    margin-left: 30px;
+}
+
+.selected {
+    margin-left: 15px;
+}

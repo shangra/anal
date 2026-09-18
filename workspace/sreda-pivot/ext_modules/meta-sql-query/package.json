@@ -1,0 +1,36 @@
+{
+    "name": "meta-sql-query",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `meta-sql-query` предоставляет возможность выполнять SQL-запросы типа `SELECT`, обрабатывая их через промежуточное AST-представление для проверки корректности и безопасности запросов перед выполнением. Он интегрируется с системой NodeCMS, обеспечивая авторизацию доступа к выполнению запросов только для определенных ролей пользователей. Модуль также поддерживает работу с подключенными базами данных через конфигурацию метаданных объектов.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "node-sql-parser": "^5.3.9"
+    },
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-access": "^1.5.0",
+        "metadata-cmp": "^1.5.4",
+        "metadata-connector": "^1.5.3"
+    },
+    "dependenciesReactCMS": {},
+    "routes": {
+        "/metasqlquery": {
+            "router": "metaSQLQuery.router.js"
+        }
+    }
+}

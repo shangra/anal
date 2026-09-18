@@ -1,0 +1,13 @@
+.quick-calculation-item::after {
+    content: '';
+    display: inline-block;
+    margin-left: 8px;
+    width: 1px;
+    height: 16px;
+    background-color: var(--ui-kit-colors-background-line);
+    vertical-align: middle;
+}
+
+.quick-calculation-item:last-child::after {
+    display: none;
+}

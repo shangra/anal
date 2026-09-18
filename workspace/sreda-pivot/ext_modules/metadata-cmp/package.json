@@ -1,0 +1,25 @@
+{
+    "name": "metadata-cmp",
+    "version": "1.5.4",
+    "enabled": true,
+    "dependencies": {
+        "sequelize": "^6.26.0"
+    },
+    "extensions": {},
+    "routes": {
+        "/metadata": {
+            "router": "Metadata.router.js"
+        },
+        "/metadata/v2": {
+            "router": "MetadataV2.router.js"
+        },
+        "/metadata/v3": {
+            "router": "MetadataV3.router.js"
+        }
+    },
+    "typeSBR": "NodeCMS",
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-access": "^1.5.0",
+        "utils": "^1.5.0"
+    }
+}

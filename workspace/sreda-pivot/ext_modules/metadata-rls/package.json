@@ -1,0 +1,86 @@
+{
+    "name": "metadata-rls",
+    "version": "1.5.3",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль **metadata-rls** предназначен для управления доступами к данным через систему контроля доступа на основе ролей и условий. Он предоставляет API для создания, чтения, обновления и удаления правил доступа (RLS), а также условия их применения. Модуль интегрирован с другими компонентами системы NodeCMS и использует механизмы авторизации пользователей и групп.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "sequelize": "^6.26.0",
+        "json-logic-js": "^2.0.2"
+    },
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-access": "^1.5.0",
+        "metadata-cmp": "^1.5.4",
+        "wrapper": "1.5.5"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "metaDumpDBService.getAdditionalRefs.decorate": {
+            "class": "/services/Rls.service.js",
+            "function": "getIdsByMapping"
+        },
+        "MetadataService.getClassesMetadata.after": {
+            "class": "/services/Rls.service.js",
+            "function": "getClassesMetadata"
+        },
+        "InfoServiceGuidClass.read.before": {
+            "class": "/services/Rls.service.js",
+            "function": "readBefore"
+        },
+        "InfoServiceFlatGuidClass.read.before": {
+            "class": "/services/Rls.service.js",
+            "function": "readBefore"
+        },
+        "RegistryInformationClass.read.before": {
+            "class": "/services/Rls.service.js",
+            "function": "readBefore"
+        },
+        "RegistryAccumulativeClass.read.before": {
+            "class": "/services/Rls.service.js",
+            "function": "readBefore"
+        },
+        "RegistryAccountingClass.read.before": {
+            "class": "/services/Rls.service.js",
+            "function": "readBefore"
+        },
+        "GuideClass.read.before": {
+            "class": "/services/Rls.service.js",
+            "function": "readBefore"
+        },
+        "DocumentsClass.read.before": {
+            "class": "/services/Rls.service.js",
+            "function": "readBefore"
+        },
+        "TableClass.read.before": {
+            "class": "/services/Rls.service.js",
+            "function": "readBefore"
+        },
+        "InfoserviceClass.read.before": {
+            "class": "/services/Rls.service.js",
+            "function": "readBefore"
+        }
+    },
+    "routes": {
+        "/metadata/rls/condition": {
+            "router": "Condition.router.js"
+        },
+        "/metadata/rls": {
+            "router": "Rls.router.js"
+        }
+    }
+}

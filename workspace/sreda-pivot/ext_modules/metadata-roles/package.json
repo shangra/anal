@@ -1,0 +1,28 @@
+{
+    "name": "metadata-roles",
+    "version": "1.5.5",
+    "typeSBR": "NodeCMS",
+    "description": "Модуль `metadata-roles` отвечает за управление ролями пользователей в системе NodeCMS. Он предоставляет функциональность для выполнения основных операций CRUD (создание, чтение, обновление, удаление) над записями о ролях. Модуль состоит из нескольких компонентов: контроллера для взаимодействия с пользовательским интерфейсом или API, сервиса для бизнес-логики и класса модели для описания структуры данных роли пользователя.",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "metadata-cmp": "^1.5.4",
+        "auth": "^1.5.0",
+        "metadata-forms": "^1.5.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "MetadataService.getClassesMetadata.after": {
+            "class": "/services/Roles.service.js",
+            "function": "getClassesMetadata"
+        },
+        "MetadataService.getTreeChildrenV3.after": {
+            "class": "/services/Roles.service.js",
+            "function": "getTreeChildrenV3"
+        }
+    },
+    "routes": {
+        "/metadata/roles": {
+            "router": "Roles.router.js"
+        }
+    }
+}

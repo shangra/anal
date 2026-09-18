@@ -1,0 +1,10 @@
+.date-panel-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: var(--ui-kit-date-picker-date-panel-border-radius);
+    gap: var(--ui-kit-date-picker-date-panel-gap);
+    background-color: var(--ui-kit-date-picker-background);
+    width: fit-content;
+    padding: var(--ui-kit-date-picker-date-panel-padding);
+  }

@@ -1,0 +1,52 @@
+{
+    "current": [
+        {
+            "UAttributes": [
+                {
+                    "id": "156a7669-c2d9-447e-8956-75710f0dc3c7",
+                    "code": 1,
+                    "markdel": 0,
+                    "name": "Фамилия",
+                    "type": "text",
+                    "updatedAt": "2022-07-22T12:07:42.299Z",
+                    "createdAt": "2022-07-22T12:07:42.299Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "074bd055-409b-4ad3-b73f-04620511c46f",
+                    "code": 2,
+                    "markdel": 0,
+                    "name": "Имя",
+                    "type": "text",
+                    "updatedAt": "2022-07-22T12:07:42.299Z",
+                    "createdAt": "2022-07-22T12:07:42.299Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "18e71a0f-d76a-4c8e-b7f1-c49cff474536",
+                    "code": 3,
+                    "markdel": 0,
+                    "name": "Отчество",
+                    "type": "text",
+                    "updatedAt": "2022-07-22T12:07:42.299Z",
+                    "createdAt": "2022-07-22T12:07:42.299Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "d4450f36-4103-44be-9308-b10b63532b9f",
+                    "code": 4,
+                    "markdel": 0,
+                    "name": "Роль",
+                    "type": "text",
+                    "updatedAt": "2022-07-22T12:07:42.299Z",
+                    "createdAt": "2022-07-22T12:07:42.299Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,36 @@
+{
+    "name": "meta-ddl-dump",
+    "version": "1.0.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль **meta-ddl-dump** предназначен для генерации SQL-запросов на основе метаданных объектов информационной системы. Он формирует запросы для получения данных из таблиц и представлений, учитывая фильтры, связи между сущностями и специфические параметры типа поддержки иерархии и материалаций данных. Полученные SQL-запросы используются для анализа и оптимизации работы приложений NodeCMS.",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "metadata-cmp": "^1.0.2",
+        "middleware-rest-check-access": "^1.0.0"
+    },
+    "dependenciesReactCMS": {},
+    "routes": {
+        "/metaddldump": {
+            "router": "MetaDDLDump.router.js"
+        }
+    }
+}

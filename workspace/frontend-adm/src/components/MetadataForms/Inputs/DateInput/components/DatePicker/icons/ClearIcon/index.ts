@@ -1,0 +1,1 @@
+export { ClearIcon } from 'components/MetadataForms/Inputs/DateInput/components/DatePicker/icons/ClearIcon/ClearIcon'

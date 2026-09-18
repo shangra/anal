@@ -1,0 +1,103 @@
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--ui-kit-spacing-2);
+    padding: var(--ui-kit-spacing-2) var(--ui-kit-spacing-4);
+    line-height: var(--ui-kit-typography-body-line-height);
+    white-space: nowrap;
+}
+
+.label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--ui-kit-spacing-2);
+    white-space: nowrap;
+}
+
+.group {
+    color: var(--ui-kit-colors-text-secondary);
+}
+
+.icon_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: var(--ui-kit-checkbox-icon-size);
+    min-width: var(--ui-kit-checkbox-icon-size);
+    height: var(--ui-kit-checkbox-icon-size);
+    min-height: var(--ui-kit-checkbox-icon-size);
+}
+
+.searchContainer {
+    margin-bottom: var(--ui-kit-spacing-6);
+}
+
+.schemasList {
+    overflow-y: auto;
+}
+
+.selectorWrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    border: 1px solid var(--ui-kit-colors-border-control);
+    border-radius: var(--ui-kit-spacing-2);
+    transition: border-color 0.2s;
+    height: var(--ui-kit-button-medium-height);
+}
+
+.selectorWrapper:hover {
+    border-color: var(--ui-kit-colors-border-controlHover);
+}
+
+.selector {
+    flex: 1;
+    padding: var(--ui-kit-spacing-4) var(--ui-kit-spacing-6);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.icon {
+    margin-right: var(--ui-kit-spacing-4);
+    flex-shrink: 0;
+    color: var(--ui-kit-colors-icon);
+}
+
+.popoverContent {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--ui-kit-spacing-2);
+    overflow: hidden;
+}
+
+.emptySearch {
+    padding: var(--ui-kit-spacing-4) var(--ui-kit-spacing-6);
+    color: var(--ui-kit-colors-text-tertiary);
+    text-align: center;
+}
+
+.select__item {
+    padding-left: var(--ui-kit-spacing-16);
+    justify-content: space-between;
+}
+
+.badge {
+    border-radius: var(--ui-kit-badge-border-radius);
+    background-color: var(--ui-kit-badge-error-background-color);
+    position: absolute;
+    top: calc(0px - (var(--ui-kit-badge-circle-size) / 2));
+    right: calc(0px - ((var(--ui-kit-badge-circle-size) + var(--ui-kit-badge-padding-x))));
+    padding: var(--ui-kit-badge-padding-y) var(--ui-kit-badge-padding-x);
+}
+
+.iconsWrap {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-kit-spacing-2);
+}

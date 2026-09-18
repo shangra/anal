@@ -1,0 +1,19 @@
+{
+    "current": [
+        {
+            "Metadata": [
+                {
+                    "id": "48d6c82e-f78b-42f2-8c19-ba9aaf457740",
+                    "markdel": 0,
+                    "parent": "00000000-0000-0000-0000-000000000000",
+                    "class_id": "48d6c82e-f78b-42f2-8c19-ba9aaf457740",
+                    "class": "InfoserviceGuide",
+                    "name": "Справочники инфосервисов",
+                    "description": "Справочники инфосервисов",
+                    "manifest": "{}",
+                    "rank": 10
+                }
+            ]
+        }
+    ]
+}

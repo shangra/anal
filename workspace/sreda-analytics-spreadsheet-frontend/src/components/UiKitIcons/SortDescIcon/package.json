@@ -1,0 +1,30 @@
+{
+    "name": "ui-kit-icons_sortdesc",
+    "version": "1.0.0",
+    "description": "",
+    "typeSBR": "ReactCMS",
+    "codeName": "SortdescIcon",
+    "lazy": false,
+    "rootComponent": false,
+    "filenameWithConstantsForTemplate": "",
+    "filenameWithUtilitiesForTemplate": "",
+    "main": "index.tsx",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "amso",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": ""
+}

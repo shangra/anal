@@ -1,0 +1,26 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.label {
+    flex: 0 1 33.333%;
+}
+
+.inputWrapper {
+    flex: 0 1 66.666%;
+}
+
+.wrapper.fullWidth {
+    justify-content: space-between;
+    width: 100%;
+}
+
+.inputWrapper.fullWidth {
+    flex: 1 !important;
+}
+
+.inputWrapper.noBorder label {
+    border: none;
+}

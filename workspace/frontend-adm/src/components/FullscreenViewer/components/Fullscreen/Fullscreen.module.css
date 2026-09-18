@@ -1,0 +1,15 @@
+.fullscreen {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: var(--zindex-toast);
+    background-color: var(--main-bg-color);
+}
+
+.close {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+}

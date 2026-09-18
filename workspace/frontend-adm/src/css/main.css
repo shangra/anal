@@ -1,0 +1,52 @@
+/* COLORED */
+
+.dropdown-menu {
+    background-color: var(--second-bg-color, #131824) !important;
+    box-shadow: 0 0 6px var(--main-text-color);
+    padding: 5px;
+    width: max-content;
+}
+
+.DropDownMenuUI,
+.DropDownMenu {
+    border-radius: 10px;
+}
+
+/* STYLE */
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%;
+    top: 60px;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+.carousel {
+    position: inherit;
+}
+
+body {
+    font-family: 'nav-sans', sans-serif, Arial;
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 0;
+    max-height: 100vh;
+    overflow-y: hidden;
+    outline-width: 0px;
+}
+
+.DesktopContainer {
+    margin-top: 70px;
+    max-height: calc(100vh - 70px);
+    height: calc(100vh - 70px);
+    overflow: auto;
+}

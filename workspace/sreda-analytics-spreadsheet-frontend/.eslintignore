@@ -1,0 +1,8 @@
+src/helpers/*
+src/components/vendors/*
+src/components/UiKitIcons/*
+src/components/ui/*
+src/components/UIKit/*
+
+src/components/PermissionsUI/SearchUser/index.js
+src/components/ChartGenerationCMP/src/components/Scatter/types.ts

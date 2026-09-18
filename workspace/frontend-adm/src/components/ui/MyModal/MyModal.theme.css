@@ -1,0 +1,7 @@
+:root {
+    --my-modal-bg-color: #2a2f3e;
+}
+
+:root[data-theme='light'] {
+    --my-modal-bg-color: #fff;
+}

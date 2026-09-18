@@ -1,0 +1,60 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    gap: 12px;
+    flex-basis: 0;
+    flex-grow: 1;
+    width: 100%;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.action {
+    flex-basis: 0;
+    flex-grow: 1;
+}
+
+.rangeGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.groupContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px
+}
+
+.groupTabs {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+    overflow-y: auto;
+}
+
+.groupTabs button {
+    flex-shrink: 0;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.pointer:focus {
+    cursor: default;
+}

@@ -1,0 +1,14 @@
+{
+    "name": "TransactionAgent",
+    "version": "1.5.0",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "description": "Модуль `TransactionAgent` предоставляет класс для управления транзакциями базы данных в проекте NodeCMS версии 1.5.0. Он использует библиотеку Sequelize (`sequelize`) для выполнения операций с базой данных внутри транзакций. Класс содержит метод `transaction`, который делегирует вызов транзакционной логики провайдеру (в данном случае — объекту `sequelize`), позволяя выполнять операции в рамках одной транзакции.",
+    "typeSBR": "NodeCMS",
+    "dependencies": {},
+    "dependenciesNodeCMS": {}
+}

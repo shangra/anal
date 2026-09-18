@@ -1,0 +1,25 @@
+{
+    "name": "cached",
+    "version": "1.5.21",
+    "description": "Работа с кэшем",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {}
+}

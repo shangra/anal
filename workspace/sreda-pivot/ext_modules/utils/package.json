@@ -1,0 +1,25 @@
+{
+    "name": "utils",
+    "version": "1.5.0",
+    "description": "полезные функции",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "main": "index.js",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "dependencies": {}
+}

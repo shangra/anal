@@ -1,0 +1,10 @@
+{
+  "sreda-analytics-migrations": {
+    "ci": "ci03549129/ci03549129",
+    "test_project": "",
+    "type": "backend",
+    "gitops": {
+      "pkap1116": "ssh://git@sbrf-bitbucket.sigma.sbrf.ru:7999/ci06667308/ci06667308_pkapsass_gitopscd.git"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+    "name": "rls-core",
+    "version": "1.5.27",
+    "description": "Корневой модуль для работы с РЛС (row-level security) - получение ограничений по доступу, назначение и удаление доступов",
+    "enabled": true,
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "dependencies": {
+        "express-validator": "^6.14.0",
+        "sequelize": "^6.26.0"
+    },
+    "routes": {
+        "/rls": {
+            "router": "RlsCore.router.js"
+        }
+    },
+    "typeSBR": "NodeCMS",
+    "dependenciesNodeCMS": {
+        "middleware-rest-validate": "^1.5.0",
+        "middleware-rest-check-auth": "^1.5.0"
+    },
+    "extensions": {}
+}

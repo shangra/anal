@@ -1,0 +1,60 @@
+{
+    "name": "metadata-infoservice",
+    "version": "1.5.5",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль **metadata-infoservice** предназначен для управления мета-данными информационных сервисов в системе NodeCMS. Он позволяет создавать, обновлять, читать и удалять информацию о полях, внешних ключах, индексах и других компонентах, необходимых для работы с базами данных и информационными сервисами. Этот модуль также обеспечивает функциональность для настройки доступа пользователей к различным компонентам системы, используя систему ролей и прав доступа.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "lite-pattern": "^1.0.6"
+    },
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-access": "^1.5.0",
+        "middleware-rest-in-transaction": "^1.5.0",
+        "metadata-cmp": "^1.5.4",
+        "metadata-infoservice-guide": "^1.5.2",
+        "metadata-connector": "^1.5.3",
+        "utils": "^1.5.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "MetadataService.getClassesMetadata.after": {
+            "class": "/services/Infoservice.service.js",
+            "function": "getClassesMetadata"
+        }
+    },
+    "routes": {
+        "/metadata/infoservice/fields": {
+            "router": "Fields.router.js"
+        },
+        "/metadata/infoservice/fieldslist": {
+            "router": "FieldsList.router.js"
+        },
+        "/metadata/infoservice/indexes": {
+            "router": "Indexes.router.js"
+        },
+        "/metadata/infoservice/keys": {
+            "router": "Keys.router.js"
+        },
+        "/metadata/infoservice/foreignkeys": {
+            "router": "ForeignKeys.router.js"
+        },
+        "/metadata/infoservice": {
+            "router": "Infoservices.router.js"
+        }
+    }
+}

@@ -1,0 +1,181 @@
+const IndexesServiceClass = require('../services/Indexes.service');
+const IndexesService = new IndexesServiceClass();
+/**
+ * @swagger
+ * tags:
+ *   - name: Indexes
+ *     description: Метаданные индексов
+ */
+class IndexesController {
+  /**
+     * @swagger
+     * /indexes/metadata:
+     *   get:
+     *     summary: Получить метаданные всех индексов
+     *     tags: [Indexes]
+     *     security:
+     *       - Adminpanel: []
+     *       - MetadataAdmin: []
+     *     responses:
+     *       200:
+     *         description: Метаданные индексов
+     */
+  static async metadata(req, res, next) {
+    try {
+      const form = await IndexesService.metadata();
+      res.json(form);
+    } catch (e) {
+      next(e);
+    }
+  }
+  /**
+     * @swagger
+     * /indexes/metadata/{id}:
+     *   get:
+     *     summary: Получить метаданные индекса по ID
+     *     tags: [Indexes]
+     *     security:
+     *       - Adminpanel: []
+     *       - MetadataAdmin: []
+     *     parameters:
+     *       - name: id
+     *         description: Идентификатор индекса
+     *         in: path
+     *         required: true
+     *         type: string
+     *     responses:
+     *       200:
+     *         description: Метаданные индекса
+     */
+  static async metadataItem(req, res, next) {
+    try {
+      const {
+        id
+      } = req.params;
+      const form = await IndexesService.metadataItem(id);
+      res.json(form);
+    } catch (e) {
+      next(e);
+    }
+  }
+  /**
+     * @swagger
+     * /indexes/metadata:
+     *   post:
+     *     summary: Создать метаданные нового индекса
+     *     tags: [Indexes]
+     *     security:
+     *       - Adminpanel: []
+     *       - MetadataAdmin: []
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               name:
+     *                 type: string
+     *               fields:
+     *                 type: array
+     *                 items:
+     *                   type: object
+     *             example:
+     *               name: Новый индекс
+     *               fields: []
+     *     responses:
+     *       200:
+     *         description: Созданные метаданные индекса
+     */
+  static async createMetadata(req, res, next) {
+    try {
+      const {
+        body
+      } = req;
+      const form = await IndexesService.createMetadata(body);
+      res.json(form);
+    } catch (e) {
+      next(e);
+    }
+  }
+  /**
+     * @swagger
+     * /indexes/metadata/{id}:
+     *   put:
+     *     summary: Обновить метаданные индекса
+     *     tags: [Indexes]
+     *     security:
+     *       - Adminpanel: []
+     *       - MetadataAdmin: []
+     *     parameters:
+     *       - name: id
+     *         description: Идентификатор индекса
+     *         in: path
+     *         required: true
+     *         type: string
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               name:
+     *                 type: string
+     *               fields:
+     *                 type: array
+     *                 items:
+     *                   type: object
+     *             example:
+     *               name: Обновленный индекс
+     *               fields: []
+     *     responses:
+     *       200:
+     *         description: Обновленные метаданные индекса
+     */
+  static async updateMetadata(req, res, next) {
+    try {
+      const {
+        id
+      } = req.params;
+      const {
+        body
+      } = req;
+      const form = await IndexesService.updateMetadata(id, body);
+      res.json(form);
+    } catch (e) {
+      next(e);
+    }
+  }
+  /**
+     * @swagger
+     * /indexes/metadata/{id}:
+     *   delete:
+     *     summary: Удалить метаданные индекса
+     *     tags: [Indexes]
+     *     security:
+     *       - Adminpanel: []
+     *       - MetadataAdmin: []
+     *     parameters:
+     *       - name: id
+     *         description: Идентификатор индекса
+     *         in: path
+     *         required: true
+     *         type: string
+     *     responses:
+     *       200:
+     *         description: Результат удаления метаданных индекса
+     */
+  static async deleteMetadata(req, res, next) {
+    try {
+      const {
+        id
+      } = req.params;
+      const form = await IndexesService.deleteMetadata(id);
+      res.json(form);
+    } catch (e) {
+      next(e);
+    }
+  }
+}
+module.exports = IndexesController;

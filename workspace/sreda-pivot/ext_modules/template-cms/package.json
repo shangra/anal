@@ -1,0 +1,20 @@
+{
+    "name": "template-cms",
+    "version": "1.5.7",
+    "description": "Модуль для работы с шаблонами",
+    "dependencies": {
+        "sequelize": "^6.26.0",
+        "express-validator": "^6.14.2"
+    },
+    "extensions": {},
+    "routes": {
+        "/templates": {
+            "router": "Templates.router.js"
+        }
+    },
+    "typeSBR": "NodeCMS",
+    "dependenciesNodeCMS": {
+        "middleware-rest-validate": "^1.0.0",
+        "middleware-rest-check-access": "^1.0.0"
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "name": "icon",
+    "version": "1.0.0",
+    "typeSBR": "ReactCMS",
+    "codeName": "Icon",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "react": "^18.2.0",
+        "handy-svg": "1.0.8"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {}
+}

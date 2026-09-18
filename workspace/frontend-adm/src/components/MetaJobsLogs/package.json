@@ -1,0 +1,26 @@
+{
+    "name": "meta-jobs-logs",
+    "version": "1.0.0",
+    "typeSBR": "ReactCMS",
+    "codeName": "MetaJobsLogs",
+    "description": "Кнопка «Просмотр логов заданий» для формы задачи Планировщика. При клике открывает окно со списком всех задач и логами выбранной задачи.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": ""
+}

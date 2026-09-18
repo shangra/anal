@@ -1,0 +1,69 @@
+{
+    "name": "metadata-reports",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --coverage --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-access": "^1.5.0",
+        "metadata-cmp": "^1.5.4",
+        "metadata-connector": "^1.5.0",
+        "metadata-infoservice": "^1.5.0",
+        "worker_code": "^1.0.0",
+        "metadata-cubes-query": "^1.5.0",
+        "meta-aggregate-calc-field": "^1.0.0",
+        "utils": "^1.0.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "MetadataService.getClassesMetadata.after": {
+            "class": "/services/Reports.service.js",
+            "function": "getClassesMetadata"
+        }
+    },
+    "routes": {
+        "/metadata/reports/infoservices": {
+            "router": "Infoservices.router.js"
+        },
+        "/metadata/reports/measures": {
+            "router": "Measures.router.js"
+        },
+        "/metadata/reports/dimensions": {
+            "router": "Dimensions.router.js"
+        },
+        "/metadata/reports/infoserviselist": {
+            "router": "InfoserviseList.router.js"
+        },
+        "/metadata/reports": {
+            "router": "Reports.router.js"
+        },
+        "/metadata/reports/fieldslist": {
+            "router": "FieldsList.router.js"
+        },
+        "/metadata/reports/fizfieldslist": {
+            "router": "FizFieldsList.router.js"
+        },
+        "/metadata/reports/fields": {
+            "router": "Fields.router.js"
+        }
+    }
+}

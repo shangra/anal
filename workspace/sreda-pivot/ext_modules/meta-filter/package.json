@@ -1,0 +1,32 @@
+{
+    "name": "meta-filter",
+    "version": "1.0.1",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль **meta-filter** предназначен для получения данных из справочников с возможностью применения фильтров и поддержки иерархических структур. Он предоставляет два основных метода: один для выполнения запросов к данным с учетом указанных фильтров, а другой — для получения списка доступных уровней иерархии записей. Модуль взаимодействует с другими компонентами системы через сервисные классы и использует SQL-запросы для работы с базой данных.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "homepage": "",
+    "dependencies": {
+        "express": "^4.17.2"
+    },
+    "dependenciesNodeCMS": {
+        "metadata-cmp": "^1.0.2"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "routes": {
+        "/metadata/meta-filter": {
+            "router": "Filter.router.js"
+        }
+    }
+}

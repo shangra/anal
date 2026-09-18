@@ -1,0 +1,19 @@
+{
+    "current": [
+        {
+            "Metadata": [
+                {
+                    "id": "2d79fa5d-c705-4503-adce-50c6622c7660",
+                    "markdel": 0,
+                    "parent": "00000000-0000-0000-0000-000000000000",
+                    "class_id": "2d79fa5d-c705-4503-adce-50c6622c7660",
+                    "class": "Roles",
+                    "name": "Роли",
+                    "description": "Роли",
+                    "manifest": "{\"owner_id\":\"2d79fa5d-c705-4503-adce-50c6622c7660\",\"class_id\":\"2d79fa5d-c705-4503-adce-50c6622c7660\",\"class\":\"Roles\",\"name\":\"Роли\",\"description\":\"Роли\",\"settings\":{\"formelement\":{\"value\":\"f1772c06-1d4f-47fb-8516-747bed27fe00\",\"link\":\"20901b97-d1cf-4472-a27b-b0442e436c9a\"},\"formlist\":{\"value\":\"7b53d199-377b-4186-a094-7c0ba46bcf16\",\"link\":\"20901b97-d1cf-4472-a27b-b0442e436c9a\"},\"formchoice\":{\"value\":\"9bc031cc-220e-4843-a172-612d80e8a337\",\"link\":\"20901b97-d1cf-4472-a27b-b0442e436c9a\"},\"hierarchical\":true},\"events\":{}}",
+                    "rank": 21
+                }
+            ]
+        }
+    ]
+}

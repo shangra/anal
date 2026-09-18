@@ -1,0 +1,36 @@
+{
+    "name": "WindowsCMP",
+    "version": "1.5.2",
+    "typeSBR": "ReactCMS",
+    "codeName": "WindowsCMP",
+    "lazy": false,
+    "rootComponent": true,
+    "filenameWithConstantsForTemplate": "",
+    "filenameWithUtilitiesForTemplate": "",
+    "description": "Модуль `WindowsCMP` отвечает за создание и управление окнами в системе. Он реализует логику открытия, закрытия, изменения размера и расположения окон, а также обеспечивает возможность переключения между открытыми окнами и взаимодействие с сайдбара́ми. Модуль включает методы для работы с активными панелями и обработки событий от пользовательских действий, обеспечивая корректное отображение окон и их элементов на экране.",
+    "main": "index.tsx",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "lite-react-statemanager": "1.0.7"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {
+        "ErrorBoundary": "^1.0.0"
+    },
+    "extensions": {}
+}

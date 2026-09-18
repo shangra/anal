@@ -1,0 +1,19 @@
+{
+    "current": [
+        {
+            "Metadata": [
+                {
+                    "id": "530cf1cf-1aa4-442b-b0f4-ba801f5c9599",
+                    "markdel": 0,
+                    "parent": "00000000-0000-0000-0000-000000000000",
+                    "class_id": "530cf1cf-1aa4-442b-b0f4-ba801f5c9599",
+                    "class": "Rls",
+                    "name": "Доступы",
+                    "description": "Доступы",
+                    "manifest": "{}",
+                    "rank": 14
+                }
+            ]
+        }
+    ]
+}

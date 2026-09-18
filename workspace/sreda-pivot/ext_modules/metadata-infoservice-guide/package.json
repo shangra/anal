@@ -1,0 +1,54 @@
+{
+    "name": "metadata-infoservice-guide",
+    "version": "1.5.2",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль **metadata-infoservice-guide** предназначен для управления метаданными справочных источников информации (\"инфосервисов\"). Он предоставляет функционал для создания, чтения, обновления и удаления полей, индексов, ключей и других компонентов, связанных со структурой данных этих справочных сервисов. Модуль включает в себя контроллеры, сервисы и роутеры, обеспечивающие доступ к данным через REST API, а также проверяет права доступа пользователей при выполнении операций.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-access": "^1.5.0",
+        "metadata-cmp": "^1.5.4",
+        "metadata-connector": "^1.5.3",
+        "utils": "^1.5.0",
+        "metadata-logic": "^1.5.1"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "MetadataService.getClassesMetadata.after": {
+            "class": "/services/InfoserviceGuide.service.js",
+            "function": "getClassesMetadata"
+        }
+    },
+    "routes": {
+        "/metadata/infoserviceguide/fields": {
+            "router": "Fields.router.js"
+        },
+        "/metadata/infoserviceguide/fieldslist": {
+            "router": "FieldsList.router.js"
+        },
+        "/metadata/infoserviceguide/indexes": {
+            "router": "Indexes.router.js"
+        },
+        "/metadata/infoserviceguide/keys": {
+            "router": "Keys.router.js"
+        },
+        "/metadata/infoserviceguide": {
+            "router": "Infoservices.router.js"
+        }
+    }
+}

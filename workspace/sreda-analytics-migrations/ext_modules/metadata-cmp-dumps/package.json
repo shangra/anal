@@ -1,0 +1,10 @@
+{
+    "name": "metadata-cmp-dumps",
+    "version": "1.0.1",
+    "description": "Настройки для управления правами метаданных",
+    "dependencies": {},
+    "extensions": {},
+    "routes": {},
+    "typeSBR": "NodeCMS",
+    "dependenciesNodeCMS": {}
+}

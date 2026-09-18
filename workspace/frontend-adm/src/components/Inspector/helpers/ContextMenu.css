@@ -1,0 +1,33 @@
+.MenuContextContainer {
+    border: 1px solid #ffffff2d;
+    border-radius: 4px;
+    /*padding: 18px;*/
+    margin: 5px 0;
+    box-sizing: border-box;
+    z-index: 999;
+}
+
+.ContextMenu {
+    position: absolute;
+    /*width: 200px;*/
+    background-color: #383838;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.ContextMenu ul {
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 0;
+    list-style: none;
+}
+
+.ContextMenu ul li {
+    padding: 12px 12px;
+}
+
+/* hover */
+.ContextMenu ul li:hover {
+    cursor: pointer;
+    background-color: #000000;
+}

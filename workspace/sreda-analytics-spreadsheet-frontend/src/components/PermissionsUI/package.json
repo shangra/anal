@@ -1,0 +1,29 @@
+{
+    "name": "permissionsui",
+    "version": "1.0.0",
+    "typeSBR": "ReactCMS",
+    "codeName": "PermissionsUI",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {}
+}

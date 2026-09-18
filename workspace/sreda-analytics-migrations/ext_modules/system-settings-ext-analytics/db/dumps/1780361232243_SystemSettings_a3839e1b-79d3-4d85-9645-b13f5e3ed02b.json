@@ -1,0 +1,16 @@
+{
+    "current": [
+        {
+            "SystemSettings": [
+                {
+                    "id": "a3839e1b-79d3-4d85-9645-b13f5e3ed02b",
+                    "parent": "00000000-0000-0000-0000-000000000000",
+                    "name": "REPORTS_PARENT",
+                    "description": "REPORTS_PARENT",
+                    "type": "55a33e2d-cb18-4486-80d7-9b7b25909031",
+                    "value": "{\n    \"parent\": \"f57c50a1-4155-46f4-ad7d-4eed48979414\",\n    \"template\": \"60a79c73-344e-4d39-b9d4-c2c5cc288716\",\n    \"paramName\": \"reportId\",\n    \"params\": [\n        {\n            \"name\": \"server\",\n            \"value\": \"pivot\"\n        }\n    ]\n}"
+                }
+            ]
+        }
+    ]
+}

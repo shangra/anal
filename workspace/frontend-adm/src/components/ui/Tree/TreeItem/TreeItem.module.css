@@ -1,0 +1,62 @@
+.hidden {
+    visibility: hidden;
+}
+
+.expandButton {
+    transition: transform 0.3s ease;
+}
+
+.rotate {
+    transform: rotate(90deg);
+}
+
+.subMenu {
+    overflow: hidden;
+    max-height: 0;
+    max-width: 0;
+    width: max-content;
+    transition: all 0.5s ease;
+}
+
+.expanded {
+    max-height: max-content;
+    max-width: max-content;
+    min-width: 100%;
+}
+
+.title {
+    height: 28px;
+    width: inherit;
+    padding: 4px;
+}
+
+.title:hover {
+    background-color: var(--clickable-bg);
+    cursor: pointer;
+}
+
+.titleActive {
+    background-color: var(--main-selected-color);
+}
+
+.spinner {
+    margin-right: -2px;
+}
+
+.filterButton {
+    padding: 4px;
+    border: none;
+    background-color: var(--clickable-bg);
+    cursor: pointer;
+}
+
+.filterButton i {
+    border: none;
+    color: var(--main-text-color);
+    cursor: pointer;    
+}
+
+.filterButton i:hover {
+    background-color: var(--clickable-bg);
+    color: white;
+}

@@ -1,0 +1,48 @@
+{
+    "name": "pivot-table",
+    "version": "1.0.4",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i --forceExit ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "@types/jest": "^30.0.0",
+        "dayjs": "^1.11.13",
+        "decimal.js": "^10.5.0",
+        "sequelize": "^6.26.0"
+    },
+    "dependenciesNodeCMS": {
+        "middleware-rest-decimal": "^1.0.2",
+        "utils": "^1.0.0",
+        "metadata-cmp": "^1.0.5",
+        "metadata-cubes": "^1.0.4",
+        "metadata-infoservice": "^1.0.5",
+        "metadata-infoservice-guide": "^1.0.0",
+        "metadata-infoservice-matrixguide": "^1.0.0",
+        "wrapper": "^1.5.5"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "routes": {
+        "/pivottables": {
+            "router": "PivotTable.router.js"
+        }
+    }
+}

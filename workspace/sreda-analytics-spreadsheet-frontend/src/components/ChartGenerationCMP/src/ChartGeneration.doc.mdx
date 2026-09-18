@@ -1,0 +1,55 @@
+import { Canvas, Meta,ArgTypes } from '@storybook/blocks';
+
+import ChartGeneration, { Default } from './ChartGeneration.stories';
+
+<Meta of={ChartGeneration} />
+
+# ChartGeneration
+
+Генератор графиков по спецификации, построенной под таблицы excel.
+
+## Ожидаемый формат данных
+
+Графики собираются от табличных данных, каждый элемент имеет тип либо строка либо число.
+
+```
+const data: (number | string)[][] = [
+    ["row 1", 5, 6 ,7],
+    ["row 2", 2, 20 ,1],
+]
+```
+
+## Настройка графиков
+
+Каждый тип графика имеет свою настройку в виде объекта meta. Значения собираются по диапазонам индексов ячеек.
+```
+const titleRange: {
+    cells: `${string}${number}:${string}${number}`
+    orientation?: "horizontal" | "vertical"
+}
+```
+
+### META для графиков Area, Line и Bar
+```
+type meta = {
+    layout?: ChartLayout // ориентация графика
+    legend?: boolean | MetaLegend,
+    tooltip?: boolean | MetaTooltip
+    grid?: boolean | MetaGrid
+    xAxis?: MetaXAxis
+    yAxis?: MetaYAxis
+    itemsRange?: ChartRange // диапазон значений
+    titleRange?: ChartRange // диапазон названий
+    categoryRange?: ChartRange // диапазон категории
+    items?: {
+        stroke?: string
+        strokeWidth?: number
+        fill?: string
+        order?: number
+    }[] // настройка цветов идет по индексам, каждый индекс сооответствует одному item
+}
+```
+
+## API
+
+<ArgTypes of={Default}/>

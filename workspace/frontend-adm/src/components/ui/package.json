@@ -1,0 +1,36 @@
+{
+    "name": "ui",
+    "version": "1.0.0",
+    "typeSBR": "ReactCMS",
+    "codeName": "ui",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "react": "=18.2.0",
+        "react-router-dom": "6.0.2",
+        "react-bootstrap": "=2.8.0",
+        "uuid": "8.3.2",
+        "lite-react-statemanager": "1.0.7",
+        "classnames": "=2.3.2",
+        "react-beautiful-dnd": "=13.1.0"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {
+        "Loader": "^0.0.0"
+    },
+    "extensions": {}
+}

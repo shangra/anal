@@ -1,0 +1,34 @@
+{
+    "name": "inspector",
+    "version": "0.0.1",
+    "typeSBR": "ReactCMS",
+    "codeName": "Inspector",
+    "lazy": false,
+    "description": "Элемент инспектора",
+    "main": "index.tsx",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "react": "^18.2.0"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {
+        "ErrorBoundary": "^1.0.0",
+        "MetadataForms": "^1.0.0",
+        "MetadataHier": "^1.0.0",
+        "AdminUiKit": "^1.0.0"
+    },
+    "extensions": {}
+}

@@ -1,0 +1,26 @@
+.selectInfinityList {}
+
+.selectInfinityList div {
+    width: max-content;
+}
+
+.selectInfinityList_notHierarchy div {
+    min-width: 100%;
+}
+
+.option, .loader, .error {
+    color: var(--main-active-color, #7c95ab);
+    border: 1px solid #7c95ab00;
+    cursor: pointer;
+    padding: 5px;
+    height: 30px;
+    background-color: transparent !important;
+    user-select: none;
+    width: 100%;
+}
+
+.option:hover {
+    color: var(--main-active-color, #fff) !important;
+    border: 1px solid var(--main-active-color, #fff);
+    border-radius: 5px;
+}

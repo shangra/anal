@@ -1,0 +1,7 @@
+.ant-select-dropdown {
+    z-index: 10001;
+}
+/* дабы не вылазили по ширине */
+.form-input-width > div:first-child {
+    width: calc(100% - 64px) !important;
+}

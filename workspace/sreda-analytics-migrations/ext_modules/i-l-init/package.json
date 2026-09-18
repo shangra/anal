@@ -1,0 +1,19 @@
+{
+    "name": "i-l-init",
+    "version": "1.0.0",
+    "description": "",
+    "enabled": true,
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --coverage --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "dependencies": {
+        "sequelize": "^6.26.0"
+    },
+    "extensions": {},
+    "routes": {},
+    "typeSBR": "NodeCMS",
+    "dependenciesNodeCMS": {}
+}

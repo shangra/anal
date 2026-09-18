@@ -1,0 +1,42 @@
+{
+    "name": "sreda-builder",
+    "version": "1.0.0",
+    "description": "Коробочный запуск и сборка Sreda Analytics: один конфиг, одна команда",
+    "type": "module",
+    "bin": {
+        "sreda-builder": "./bin/sreda-builder.js",
+        "builder": "./bin/sreda-builder.js"
+    },
+    "scripts": {
+        "postinstall": "node bin/sreda-builder.js install --root workspace",
+        "env": "node bin/sreda-builder.js env --root workspace",
+        "db": "node bin/sreda-builder.js db --root workspace",
+        "start": "node bin/sreda-builder.js start --root workspace",
+        "build": "node bin/sreda-builder.js build",
+        "list": "node bin/sreda-builder.js list",
+        "validate": "node bin/sreda-builder.js validate",
+        "pack:adm": "node scripts/sbox.js pack workspace/frontend-adm frontend-adm.sbox",
+        "b64:adm": "node scripts/sbox.js to-b64 frontend-adm.sbox frontend-adm.sbox.txt",
+        "unpack:adm": "node scripts/sbox.js unpack frontend-adm.sbox.txt workspace/frontend-adm",
+        "unpack:pivot": "node scripts/sbox.js unpack sbox-inbox-pivot/sreda-pivot.sbox.txt workspace/sreda-pivot",
+        "unpack:spreadsheet": "node scripts/sbox.js unpack sbox-inbox-spreadsheet/sreda-analytics-spreadsheet-frontend.sbox.txt workspace/sreda-analytics-spreadsheet-frontend",
+        "unpack:migrations": "node scripts/sbox.js unpack sbox-inbox-migrations/sreda-analytics-migrations.sbox.txt workspace/sreda-analytics-migrations"
+    },
+    "engines": {
+        "node": ">=18"
+    },
+    "files": [
+        "bin",
+        "src",
+        "box.config.json",
+        ".env.example",
+        "builder.config.json"
+    ],
+    "keywords": [
+        "builder",
+        "box",
+        "sreda",
+        "analytics"
+    ],
+    "license": "UNLICENSED"
+}

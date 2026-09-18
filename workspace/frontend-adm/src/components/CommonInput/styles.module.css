@@ -1,0 +1,29 @@
+.commonInputWrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+
+.commonInputWrapperFullWidth {
+    width: 100% !important;
+}
+
+.rangeButtonWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.commonInputCustom {
+    outline: none !important;
+    border-radius: 0 !important;
+    width: 100%;
+}
+
+.commonInputButton {
+    border-radius: 0 !important;
+    min-width: 32px !important;
+}
+
+.numericInput input {
+    text-align: right;
+}

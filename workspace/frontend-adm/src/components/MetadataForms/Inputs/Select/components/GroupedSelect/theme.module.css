@@ -1,0 +1,28 @@
+:root {
+    --ui-kit-select-height: var(--ui-kit-spacing-16);
+    --ui-kit-multi-select-height: var(--ui-kit-spacing-16);
+    --ui-kit-multi-select-value-gap: var(--ui-kit-spacing-1);
+    --ui-kit-multi-select-container-gap: var(--ui-kit-spacing-2);
+    --ui-kit-multi-select-sing-line-container-height: var(--ui-kit-spacing-12);
+    --ui-kit-select-min-width: var(--ui-kit-spacing-100);
+    --ui-kit-select-focused-outlined-size: var(--ui-kit-spacing-1);
+    --ui-kit-select-focused-outlined-color: var(--ui-kit-colors-background-highlighted);
+    --ui-kit-select-disabled-opacity: 0.4;
+    --ui-kit-select-gap: var(--ui-kit-spacing-0);
+    --ui-kit-select-hint-color: var(--ui-kit-colors-text-secondary);
+    --ui-kit-select-amount-color: var(--ui-kit-colors-text-primary);
+    --ui-kit-select-hint-padding: var(--ui-kit-spacing-2) var(--ui-kit-spacing-0) var(--ui-kit-spacing-0) var(--ui-kit-spacing-4);
+    --ui-kit-select-container-gap: var(--ui-kit-spacing-4);
+    --ui-kit-select-list-gap: var(--ui-kit-spacing-4);
+    --ui-kit-select-border-radius: var(--ui-kit-spacing-2);
+    --ui-kit-select-container-padding: var(--ui-kit-spacing-3);
+    --ui-kit-select-rounded-border-radius: var(--ui-kit-spacing-6);
+    --ui-kit-select-error-color: var(--ui-kit-colors-alert-error);
+    --ui-kit-select-success-color: var(--ui-kit-colors-alert-success);
+    --ui-kit-select-enabled-border-color: var(--ui-kit-colors-border-control);
+    --ui-kit-select-enabled-background-color: var(--ui-kit-colors-background-control);
+    --ui-kit-select-hover-border-color: var(--ui-kit-colors-border-controlHover);
+    --ui-kit-select-hover-background-color: var(--ui-kit-colors-background-tertiary);
+    --ui-kit-select-input-color: var(--ui-kit-colors-text-primary);
+    --ui-kit-select-input-placeholder-color: var(--ui-kit-colors-text-tertiary);
+}

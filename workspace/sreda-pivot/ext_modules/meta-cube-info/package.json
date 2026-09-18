@@ -1,0 +1,39 @@
+{
+    "name": "meta-cube-info",
+    "version": "1.0.0",
+    "description": "Модуль `meta-cube-info` добавляет дополнительную информацию о кубах (кубы — это специализированные структуры данных). При вызове метода `formAfter`, он проверяет наличие идентификатора куба (`id`), получает метаданные куба через класс `Metadata`, создает новую кнопку с информацией о кубе и добавляет её в массив кнопок интерфейса. Этот процесс позволяет пользователям получать доступ к дополнительной информации о конкретном кубе прямо из пользовательского интерфейса.",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "CubesService.form.after": {
+            "class": "/services/MetaCubeInfo.service.js",
+            "function": "formAfter"
+        },
+        "ReportsService.form.after": {
+            "class": "/services/MetaCubeInfo.service.js",
+            "function": "formAfter"
+        }
+    },
+    "routes": {},
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": ""
+}

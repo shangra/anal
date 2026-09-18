@@ -1,0 +1,35 @@
+{
+    "name": "meta-search",
+    "version": "1.0.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль **meta-search** предоставляет функционал расширенного поиска по метаданным системы NodeCMS. Он реализует специальный сервисный класс (`MetaSearchService`), который обрабатывает запросы пользователей через контроллер (`MetaSearchController`) и маршрутизатор (`MetaSearch.router.js`), обеспечивая доступ к поиску через REST API. В основе модуля лежит реализация собственного механизма полноготекстового поиска, включающего создание индексов и обработку запросов с использованием специфических алгоритмов нормализации данных и фильтрации результатов.",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "metadata-cmp": "^1.0.2"
+    },
+    "dependenciesReactCMS": {},
+    "routes": {
+        "/metadata/metasearch": {
+            "router": "MetaSearch.router.js"
+        }
+    }
+}

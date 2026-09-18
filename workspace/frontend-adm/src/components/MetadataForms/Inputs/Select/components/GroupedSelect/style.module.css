@@ -1,0 +1,162 @@
+@import "./theme.module.css";
+
+.main-container {
+    display: inline-block;
+    width: max-content;
+}
+.main-container-line {
+    min-width: min-content;
+}
+
+/* focused */
+.container__focused .input-container {
+    outline: var(--ui-kit-select-focused-outlined-size) solid var(--ui-kit-select-focused-outlined-color);
+}
+/* disabled */
+.container__disabled {
+    cursor: default;
+    opacity: var(--ui-kit-select-disabled-opacity);
+}
+.container__disabled .input-container{
+    cursor: default;
+}
+
+.container {
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--ui-kit-select-gap);
+    width: var(--ui-kit-select-min-width);
+}
+
+.full-width {
+    width: 100%;
+}
+
+.hint {
+    color: var(--ui-kit-select-hint-color);
+    padding: var(--ui-kit-select-hint-padding);
+    user-select: none;
+    word-wrap: break-word;
+}
+
+
+/* statuses */
+.container__success .hint {
+    color: var(--ui-kit-select-success-color);
+}
+.container.container__outlined.container__success .input-container{
+    border-color: var(--ui-kit-select-success-color);
+}
+.container.container__contained.container__success .input-container{
+    background-color: hsl(from var(--ui-kit-select-success-color) h s l / 0.2);
+}
+.container__error .hint {
+    color: var(--ui-kit-select-error-color);
+}
+.container.container__outlined.container__error .input-container{
+    border-color: var(--ui-kit-select-error-color);
+}
+.container.container__contained.container__error .input-container{
+    background-color: hsl(from var(--ui-kit-select-error-color) h s l / 0.2);
+}
+
+.container .input-container {
+    display: flex;
+    flex-direction: row;
+    gap: var(--ui-kit-select-container-gap);
+    align-items: center;
+    width: 100%;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    background-color: transparent;
+    border-radius: var(--ui-kit-select-border-radius);
+    padding: var(--ui-kit-select-container-padding);
+}
+
+.container__rounded .input-container {
+    border-radius: var(--ui-kit-select-rounded-border-radius);
+}
+
+.input-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    min-height: var(--ui-kit-multi-select-height);
+    gap: var(--ui-kit-multi-select-container-gap);
+    flex-shrink: 0;
+    border-radius: 0 !important;
+}
+
+.sing-line {
+    max-height: var(--ui-kit-multi-select-sing-line-container-height);
+    flex-wrap: nowrap !important;
+}
+.sing-line-item-container {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-kit-multi-select-container-gap);
+    flex-basis: 0;
+    flex-grow: 1;
+    min-width: 0;
+}
+
+/* enabled */
+.container.container__outlined .input-container {
+    border-color: var(--ui-kit-select-enabled-border-color);
+}
+.container.container__contained .input-container {
+    border-color: transparent;
+    background-color: var(--ui-kit-select-enabled-background-color);
+}
+/* hovered */
+.container.container__hovered.container__outlined .input-container {
+    border-color: var(--ui-kit-select-hover-border-color);
+}
+.container.container__hovered.container__contained .input-container {
+    border-color: transparent;
+    background-color: var(--ui-kit-select-hover-background-color);
+}
+
+.input-text {
+    color: var(--ui-kit-select-input-color);
+    flex-basis: 0;
+    flex-grow: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.input-placeholder {
+    color: var(--ui-kit-select-input-placeholder-color);
+    flex-basis: 0;
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.list-container {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    gap: var(--ui-kit-select-list-gap);
+    width: 100%;
+    flex-basis: 0;
+    flex-grow: 1;
+}
+.multiselect-value-container {
+    display: flex;
+    color: var(--ui-kit-select-input-color);
+    flex-basis: 0;
+    flex-grow: 1;
+    min-width: 0;
+    flex-wrap: wrap;
+    gap: var(--ui-kit-multi-select-value-gap);
+}
+.popover {
+    min-height: 0 !important;
+    display: inline-flex;
+    width: var(--ui-kit-select-min-width);
+}

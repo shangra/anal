@@ -1,0 +1,37 @@
+module.exports = {
+    up: async (queryInterface, Sequelize) => {
+        // OLAP_PARENT
+        await queryInterface.bulkInsert(
+            {
+                tableName: 'SystemSettings',
+                schema: process.env.DB_SCHEMA,
+            },
+            [
+                {
+                    id: 'd1d05ff2-e13d-4f42-bdfc-fc10068fae29',
+                    parent: '00000000-0000-0000-0000-000000000000',
+                    name: 'OLAP_PARENT',
+                    description: 'OLAP_PARENT',
+                    type: '55a33e2d-cb18-4486-80d7-9b7b25909031',
+                    value: '{\n    "parent": "6f9de64d-75e3-4ef4-9cdb-a6f07c31db2d",\n    "template": "4a46875c-5b6f-4aa2-8399-0d51e0588d7b",\n    "paramName": "cubeId",\n    "params": [\n        {\n            "name": "server",\n            "value": "pivot"\n        }\n    ]\n}\n',
+                },
+            ],
+            {},
+        );
+    },
+
+    down: async (queryInterface, Sequelize) => {
+        await queryInterface.bulkDelete(
+            {
+                tableName: 'SystemSettings',
+                schema: process.env.DB_SCHEMA,
+            },
+            null,
+            {
+                where: {
+                    id: 'd1d05ff2-e13d-4f42-bdfc-fc10068fae29',
+                },
+            },
+        );
+    },
+};

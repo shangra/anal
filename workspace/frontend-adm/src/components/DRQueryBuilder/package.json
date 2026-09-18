@@ -1,0 +1,32 @@
+{
+    "name": "drquerybuilder",
+    "version": "1.0.0",
+    "description": "",
+    "typeSBR": "ReactCMS",
+    "codeName": "DRQueryBuilder",
+    "lazy": false,
+    "rootComponent": false,
+    "filenameWithConstantsForTemplate": "",
+    "filenameWithUtilitiesForTemplate": "",
+    "main": "index.tsx",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {
+        "MetadataForms": "^1.0.0"
+    },
+    "extensions": {},
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": ""
+}

@@ -1,0 +1,19 @@
+{
+    "name": "middleware-rest-check-auth",
+    "version": "1.5.1",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `middleware-rest-check-auth` является промежуточным слоем (middleware), предназначенным для защиты REST API от несанкционированного доступа. При каждом запросе он проверяет наличие валидного идентификатора пользователя (`user.id`) в хранилище сессий через сервис `sessionStorage`. В случае отсутствия авторизации генерируется ошибка `UnathorizedError`, если же пользователь авторизован, обработка запроса продолжается далее.",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {}
+}

@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--ui-kit-spacing-4);
+    padding-right: var(--ui-kit-spacing-2);
+}
+
+.icon_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: var(--ui-kit-checkbox-icon-size);
+    min-width: var(--ui-kit-checkbox-icon-size);
+    height: var(--ui-kit-checkbox-icon-size);
+    min-height: var(--ui-kit-checkbox-icon-size);
+}

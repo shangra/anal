@@ -1,0 +1,29 @@
+.flash {
+    position: fixed;
+    top: 100px;
+    width: 450px;
+    min-height: 40px;
+
+    z-index: var(--zindex-tooltip);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 5px;
+    color: var(--main-text-color);
+    background-color: var(--second-bg-color, #131824);
+    box-shadow: 0 0 6px var(--main-selected-color);
+    border: none;
+}
+
+.closeButton {
+    color: var(--main-text-color);
+    position: absolute;
+    right: 0;
+}
+
+.closeButton:hover {
+    cursor: pointer;
+    color: var(--main-active-color);
+}

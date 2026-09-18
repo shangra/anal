@@ -1,0 +1,36 @@
+{
+    "current": [
+        {
+            "URule": [
+                {
+                    "id": "dad2ed2b-4699-4770-b615-2e6402c3eb7f",
+                    "markdel": 0,
+                    "name": "CodeManager",
+                    "details": "Доступ к управлению Подпрограммами",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "f5e8a72a-b508-427a-b737-67fae41d951d",
+                    "markdel": 0,
+                    "name": "CodeRead",
+                    "details": "Доступ к просмотру Подпрограмм",
+                    "updatedAt": "2022-07-22T12:07:42.293Z",
+                    "createdAt": "2022-07-22T12:07:42.293Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "16471b27-cd23-4742-8e84-00ba07c933ba",
+                    "markdel": 0,
+                    "name": "CodeWrite",
+                    "details": "Доступ к редактированию Подпрограмм",
+                    "updatedAt": "2022-07-22T12:07:42.293Z",
+                    "createdAt": "2022-07-22T12:07:42.293Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,26 @@
+{
+    "name": "csv-parser",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `csv-parser` предназначен для разбора CSV-файлов и фильтрации данных согласно заданным условиям. Он разделяет строки на основе указанных разделителей столбцов и строк, а также позволяет выбирать определённые области данных путем применения условий фильтрации. Модуль предоставляет методы для обработки файлов и возвращает структуру с заголовками и данными после обработки.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {}
+}

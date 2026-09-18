@@ -1,0 +1,29 @@
+{
+    "name": "cors-ext-rest-express",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `cors-ext-rest-express` является расширением для платформы NodeCMS, предназначенным для обработки междоменных HTTP-запросов (CORS). Он предоставляет мидлварь для приложения Express, настроенный таким образом, чтобы разрешить передачу файлов cookie между доменами. Это расширение упрощает настройку политики CORS и позволяет разработчикам легко интегрировать ее в свои REST API, обеспечивая совместимость с клиентами из разных источников.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "cors": "^2.8.5"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "routes": {}
+}

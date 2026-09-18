@@ -1,0 +1,20 @@
+{
+    "current": [
+        {
+            "User": [
+                {
+                    "id": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "code": 1,
+                    "markdel": 0,
+                    "login": "su",
+                    "password": "0b180078d994cb2b5ed89d7ce8e7eea2",
+                    "status": 0,
+                    "updatedAt": "2022-07-22T12:07:42.302Z",
+                    "createdAt": "2022-07-22T12:07:42.302Z",
+                    "createdUser": null,
+                    "updatedUser": null
+                }
+            ]
+        }
+    ]
+}

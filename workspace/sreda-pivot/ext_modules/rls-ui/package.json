@@ -1,0 +1,27 @@
+{
+    "name": "rls-ui",
+    "version": "1.5.13",
+    "enabled": true,
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "dependencies": {
+        "express-validator": "^6.14.2"
+    },
+    "routes": {
+        "/rls": {
+            "router": "RlsUI.router.js"
+        }
+    },
+    "typeSBR": "NodeCMS",
+    "dependenciesNodeCMS": {
+        "middleware-rest-validate": "^1.0.0",
+        "middleware-rest-check-auth": "^1.0.0",
+        "wrapper": "^1.5.5",
+        "rls-core": "^1.5.27"
+    },
+    "description": "Модуль `rls-ui` отвечает за управление правами доступа (RLS) в платформе NodeCMS версии 1.5.13. С помощью сервисов и маршрутов он предоставляет возможность получения информации о правах доступа конкретных пользователей, их ролей, групп и связанных с ними правил относительно различных объектов или сущностей системы. Модуль позволяет разработчикам интегрировать механизмы контроля доступа в пользовательский интерфейс приложения, обеспечивая тем самым гибкое управление доступом к данным на уровне интерфейса пользователя."
+}

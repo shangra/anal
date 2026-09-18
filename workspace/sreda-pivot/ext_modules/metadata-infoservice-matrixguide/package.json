@@ -1,0 +1,60 @@
+{
+    "name": "metadata-infoservice-matrixguide",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "metadata-cmp": "^1.5.4",
+        "metadata-connector": "^1.5.0",
+        "metadata-logic": "^1.5.0",
+        "middleware-rest-check-access": "^1.5.0",
+        "meta-fsck": "^1.1.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "MetadataService.getClassesMetadata.after": {
+            "class": "/services/InfoserviceMatrixGuide.service.js",
+            "function": "getClassesMetadata"
+        }
+    },
+    "routes": {
+        "/metadata/infoservicematrixguide/hierarchy": {
+            "router": "Hierarchy.router.js"
+        },
+        "/metadata/infoservicematrixguide/sysfields": {
+            "router": "SysFields.router.js"
+        },
+        "/metadata/infoservicematrixguide/fields": {
+            "router": "Fields.router.js"
+        },
+        "/metadata/infoservicematrixguide/fieldslist": {
+            "router": "FieldsList.router.js"
+        },
+        "/metadata/infoservicematrixguide/keys": {
+            "router": "Keys.router.js"
+        },
+        "/metadata/infoservicematrixguide": {
+            "router": "InfoserviceMatrixGuide.router.js"
+        }
+    }
+}

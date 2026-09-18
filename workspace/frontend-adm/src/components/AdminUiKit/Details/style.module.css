@@ -1,0 +1,51 @@
+.elementDetails {
+    width: 100%;
+}
+
+.paramsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.noParams {
+    text-align: center;
+    color: var(--ui-kit-text-secondary-color);
+}
+
+.paramBlock {
+    border: 1px solid var(--ui-kit-border-color);
+    border-radius: 4px;
+    padding: 4px;
+    background: var(--ui-kit-bg-secondary);
+}
+
+.paramName {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: var(--ui-kit-text-primary-color);
+}
+
+.paramFields {
+    display: flex;
+    gap: 12px;
+}
+
+.paramField {
+    flex: 1;
+    min-width: 0;
+}
+
+.savingIndicator {
+    font-size: 12px;
+    color: var(--ui-kit-text-secondary-color);
+    margin-top: 4px;
+    text-align: right;
+}

@@ -1,0 +1,27 @@
+{
+    "name": "worker_code",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `worker_code` предоставляет сервис для запуска асинхронных задач в отдельных потоках Node.js через механизм Web Workers. Он позволяет передавать исполняемый код или путь к файлу вместе с аргументами функции и запускать их параллельно, улучшая производительность приложений за счет параллельного выполнения вычислений. Сервис возвращает результат выполнения задачи через промис либо сообщает об ошибке, если выполнение завершилось неудачно.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "routes": {}
+}

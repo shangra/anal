@@ -1,0 +1,32 @@
+{
+    "name": "memorysave-storage-node-cache",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `memorysave-storage-node-cache` предоставляет реализацию интерфейса для сохранения данных в памяти сервера с использованием библиотеки `node-cache`. Он позволяет хранить данные локально без обращения к внешним хранилищам, обеспечивая простоту использования и высокую производительность за счет работы непосредственно в оперативной памяти. Модуль поддерживает основные операции: получение (`get`), установку (`set`) и удаление (`del`) значений с возможностью установки времени жизни (TTL).",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "node-cache": "^5.1.2"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "routes": {}
+}

@@ -1,0 +1,19 @@
+{
+    "current": [
+        {
+            "Metadata": [
+                {
+                    "id": "cce0463c-2dd3-4ee2-aef0-4b83c9c29970",
+                    "markdel": 0,
+                    "parent": "00000000-0000-0000-0000-000000000000",
+                    "class_id": "cce0463c-2dd3-4ee2-aef0-4b83c9c29970",
+                    "class": "Connector",
+                    "name": "Коннекторы",
+                    "description": "Коннекторы",
+                    "manifest": "{}",
+                    "rank": 2
+                }
+            ]
+        }
+    ]
+}

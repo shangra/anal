@@ -1,0 +1,26 @@
+{
+  "name": "FileManagerWindow",
+  "version": "1.0.0",
+  "description": "Окно управления файлами и директориями. Открывается из узла «Файлы» дерева метаданных.",
+  "typeSBR": "ReactCMS",
+  "codeName": "FileManagerWindow",
+  "lazy": false,
+  "rootComponent": false,
+  "main": "index.tsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {},
+  "dependenciesNodeCMS": {},
+  "dependenciesReactCMS": {
+    "ErrorBoundary": "^1.0.0"
+  },
+  "extensions": {},
+  "repository": {
+    "type": "git",
+    "url": "git+"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

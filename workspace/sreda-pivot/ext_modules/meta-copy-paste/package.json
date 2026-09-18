@@ -1,0 +1,71 @@
+{
+    "name": "meta-copy-paste",
+    "version": "1.5.3",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `meta-copy-paste` предоставляет функционал для копирования и вставки метаданных объектов через API-интерфейс. Он позволяет пользователю скопировать метаданные одного объекта и затем вставить их в другой объект, обновляя связи между вложенными объектами при необходимости. Модуль интегрируется с другими сервисами CMS посредством расширения кнопок интерфейса и маршрутизации HTTP-запросов.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "middleware-rest-in-transaction": "^1.5.0",
+        "metadata-cmp": "^1.5.4"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "InfoserviceService.form.after": {
+            "class": "/services/metaCopyPaste.service.js",
+            "function": "formAfter"
+        },
+        "GuideService.form.after": {
+            "class": "/services/metaCopyPaste.service.js",
+            "function": "formAfter"
+        },
+        "DocumentsService.form.after": {
+            "class": "/services/metaCopyPaste.service.js",
+            "function": "formAfter"
+        },
+        "RegistryInformationService.form.after": {
+            "class": "/services/metaCopyPaste.service.js",
+            "function": "formAfter"
+        },
+        "RegistryAccumulativeService.form.after": {
+            "class": "/services/metaCopyPaste.service.js",
+            "function": "formAfter"
+        },
+        "InfoserviceGuideService.form.after": {
+            "class": "/services/metaCopyPaste.service.js",
+            "function": "formAfter"
+        },
+        "InfoserviceFlatGuideService.form.after": {
+            "class": "/services/metaCopyPaste.service.js",
+            "function": "formAfter"
+        },
+        "RlsService.form.after": {
+            "class": "/services/metaCopyPaste.service.js",
+            "function": "formAfter"
+        },
+        "ConditionService.form.after": {
+            "class": "/services/metaCopyPaste.service.js",
+            "function": "formAfter"
+        }
+    },
+    "routes": {
+        "/metadata/metacopypaste": {
+            "router": "metaCopyPaste.router.js"
+        }
+    }
+}

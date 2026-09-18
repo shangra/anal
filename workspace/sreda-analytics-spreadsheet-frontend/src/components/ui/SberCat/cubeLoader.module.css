@@ -1,0 +1,9 @@
+.cube-body * {
+    box-sizing: border-box;
+}
+
+.cube-container {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}

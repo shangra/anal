@@ -1,0 +1,105 @@
+
+:global(.img.empty) {
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: 100%;
+    border-radius: 50%;
+    background-image: url(../css/img/avatar.svg);
+    width: 100%;
+    height: 100%;
+}
+
+:global(.img.avatar) {
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: 100%;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+}
+
+.avatarLogo {
+    width: 32px;
+    height: 32px;
+    margin-right: 15px;
+}
+
+.userProfile {
+    padding: 8px 16px;
+    pointer-events: none;
+}
+
+.userProfile :global(.title) {
+    font-size: 10px;
+}
+
+.userProfile :global(.name) {
+    font-size: 12px;
+    color: var(--main-active-color, #ffff);
+}
+
+:global(.DropDownMenu) {
+    width: 350px;
+    right: 15px;
+    position: fixed;
+    background-color: var(--main-bg-color, rgba(124, 149, 171, .2));
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--primary-bg-color, rgba(124, 149, 171, .2));
+    list-style-type: none;
+    padding: 3px 0;
+}
+
+:global(.DropDownMenu span.d-block.title) {
+    color: var(--main-text-color, #7c95ab);
+}
+
+:global(.dropdownItemUI .dropdown-toggle, .dropdownItemUI .dropdown-toggle:before) {
+    content: none;
+}
+
+:global(.SearchText input) {
+    background-color: var(--primary-bg-color, rgba(124, 149, 171, .2));
+    border-color: var(--primary-bg-color, rgba(124, 149, 171, .2));
+    color: var(--main-active-color, #ffff);
+    background-image: url('./img/search.svg');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding-left: 40px;
+}
+
+:global(.SearchText input:focus) {
+    background-color: var(--primary-bg-color, rgba(124, 149, 171, .2));
+    border-color: var(--primary-bg-color, rgba(124, 149, 171, .2));
+    color: var(--main-active-color, #ffff);
+}
+
+.SearchNavBar :global(a::after) {
+    content: none;
+}
+
+:global(a.nav-link.d-flex.hint-tooltip-search:hover) {
+    color: var(--main-active-color, #ffff) !important;
+}
+
+:global(ul#desktopUserMenu .text-decoration-none.d-flex.justify-content-between.align-items-center) {
+    color: var(--main-active-color, #ffff) !important;
+}
+
+:global(ul#desktopUserMenu .dropdown-item.dropdownItemUI) {
+    font-size: 14px !important;
+    padding: 0 !important;
+}
+
+:global(ul#desktopUserMenu label.btn.radio-btn.shadow-none) {
+    font-size: 14px !important;
+}
+
+.MenuComponentUserMenu {
+    padding: 8px 16px;
+}
+
+.MenuComponentUserMenu:hover {
+    background: var(--primary-bg-color, rgba(124, 149, 171, .2));
+}
+

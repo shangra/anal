@@ -1,0 +1,16 @@
+{
+    "name": "middleware-rest-decimal",
+    "version": "1.5.2",
+    "enabled": true,
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "dependencies": {},
+    "extensions": {},
+    "typeSBR": "NodeCMS",
+    "dependenciesNodeCMS": {},
+    "description": "Модуль `middleware-rest-decimal` предназначен для преобразования значений LosslessNumbers в объектах запроса REST API перед обработкой данных. Он рекурсивно проходит по объекту запроса (`req.body`), заменяя значения типа LosslessNumber их числовыми значениями. После обработки запрос передается дальше цепочке middleware вызовом функции `next()`."
+}

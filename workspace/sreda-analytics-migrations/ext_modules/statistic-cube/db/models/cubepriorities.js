@@ -1,0 +1,92 @@
+const { Sequelize, DataTypes, Model } = require('sequelize');
+
+/**
+ * @typedef {import('./type/CubePriority').CubePriorityAttributes} CubePriorityAttributes
+ * @typedef {import('./type/CubePriority').CubePriorityCreationAttributes} CubePriorityCreationAttributes
+ */
+
+/**
+ * @class CubesPriorities
+ * @extends {Model<CubePriorityAttributes, CubePriorityCreationAttributes>}
+ */
+class CubesPriorities extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     * @param {any} models
+     */
+    static associate(models) {
+        // define association here
+    }
+
+    /**
+     * @param {{ id: string; }} data
+     */
+    static DumpInstruction(data) {
+        let result = {};
+        if (data) {
+            result = {
+                before: [
+                    {
+                        table: 'CubesPriorities',
+                        where: { id: data.id },
+                    },
+                ],
+                after: [],
+            };
+        }
+
+        return result;
+    }
+}
+
+/**
+ * @param {Sequelize} sequelize 
+ * @param {DataTypes} DataTypes 
+ * @returns {typeof CubesPriorities}
+ */
+module.exports = (sequelize, DataTypes) => {
+    CubesPriorities.init(
+        {
+            id: {
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
+                allowNull: false,
+                primaryKey: true,
+            },
+            cube_id: {
+               type: DataTypes.UUID,
+               allowNull: false
+            },
+            priority: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: 0
+            },
+            manual: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                defaultValue: false
+            },
+            createdAt: {
+                type: DataTypes.DATE,
+                allowNull: false,
+                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+            },
+            updatedAt: {
+                type: DataTypes.DATE,
+                allowNull: false,
+                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+            }
+        },
+        {
+            sequelize,
+            timestamps: false,
+            modelName: 'CubesPriorities',
+            schema: process.env.DB_SCHEMA
+        },
+    );
+
+    return CubesPriorities;
+};

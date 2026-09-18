@@ -1,0 +1,6 @@
+.tablePartDGTable > div {
+    height: auto;
+}
+.tablePartDGTable > div > div[role="grid"] {
+    height: 250px !important;
+}

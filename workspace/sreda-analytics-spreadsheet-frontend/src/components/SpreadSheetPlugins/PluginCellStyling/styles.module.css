@@ -1,0 +1,53 @@
+.block {
+    display: flex;
+    width: 100%;
+    gap: var(--ui-kit-button-gap);
+}
+
+.block-group {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    align-items: flex-start;
+}
+
+.block-group > .block {
+    margin-bottom: 10px;
+}
+
+.block-group > .block:last-child {
+    margin-bottom: 0;
+}
+
+.line,
+.line-group {
+    display: flex;
+}
+
+.line-group button {
+    border-radius: 0;
+}
+
+.line-group *:first-child>button,
+.line-group>button:first-child {
+    border-radius: var(--ui-kit-button-border-radius) 0 0 var(--ui-kit-button-border-radius);
+}
+
+.line-group>button+button,
+.line-group *+*>button {
+    border-left: 0;
+}
+
+.line-group *:last-child>button,
+.line-group>button:last-child {
+    border-radius: 0 var(--ui-kit-button-border-radius) var(--ui-kit-button-border-radius) 0;
+}
+
+.selected-color {
+    position: absolute;
+    left: 0;
+    right: 1px;
+    bottom: 1px;
+    height: 4px;
+}

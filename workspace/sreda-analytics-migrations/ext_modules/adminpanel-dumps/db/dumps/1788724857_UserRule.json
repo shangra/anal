@@ -1,0 +1,58 @@
+{
+    "current": [
+        {
+            "UserRules": [
+                {
+                    "id": "5a2def46-1e68-47c1-9aa7-0d40e4a0d228",
+                    "code": 1,
+                    "user_id": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "rule_id": "b5397f7f-94a2-4780-8aec-d899105bc6bf",
+                    "updatedAt": "2022-07-22T12:07:42.343Z",
+                    "createdAt": "2022-07-22T12:07:42.343Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "572cc90e-efd1-4a21-92a9-84f5856678a1",
+                    "code": 1,
+                    "user_id": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "rule_id": "79ac697d-2559-4a43-8279-bf12fc1c4ffc",
+                    "updatedAt": "2022-07-22T12:07:42.343Z",
+                    "createdAt": "2022-07-22T12:07:42.343Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "0b29c29c-1e7a-481e-bd24-f674d6cba9c3",
+                    "code": 1,
+                    "user_id": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "rule_id": "ef75e99b-51dd-47a5-914d-9b6d1df3cc20",
+                    "updatedAt": "2022-07-22T12:07:42.343Z",
+                    "createdAt": "2022-07-22T12:07:42.343Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "0b29c29c-1e7a-481e-bd24-f674d6cba9c3",
+                    "code": 1,
+                    "user_id": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "rule_id": "2158f2d9-d42b-4860-b4c2-a5f60e3d434d",
+                    "updatedAt": "2022-07-22T12:07:42.343Z",
+                    "createdAt": "2022-07-22T12:07:42.343Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "e5d05e4a-4640-40f9-a686-1cc91181d85d",
+                    "code": 1,
+                    "user_id": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "rule_id": "08c35af6-4197-4af9-9873-03120ec273cc",
+                    "updatedAt": "2022-07-22T12:07:42.343Z",
+                    "createdAt": "2022-07-22T12:07:42.343Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                }
+            ]
+        }
+    ]
+}

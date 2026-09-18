@@ -1,0 +1,70 @@
+{
+    "name": "metadata-processing",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --coverage --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "keywords": [],
+    "license": "ISC",
+    "dependencies": {
+        "sequelize": "^6.26.0"
+    },
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-access": "^1.5.0",
+        "metadata-cmp": "^1.5.4",
+        "metadata-connector": "^1.5.0",
+        "utils": "^1.0.0",
+        "metadata-cubes": "^1.5.0",
+        "metadata-cubes-query": "^1.5.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "CubeQueryBuilderClass.prepareOptions.after": {
+            "class": "/services/metadata/helpers/Overloads.class.js",
+            "function": "prepareOptionsAfter"
+        },
+        "CubeQueryBuilderClass.getEntity.after": {
+            "class": "/services/metadata/helpers/Overloads.class.js",
+            "function": "getEntityAfter"
+        },
+        "MetadataService.getClassesMetadata.after": {
+            "class": "/services/Processing.service.js",
+            "function": "getClassesMetadata"
+        },
+        "CubesClass.subTree.after": {
+            "class": "/services/metadata/Processing.class.js",
+            "function": "subTreeAfter"
+        },
+        "CubesClass.processingInfo.decorate": {
+            "class": "/services/metadata/Processing.class.js",
+            "function": "processingTableInfoDecorate"
+        }
+    },
+    "routes": {
+        "/metadata/processing/measures/aggregations": {
+            "router": "Aggregations.router.js"
+        },
+        "/metadata/processing/measures": {
+            "router": "Measures.router.js"
+        },
+        "/metadata/processing/matrix": {
+            "router": "Matrix.router.js"
+        },
+        "/metadata/processing/dimensions": {
+            "router": "Dimensions.router.js"
+        },
+        "/metadata/processing": {
+            "router": "Processing.router.js"
+        },
+        "/processing": {
+            "router": "Calculation.router.js"
+        }
+    }
+}

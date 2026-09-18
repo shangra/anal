@@ -1,0 +1,34 @@
+{
+    "name": "secman",
+    "version": "1.0.0",
+    "description": "",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "node-vault": "^0.10.5"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "ConnectorsService.form.after": {
+            "class": "/services/Secman.service.js",
+            "function": "formAfter"
+        }
+    },
+    "routes": {},
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": ""
+}

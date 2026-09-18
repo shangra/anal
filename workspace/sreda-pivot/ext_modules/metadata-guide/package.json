@@ -1,0 +1,77 @@
+{
+    "name": "metadata-guide",
+    "version": "1.5.7",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль **metadata-guide** предназначен для управления структурой справочных таблиц (справочников), используемых в системе NodeCMS. Он предоставляет интерфейс для работы со справочниками через REST API, позволяя создавать, читать, обновлять и удалять как сами справочные таблицы, так и связанные с ними системные и пользовательские поля, индексы, ключи и формы. Модуль также обеспечивает поддержку иерархических структур и проверку прав доступа к данным.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-access": "^1.5.0",
+        "middleware-rest-check-auth": "^1.5.0",
+        "metadata-cmp": "^1.5.4",
+        "metadata-connector": "^1.5.3",
+        "metadata-forms": "^1.5.5",
+        "rls-core": "^1.5.27",
+        "metadata-logic": "^1.5.1",
+        "meta-where-formatter": "^1.5.0",
+        "utils": "^1.5.0",
+        "meta-object-server-code": "^1.5.0",
+        "QueueAgent": "^1.5.0",
+        "TransactionAgent": "^1.5.0",
+        "wrapper": "1.5.5"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "MetadataService.getClassesMetadata.after": {
+            "class": "/services/Guide.service.js",
+            "function": "getClassesMetadata"
+        }
+    },
+    "routes": {
+        "/metadata/guide/fields": {
+            "router": "Fields.router.js"
+        },
+        "/metadata/guide/fieldslist": {
+            "router": "FieldsList.router.js"
+        },
+        "/metadata/guide/tabularparts": {
+            "router": "TabularParts.router.js"
+        },
+        "/metadata/guide/tabularfieldslist": {
+            "router": "TabularFieldsList.router.js"
+        },
+        "/metadata/guide/forms": {
+            "router": "Forms.router.js"
+        },
+        "/metadata/guide/sysfields": {
+            "router": "SysFields.router.js"
+        },
+        "/metadata/guide/tabularsysfields": {
+            "router": "TabularSysFields.router.js"
+        },
+        "/metadata/guide/indexes": {
+            "router": "Indexes.router.js"
+        },
+        "/metadata/guide/keys": {
+            "router": "Keys.router.js"
+        },
+        "/metadata/guide": {
+            "router": "Guide.router.js"
+        }
+    }
+}

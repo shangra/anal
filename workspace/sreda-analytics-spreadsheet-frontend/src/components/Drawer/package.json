@@ -1,0 +1,30 @@
+{
+    "name": "drawer",
+    "version": "1.0.0",
+    "typeSBR": "ReactCMS",
+    "codeName": "Drawer",
+    "description": "",
+    "lazy": false,
+    "rootComponent": false,
+    "filenameWithConstantsForTemplate": "",
+    "filenameWithUtilitiesForTemplate": "",
+    "main": "index.tsx",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": ""
+}

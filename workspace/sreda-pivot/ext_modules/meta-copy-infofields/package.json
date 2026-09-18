@@ -1,0 +1,49 @@
+{
+    "name": "meta-copy-infofields",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль **meta-copy-infofields** предназначен для копирования полей из одного объекта метаданных в другой объект того же типа. Он автоматически создает или обновляет поля измерений и показателей в зависимости от их типов данных и настроек исходного объекта. Модуль предоставляет сервисный класс и контроллер для выполнения этих операций через API-интерфейс NodeCMS.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "sequelize": "^6.26.0"
+    },
+    "dependenciesNodeCMS": {
+        "middleware-rest-in-transaction": "^1.5.0",
+        "metadata-cmp": "^1.5.4"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "CubesService.form.after": {
+            "class": "/services/metaCopyInfofields.service.js",
+            "function": "formAfter"
+        },
+        "MLService.form.after": {
+            "class": "/services/metaCopyInfofields.service.js",
+            "function": "formAfter"
+        },
+        "ReportsService.form.after": {
+            "class": "/services/metaCopyInfofields.service.js",
+            "function": "formAfter"
+        }
+    },
+    "routes": {
+        "/metadata/metacopyinfofields": {
+            "router": "metaCopyInfofields.router.js"
+        }
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "name": "filterstringcmp",
+    "version": "1.0.0",
+    "typeSBR": "ReactCMS",
+    "codeName": "FilterStringCMP",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "react": "^18.2.0",
+        "uuid": "8.3.2"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {
+    },
+    "extensions": {}
+}

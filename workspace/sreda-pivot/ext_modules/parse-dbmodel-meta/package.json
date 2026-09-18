@@ -1,0 +1,43 @@
+{
+    "name": "parse-dbmodel-meta",
+    "version": "1.5.1",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль parse-dbmodel-meta предназначен для автоматического заполнения метаданных модели базы данных из существующей таблицы или предоставленного тела запроса. Он предоставляет возможность загружать информацию о полях таблицы и их типах, а также автоматически создавать соответствующие записи метаданных. Модуль интегрируется с системой управления контентом NodeCMS через REST API маршруты и расширения функциона сервисов метаданных.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "metadata-cmp": "^1.5.4",
+        "metadata-connector": "^1.5.3"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "InfoserviceService.form.after": {
+            "class": "/services/parseDbmodelMeta.service.js",
+            "function": "formAfter"
+        },
+        "InfoserviceGuideService.form.after": {
+            "class": "/services/parseDbmodelMeta.service.js",
+            "function": "formAfter"
+        }
+    },
+    "routes": {
+        "/metadata/parsedbmodelmeta": {
+            "router": "parseDbmodelMeta.router.js"
+        }
+    }
+}

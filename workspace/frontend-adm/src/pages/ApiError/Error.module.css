@@ -1,0 +1,11 @@
+.errorDescription {
+    background-color: var(--tile-bg-color, #2a2f3e);
+    color: var(--main-text-color, #7c95ab);
+}
+
+.cutText {
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

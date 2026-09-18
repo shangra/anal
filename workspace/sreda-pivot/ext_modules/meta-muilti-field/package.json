@@ -1,0 +1,352 @@
+{
+    "name": "meta-muilti-field",
+    "version": "1.5.1",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `meta-muilti-field` расширяет функциональность системы управления метаданными NodeCMS, добавляя поддержку композитных полей (`composite`) и мульти-ссылок (`multiRef`), позволяя гибко управлять данными сложных типов. Он обеспечивает обработку таких полей при операциях поиска, обновления и создания записей, а также корректирует запросы к базе данных, учитывая специфику этих новых типов полей. Модуль интегрируется через расширения и декораторы различных классов, обеспечивая универсальность использования композитных полей во всех основных компонентах платформы — справочниках, документах, таблицах и регистрах учета.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "metadata-cmp": "^1.5.4",
+        "utils": "^1.5.0"
+    },
+    "dependenciesReactCMS": {},
+    "routes": {
+        "/metadata/metacompositehelper": {
+            "router": "MetaCompositeHelper.router.js"
+        }
+    },
+    "extensions": {
+        "ConnectorValidation.validateBeforeCreate.before": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "beforeValidation"
+        },
+        "ConnectorValidation.validateBeforeBulkCreate.before": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "beforeValidation"
+        },
+        "ConnectorValidation.validateBeforeUpdate.before": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "beforeValidation"
+        },
+        "TabularPartsClass.findAll.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "findAllInner"
+        },
+        "TabularPartsClass.count.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "countInner"
+        },
+        "TabularPartsClass.dataUpdate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataUpdateInner"
+        },
+        "TabularPartsClass.dataBulkCreate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataBulkCreateInner"
+        },
+        "TabularPartsClass.dataSynch.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataSynchInner"
+        },
+        "ChartAccountsClass.findAll.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "findAllInner"
+        },
+        "ChartAccountsClass.count.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "countInner"
+        },
+        "ChartAccountsClass.dataUpdate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataUpdateInner"
+        },
+        "ChartAccountsClass.dataBulkCreate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataBulkCreateInner"
+        },
+        "ChartAccountsClass.dataSynch.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataSynchInner"
+        },
+        "ChartAccountsClass.dataDelete.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataDeleteInner"
+        },
+        "GuideClass.findAll.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "findAllInner"
+        },
+        "GuideClass.count.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "countInner"
+        },
+        "GuideClass.dataUpdate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataUpdateInner"
+        },
+        "GuideClass.dataBulkCreate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataBulkCreateInner"
+        },
+        "GuideClass.dataSynch.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataSynchInner"
+        },
+        "GuideClass.dataDelete.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataDeleteInner"
+        },
+        "DocumentsClass.findAll.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "findAllInner"
+        },
+        "DocumentsClass.count.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "countInner"
+        },
+        "DocumentsClass.dataUpdate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataUpdateInner"
+        },
+        "DocumentsClass.dataBulkCreate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataBulkCreateInner"
+        },
+        "DocumentsClass.dataSynch.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataSynchInner"
+        },
+        "DocumentsClass.dataDelete.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataDeleteInner"
+        },
+        "LevelClass.getCompositeFields.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "getCompositeFields"
+        },
+        "RegistryInformationClass.findAll.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "findAllInner"
+        },
+        "RegistryInformationClass.count.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "countInner"
+        },
+        "RegistryInformationClass.dataUpdate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataUpdateInner"
+        },
+        "RegistryInformationClass.dataBulkCreate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataBulkCreateInner"
+        },
+        "RegistryInformationClass.dataCreate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataCreateInner"
+        },
+        "RegistryAccumulativeClass.findAll.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "findAllInner"
+        },
+        "RegistryAccumulativeClass.count.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "countInner"
+        },
+        "RegistryAccumulativeClass.dataUpdate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataUpdateInner"
+        },
+        "RegistryAccumulativeClass.dataBulkCreate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataBulkCreateInner"
+        },
+        "RegistryAccumulativeClass.dataCreate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataCreateInner"
+        },
+        "RegistryAccountingClass.findAll.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "findAllInner"
+        },
+        "RegistryAccountingClass.count.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "countInner"
+        },
+        "RegistryAccountingClass.dataUpdate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataUpdateInner"
+        },
+        "RegistryAccountingClass.dataBulkCreate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataBulkCreateInner"
+        },
+        "RegistryAccountingClass.dataCreate.inner": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "dataCreateInner"
+        },
+        "RegistryInformationClass.generateSyncField.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateSyncField"
+        },
+        "RegistryInformationClass.getCompositeFields.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "getCompositeFields"
+        },
+        "ChartAccountsClass.getCompositeFields.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "getCompositeFields"
+        },
+        "RegistryAccumulativeClass.generateSyncField.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateSyncField"
+        },
+        "RegistryAccumulativeClass.getCompositeFields.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "getCompositeFields"
+        },
+        "RegistryAccumulativeClass.generateKeys.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateKeys"
+        },
+        "RegistryAccountingClass.generateKeys.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateKeys"
+        },
+        "DocumentsClass.generateKeys.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateKeys"
+        },
+        "TableClass.generateKeys.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateKeys"
+        },
+        "GuideClass.generateKeys.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateKeys"
+        },
+        "ChartAccountsClass.generateKeys.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateKeys"
+        },
+        "RegistryInformationClass.generateKeys.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateKeys"
+        },
+        "RegistryAccumulativeClass.generateSysKeys.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateSysKeys"
+        },
+        "RegistryAccountingClass.generateSyncField.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateSyncField"
+        },
+        "RegistryAccountingClass.getCompositeFields.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "getCompositeFields"
+        },
+        "RegistryAccountingClass.generateSysKeys.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateSysKeys"
+        },
+        "GuideClass.getCompositeFields.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "getCompositeFields"
+        },
+        "TabularPartsClass.getCompositeFields.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "getCompositeFields"
+        },
+        "TableClass.getCompositeFields.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "getCompositeFields"
+        },
+        "DocumentsClass.getCompositeFields.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "getCompositeFields"
+        },
+        "MetaTableInfoInjectService.generateOptions.after": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateOptionsAfter"
+        },
+        "MetaTableInfoInjectService.generateBody.after": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateBodyAfter"
+        },
+        "MetaTableInfoInjectService.generateWhere.after": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateWhereAfter"
+        },
+        "metaSynhDbmodelService.hydrateTreeObject.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "hydrateTreeObject"
+        },
+        "MetaSynhAccountingRegistryService.hydrateTreeObject.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "hydrateTreeObject"
+        },
+        "RegistryAccountingClass.hydrateTreeObject.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "hydrateTreeObject"
+        },
+        "RegistryAccumulativeClass.hydrateTreeObject.decorate": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "hydrateTreeObject"
+        },
+        "RegistryAccountingClass.form.after": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "formAfter"
+        },
+        "RegistryAccountingFieldsService.form.after": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "formAfter"
+        },
+        "RegistryAccumulativeFieldsService.form.after": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "formAfter"
+        },
+        "RegistryInformationFieldsService.form.after": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "formAfter"
+        },
+        "TableFieldsService.form.after": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "formAfter"
+        },
+        "GuideFieldsService.form.after": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "formAfter"
+        },
+        "DocumentFieldsService.form.after": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "formAfter"
+        },
+        "SysFieldsService.form.after": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "formAfter"
+        },
+        "DimensionsService.form.after": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "formAfter"
+        },
+        "TabularFieldsListService.form.after": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "formAfter"
+        },
+        "RegistryAccountingClass.generateLeftover.before": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateLeftoverBefore"
+        },
+        "RegistryAccountingSynchService.generateLeftover.before": {
+            "class": "/services/MetaMultiField.service.js",
+            "function": "generateLeftoverBefore"
+        }
+    }
+}

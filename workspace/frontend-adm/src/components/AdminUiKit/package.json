@@ -1,0 +1,35 @@
+{
+    "name": "AdminUiKit",
+    "version": "1.0.0",
+    "description": "",
+    "typeSBR": "ReactCMS",
+    "codeName": "AdminUiKit",
+    "lazy": false,
+    "rootComponent": false,
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {
+        "CodeEditorCMP": "^1.0.0",
+        "CommonInput": "^1.0.0",
+        "ErrorBoundary": "^1.0.0",
+        "MetadataForms": "^1.0.0"
+    },
+    "extensions": {},
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "filenameWithConstantsForTemplate": "",
+    "filenameWithUtilitiesForTemplate": ""
+}

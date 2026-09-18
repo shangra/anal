@@ -1,0 +1,15 @@
+.drawer {
+    width: 60% !important;
+  
+}
+
+div[data-test-id="drawer-overlay"] {
+    z-index: var(--zindex-offcanvas, 1045);
+   
+}
+
+.drawer div[data-test-id="drawer"] {
+    overflow-x: auto;
+    flex-basis: 0;
+    flex-grow: 1;
+}

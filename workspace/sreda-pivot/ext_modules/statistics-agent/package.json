@@ -1,0 +1,18 @@
+{
+    "name": "statistics-agent",
+    "version": "1.5.3",
+    "enabled": true,
+    "dependencies": {
+        "@opentelemetry/api": "^1.9.0",
+        "@opentelemetry/auto-instrumentations-node": "^0.76.0",
+        "@opentelemetry/exporter-trace-otlp-http": "^0.218.0",
+        "@opentelemetry/resources": "^2.7.1",
+        "@opentelemetry/sdk-logs": "^0.218.0",
+        "@opentelemetry/sdk-node": "^0.218.0",
+        "@opentelemetry/semantic-conventions": "^1.41.1"
+    },
+    "extensions": {},
+    "typeSBR": "NodeCMS",
+    "dependenciesNodeCMS": {},
+    "description": "Модуль `statistics-agent` является частью системы сбора телеметрии для приложений на основе NodeCMS, построенной с использованием библиотеки OpenTelemetry. Он отвечает за сбор данных об использовании ресурсов, таких как CPU, память и дисковая активность, а также за мониторинг активности базы данных и сетевых соединений. Собранные данные могут быть экспортированы в централизованный коллектор для дальнейшей обработки и анализа, позволяя оперативно выявлять проблемы производительности или перегрузки инфраструктуры."
+}

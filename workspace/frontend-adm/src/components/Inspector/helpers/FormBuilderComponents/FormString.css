@@ -1,0 +1,31 @@
+.form-input-group {
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+.form-input {
+    display: flex;
+    align-items: center;
+    padding: .175rem .25rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--main-bg-color);
+    text-align: center;
+    white-space: nowrap;
+    background-color: var(--ui-kit-colors-background-primary);
+    border: 1px solid var(--ui-kit-colors-border-secondary);
+}
+
+/* TODO: Из прошлой админки. Оставлю так */
+.form-input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-group-checkbox {
+    margin-left: calc('1px' * -1);
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}

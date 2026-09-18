@@ -1,0 +1,130 @@
+.treeElem {
+    height: 25px;
+    border-radius: 5px;
+    max-width: 100%;
+    padding: 0 4px;
+    overflow: hidden;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease;
+}
+
+.treeElem:hover {
+    background-color: var(--primary-bg-color, rgba(124, 149, 171, 0.12));
+}
+
+.deletedItem {
+    color: var(--secondary-text-color, #6b6b6b);
+    text-decoration: line-through;
+}
+
+/* Icon spacing */
+.iconWithMargin {
+    margin-right: 4px;
+}
+
+/* Search wrapper */
+.searchWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 12px;
+    pointer-events: none;
+    color: var(--secondary-text-color, #6b6b6b);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.searchInput {
+    width: 100%;
+    height: 32px;
+    padding-left: 36px;
+    padding-right: 32px;
+    font-size: 13px;
+    border-radius: 16px;
+    background-color: var(--primary-bg-color, rgba(124, 149, 171, 0.1));
+    border: 1px solid var(--border-color, #d9d9d9);
+    outline: none;
+    box-sizing: border-box;
+}
+
+.searchInput:focus {
+    background-color: var(--primary-bg-color, rgba(124, 149, 171, 0.1));
+    border-color: var(--main-effect-color, #4786ff);
+    box-shadow: none;
+}
+
+.searchClear {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    color: var(--secondary-text-color, #6b6b6b);
+    display: flex;
+    align-items: center;
+    z-index: 1;
+}
+
+.searchClear:hover {
+    color: var(--main-text-color, #333);
+}
+
+/* Search results */
+.searchResults {
+    max-height: 45vh;
+    overflow-y: auto;
+    padding: 4px 0;
+}
+
+.searchResult {
+    display: flex;
+    align-items: center;
+    padding: 2px 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease;
+}
+
+.searchResult:hover {
+    background-color: var(--primary-bg-color, rgba(124, 149, 171, 0.18));
+}
+
+.searchResultText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+}
+
+.searchingText {
+    color: var(--secondary-text-color, #6b6b6b);
+    font-size: 13px;
+}
+
+.tooMany {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 12px;
+    font-style: italic;
+    color: var(--secondary-text-color, #6b6b6b);
+}
+
+.noChildrenText {
+    color: var(--secondary-text-color, #6b6b6b);
+    font-size: 13px;
+}
+
+/* Container */
+.container {
+    padding: 0;
+}

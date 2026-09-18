@@ -1,0 +1,29 @@
+{
+    "name": "metadata-forms-dumps",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `metadata-forms-dumps` отвечает за хранение и обработку метаданных форм в системе NodeCMS версии 1.5.0. Он предоставляет информацию о доступных формах, их структуре и способах отображения (через шаблоны HTML и компоненты React). На основе этих данных система генерирует необходимые интерфейсы для взаимодействия пользователя с различными объектами платформы.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "sequelize": "^6.26.0"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "routes": {}
+}

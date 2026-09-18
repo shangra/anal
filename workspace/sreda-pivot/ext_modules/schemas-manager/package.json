@@ -1,0 +1,38 @@
+{
+    "name": "schemas-manager",
+    "version": "1.5.3",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль schemas-manager предназначен для управления мета-данными схемами в системе NodeCMS. Он предоставляет API для получения всех доступных схем, чтения конкретной схемы, создания новой схемы, редактирования существующей схемы и удаления схемы. Также он поддерживает управление правами доступа к схемам.",
+    "main": "index.js",
+    "scripts": {
+        "generate:migration": "npx sequelize-cli migration:generate --migrations-path ./db/migrations --name",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "express-validator": "^6.14.0"
+    },
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-auth": "^1.5.0",
+        "metadata-guide": "^1.5.5",
+        "rls-core": "^1.5.27"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "routes": {
+        "/metadata/schemas": {
+            "router": "SchemasManager.router.js"
+        }
+    }
+}

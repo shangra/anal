@@ -1,0 +1,14 @@
+.button {
+    width: 24px;
+    height: 24px;
+    padding: 2px;
+    font-size: 20px;
+    line-height: 1;
+    color: var(--main-text-color);
+    border: none;
+    background-color: transparent;
+}
+
+.button i {
+    display: block;
+}

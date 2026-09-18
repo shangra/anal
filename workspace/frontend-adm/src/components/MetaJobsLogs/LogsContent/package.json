@@ -1,0 +1,15 @@
+{
+    "name": "jobs-logs-logs-content",
+    "version": "1.0.0",
+    "typeSBR": "ReactCMS",
+    "codeName": "LogsContent",
+    "description": "Двухпанельное содержимое окна просмотра логов заданий (слева список задач, справа логи с пагинацией).",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {}
+}

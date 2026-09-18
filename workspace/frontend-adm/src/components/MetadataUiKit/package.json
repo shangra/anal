@@ -1,0 +1,36 @@
+{
+    "name": "metadatauikit",
+    "version": "1.0.0",
+    "typeSBR": "ReactCMS",
+    "codeName": "MetadataUiKit",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "lite-react-statemanager": "1.0.7",
+        "react": "^18.2.0",
+        "react-bootstrap": "^2.8.0",
+        "uuid": "8.3.2"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {
+        "ui": "^1.0.0",
+        "Loader": "^0.0.0",
+        "Metadata": "^1.0.0",
+        "DGTable": "^1.0.0"
+    },
+    "extensions": {}
+}

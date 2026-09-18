@@ -1,0 +1,33 @@
+{
+    "name": "sortable-list",
+    "version": "1.0.0",
+    "typeSBR": "ReactCMS",
+    "codeName": "SortableList",
+    "lazy": true,
+    "description": "",
+    "main": "index.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "react": "^18.2.0",
+        "lite-react-statemanager": "1.0.7"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {
+        "adminpanel": "^0.0.0",
+        "ui": "^1.0.0"
+    },
+    "extensions": {}
+}

@@ -1,0 +1,42 @@
+FROM --platform=linux/amd64 base.registry-ci.delta.sbrf.ru/base/docker.io/node:22.10-alpine3.19
+
+COPY docker/ca-certificates/ /usr/local/share/ca-certificates/
+RUN cat /usr/local/share/ca-certificates/sberca_root_ext.pem >> /etc/ssl/certs/ca-certificates.crt; \
+    cat /usr/local/share/ca-certificates/sberca_ext.pem >> /etc/ssl/certs/ca-certificates.crt
+
+RUN apk update; \
+    apk add --no-cache --virtual \
+    alpine-sdk \
+    make \
+    gcc \
+    g++ \
+    python3 \
+    busybox-extras \
+    bash \
+    curl \
+    libpq \
+    libpq-dev \
+    postgresql-client
+
+COPY docker/entrypoint.sh /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
+
+ARG PORT=8080
+ENV PORT=${PORT}
+
+WORKDIR /app
+
+COPY . .
+
+ENV NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
+
+RUN --mount=type=ssh --mount=type=secret,id=npmrc,dst=/root/.npmrc \
+    npm cache clean --force; \
+    npm install --global cross-env; \
+    npm ci && npm i pg-native
+
+EXPOSE ${PORT}
+
+ENTRYPOINT [ "docker-entrypoint" ]
+
+CMD ["npm", "run", "dev"]

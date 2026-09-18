@@ -1,0 +1,154 @@
+.cutText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.buttonRowMenu {
+    padding: 0 6px;
+}
+
+.errorBlock {
+    padding: 12px;
+    color: var(--error-color, #c62828);
+}
+
+/* Modal inputs */
+.modalInput {
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #d9d9d9;
+    box-sizing: border-box;
+    font-size: 13px;
+}
+
+.modalInput:focus {
+    outline: none;
+    border-color: var(--main-effect-color, #4786ff);
+}
+
+/* Confirm dialog */
+.confirmDialog {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 12px;
+}
+
+/* Toolbar */
+.toolbar {
+    padding: 0 6px;
+    margin-bottom: 12px;
+}
+
+.buttons {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.toolbarBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border: 1px solid var(--border-color, #d9d9d9);
+    background-color: var(--primary-bg-color, #ffffff);
+    color: var(--main-text-color, #333);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: all 0.2s ease;
+}
+
+.toolbarBtn:hover:not(:disabled) {
+    background-color: var(--hover-bg-color, rgba(71, 134, 255, 0.1));
+    border-color: var(--main-effect-color, #4786ff);
+    color: var(--main-effect-color, #4786ff);
+}
+
+.toolbarBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.toolbarBtn i {
+    font-size: 16px;
+}
+
+/* File rows */
+.row {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    border-radius: 4px;
+    gap: 8px;
+    overflow: hidden;
+    transition: background-color 0.2s ease;
+}
+
+.row:hover {
+    background-color: var(--primary-bg-color, rgba(124, 149, 171, 0.12));
+}
+
+.rowName {
+    flex: 5;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rowSize {
+    flex: 2;
+    min-width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rowDate {
+    flex: 2;
+    min-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rowActions {
+    flex: 3;
+    min-width: 80px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+/* Header and content blocks */
+.headerTitle {
+    margin: 0 0 12px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.fullnameBlock {
+    font-size: 13px;
+    color: var(--secondary-text-color, #6b6b6b);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0 0 12px;
+}
+
+.loadingBlock {
+    padding: 12px;
+}
+
+.emptyBlock {
+    padding: 12px;
+    color: var(--secondary-text-color, #6b6b6b);
+    font-size: 13px;
+}

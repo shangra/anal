@@ -1,0 +1,1 @@
+export { CalendarIcon } from 'components/MetadataForms/Inputs/DateTime/components/DatePicker/icons/CalendarIcon/CalendarIcon'

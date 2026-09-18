@@ -1,0 +1,25 @@
+{
+  "name": "pivot-menu-types",
+  "version": "1.0.0",
+  "typeSBR": "ReactCMS",
+  "description": "Модуль типов данных меню куба",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "dependencies": {},
+  "dependenciesNodeCMS": {},
+  "dependenciesReactCMS": {},
+  "extensions": {}
+}

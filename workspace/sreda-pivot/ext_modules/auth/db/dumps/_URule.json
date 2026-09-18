@@ -1,0 +1,140 @@
+{
+    "current": [
+        {
+            "URule": [
+                {
+                    "id": "90499885-ae60-440b-a59f-cfd3958110cd",
+                    "code": 1,
+                    "markdel": 0,
+                    "name": "AllRead",
+                    "details": "AllRead",
+                    "updatedAt": "2022-07-22T12:07:42.293Z",
+                    "createdAt": "2022-07-22T12:07:42.293Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "09d683ab-8ff0-43a9-ba16-2c68bf3bc9c6",
+                    "code": 2,
+                    "markdel": 0,
+                    "name": "AllWrite",
+                    "details": "AllWrite",
+                    "updatedAt": "2022-07-22T12:07:42.293Z",
+                    "createdAt": "2022-07-22T12:07:42.293Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "ef75e99b-51dd-47a5-914d-9b6d1df3cc20",
+                    "code": 3,
+                    "markdel": 0,
+                    "name": "Adminpanel",
+                    "details": "Доступ к панели администратора",
+                    "updatedAt": "2022-07-22T12:07:42.293Z",
+                    "createdAt": "2022-07-22T12:07:42.293Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "396c8ea0-7181-45e5-bb55-90916cab5cd4",
+                    "code": 4,
+                    "markdel": 0,
+                    "name": "UserManager",
+                    "details": "Доступ к управлению пользователями",
+                    "updatedAt": "2022-07-22T12:07:42.293Z",
+                    "createdAt": "2022-07-22T12:07:42.293Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "12e32c9d-6e4f-4d57-ae22-5cddaabf343c",
+                    "code": 14,
+                    "markdel": 0,
+                    "name": "Administrator",
+                    "details": "Администратор",
+                    "updatedAt": "2022-07-22T12:07:42.293Z",
+                    "createdAt": "2022-07-22T12:07:42.293Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "d5193eee-7426-4ce9-87c3-4268cc88a274",
+                    "code": 21,
+                    "markdel": 0,
+                    "name": "UsersWrite",
+                    "details": "Редактирование пользователей",
+                    "updatedAt": "2022-07-22T12:07:42.293Z",
+                    "createdAt": "2022-07-22T12:07:42.293Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "178741de-ba31-48a0-b2ee-cca297a5c763",
+                    "code": 22,
+                    "markdel": 0,
+                    "name": "UsersRead",
+                    "details": "Чтение пользователей",
+                    "updatedAt": "2022-07-22T12:07:42.293Z",
+                    "createdAt": "2022-07-22T12:07:42.293Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "1bff8bf4-cffd-464f-a650-6112b89da4b6",
+                    "code": 23,
+                    "markdel": 0,
+                    "name": "RolesWrite",
+                    "details": "Редактирование ролей",
+                    "updatedAt": "2022-07-22T12:07:42.293Z",
+                    "createdAt": "2022-07-22T12:07:42.293Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "1c313772-27bc-4404-bbab-d3e9bae83657",
+                    "code": 24,
+                    "markdel": 0,
+                    "name": "RolesRead",
+                    "details": "Чтение ролей",
+                    "updatedAt": "2022-07-22T12:07:42.293Z",
+                    "createdAt": "2022-07-22T12:07:42.293Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "220ba56c-f6fd-422e-9352-2040eb0dc804",
+                    "code": 25,
+                    "markdel": 0,
+                    "name": "RulesRead",
+                    "details": "Чтение прав",
+                    "updatedAt": "2022-07-22T12:07:42.293Z",
+                    "createdAt": "2022-07-22T12:07:42.293Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "fdf02195-d597-42d8-86da-8b4343cd6bfc",
+                    "code": 26,
+                    "markdel": 0,
+                    "name": "RulesWrite",
+                    "details": "Редактирование прав",
+                    "updatedAt": "2022-07-22T12:07:42.293Z",
+                    "createdAt": "2022-07-22T12:07:42.293Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "6b11cc95-0637-4dfa-8698-c2763bca91fa",
+                    "code": 33,
+                    "markdel": 0,
+                    "name": "MatrixRead",
+                    "details": "Чтение матриц",
+                    "updatedAt": "2022-07-22T12:07:42.293Z",
+                    "createdAt": "2022-07-22T12:07:42.293Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                }
+            ]
+        }
+    ]
+}

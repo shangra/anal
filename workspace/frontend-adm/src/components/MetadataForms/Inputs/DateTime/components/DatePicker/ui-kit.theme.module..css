@@ -1,0 +1,111 @@
+:root {
+    /*
+        Набор токенов из которых строиться тема.
+        При необходимости можно поменять значения в токенах для конкретных компонентов
+    */
+    /* Spacing */
+    --ui-kit-spacing-0: 0;
+    --ui-kit-spacing-1: 2px;
+    --ui-kit-spacing-2: 4px;
+    --ui-kit-spacing-3: 6px;
+    --ui-kit-spacing-4: 8px;
+    --ui-kit-spacing-5: 10px;
+    --ui-kit-spacing-6: 12px;
+    --ui-kit-spacing-7: 14px;
+    --ui-kit-spacing-8: 16px;
+    --ui-kit-spacing-9: 18px;
+    --ui-kit-spacing-10: 20px;
+    --ui-kit-spacing-11: 22px;
+    --ui-kit-spacing-12: 24px;
+    --ui-kit-spacing-13: 26px;
+    --ui-kit-spacing-14: 28px;
+    --ui-kit-spacing-15: 30px;
+    --ui-kit-spacing-16: 32px;
+    --ui-kit-spacing-17: 34px;
+    --ui-kit-spacing-18: 36px;
+    --ui-kit-spacing-19: 38px;
+    --ui-kit-spacing-20: 40px;
+    --ui-kit-spacing-21: 42px;
+    --ui-kit-spacing-22: 44px;
+    --ui-kit-spacing-23: 46px;
+    --ui-kit-spacing-24: 48px;
+    --ui-kit-spacing-25: 50px;
+    --ui-kit-spacing-26: 52px;
+    --ui-kit-spacing-27: 54px;
+    --ui-kit-spacing-28: 56px;
+    --ui-kit-spacing-29: 58px;
+    --ui-kit-spacing-30: 60px;
+    --ui-kit-spacing-31: 62px;
+    --ui-kit-spacing-32: 64px;
+    --ui-kit-spacing-33: 66px;
+    --ui-kit-spacing-34: 68px;
+    --ui-kit-spacing-35: 70px;
+    --ui-kit-spacing-60: 120px;
+    --ui-kit-spacing-61: 122px;
+    --ui-kit-spacing-62: 124px;
+    --ui-kit-spacing-63: 126px;
+    --ui-kit-spacing-64: 128px;
+    --ui-kit-spacing-80: 160px;
+    --ui-kit-spacing-81: 162px;
+    --ui-kit-spacing-88: 176px;
+    --ui-kit-spacing-96: 192px;
+    --ui-kit-spacing-100: 200px;
+    --ui-kit-spacing-107: 214px;
+    --ui-kit-spacing-112: 224px;
+    --ui-kit-spacing-102: 204px;
+    --ui-kit-spacing-119: 238px;
+    --ui-kit-spacing-121: 242px;
+    --ui-kit-spacing-122: 244px;
+    --ui-kit-spacing-131: 262px;
+    --ui-kit-spacing-133: 266px;
+    --ui-kit-spacing-135: 270px;
+    --ui-kit-spacing-140: 300px;
+    --ui-kit-spacing-154: 308px;
+    --ui-kit-spacing-162: 324px;
+    --ui-kit-spacing-167: 334px;
+    --ui-kit-spacing-165: 352px;
+    --ui-kit-spacing-180: 360px;
+
+    /* FONTS */
+    --ui-kit-fonts-heading1-font-size: 6rem;
+    --ui-kit-fonts-heading2-font-size: 3.75rem;
+    --ui-kit-fonts-heading3-font-size: 3rem;
+    --ui-kit-fonts-heading4-font-size: 2.125rem;
+    --ui-kit-fonts-heading5-font-size: 1.5rem;
+    --ui-kit-fonts-heading6-font-size: 1.25rem;
+    --ui-kit-fonts-subtitle1-font-size: 1rem;
+    --ui-kit-fonts-subtitle2-font-size: 0.875rem;
+    --ui-kit-fonts-body1-font-size: 1rem;
+    --ui-kit-fonts-body2-font-size: 0.875rem;
+    --ui-kit-fonts-caption-font-size: 0.75rem;
+    --ui-kit-fonts-actions-xLarge-font-size: 18px;
+    --ui-kit-fonts-actions-large-font-size: 16px;
+    --ui-kit-fonts-actions-medium-font-size: 14px;
+    --ui-kit-fonts-actions-small-font-size: 13px;
+    --ui-kit-fonts-actions-xSmall-font-size: 12px;
+    --ui-kit-fonts-actions-xxSmall-font-size: 9px;
+    --ui-kit-fonts-actions-xxxSmall-font-size: 8px;
+
+    --ui-kit-disabled-opacity: .65;
+
+    --ui-kit-fonts-font-weight-heavy: 900;
+    --ui-kit-fonts-font-weight-extra-bold: 800;
+    --ui-kit-fonts-font-weight-bold: 700;
+    --ui-kit-fonts-font-weight-semi-bold: 600;
+    --ui-kit-fonts-font-weight-medium: 500;
+    --ui-kit-fonts-font-weight-normal: 400;
+    --ui-kit-fonts-font-weight-light: 300;
+    --ui-kit-fonts-font-weight-extra-light: 200;
+
+    /* font-family */
+    --ui-kit-fonts-font-family: "SB Sans Text";
+
+    /* z-indexes */
+    --ui-kit-zindex-layout: 0;
+    --ui-kit-zindex-float-button: 1040;
+    --ui-kit-zindex-modal-backdrop: 1050;
+    --ui-kit-zindex-modal: 1055;
+    --ui-kit-zindex-popover: 1070;
+    --ui-kit-zindex-tooltip: 1080;
+    --ui-kit-zindex-notification: 1090;
+}

@@ -1,0 +1,50 @@
+.assistantImg {
+    width: 128px;
+    height: 128px;
+    background-image: url('../img/output.png');
+    background-repeat: no-repeat;
+
+    animation: moveY 3s steps(90) infinite;
+}
+
+.startRecord {
+    filter: invert(1);
+}
+
+.rightAssistant {
+    position: absolute;
+    top: calc(100vh - 128px);
+    left: calc(100vw - 128px);
+    z-index: 1001;
+}
+
+@keyframes moveY {
+    from {
+        background-position-y: 0px;
+    }
+    to {
+        background-position-y: -11520px;
+    }
+}
+
+.assistentImgSpech {
+    left: 0px;
+    top: 0px;
+    position: absolute;
+
+    width: 128px;
+    height: 128px;
+    background-image: url('../img/output_spech.png');
+    background-repeat: no-repeat;
+
+    animation: moveYSpech 3s steps(60) infinite;
+}
+
+@keyframes moveYSpech {
+    from {
+        background-position-y: 0px;
+    }
+    to {
+        background-position-y: -7680px;
+    }
+}

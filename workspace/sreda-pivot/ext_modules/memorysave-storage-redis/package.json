@@ -1,0 +1,24 @@
+{
+    "name": "memorysave-storage-redis",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `memorysave-storage-redis` реализует механизм хранения данных с использованием Redis для NodeCMS. Он позволяет сохранять как примитивные значения, так и большие массивы, разделяя последние на чанки для эффективного управления памятью. Модуль также обеспечивает обработку ошибок подключения к Redis и автоматическое восстановление соединения при его разрыве.",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "homepage": "",
+    "dependencies": {
+        "redis": "^5.10.0"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {}
+}

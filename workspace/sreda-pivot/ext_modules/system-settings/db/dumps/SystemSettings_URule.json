@@ -1,0 +1,32 @@
+{
+    "current": [
+        {
+            "URule": [
+                {
+                    "id": "08c35af6-4197-4af9-9873-03120ec273cc",
+                    "markdel": 0,
+                    "name": "SystemSettingsManager",
+                    "details": "Доступ к администрированию системных настроек",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "c1d12572-8483-45c7-93ec-4c94dae85f3b",
+                    "markdel": 0,
+                    "name": "SystemSettingsRead",
+                    "details": "Просмотр системных настроек",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "b50b5ca9-ae79-4a99-b453-85688abd1582",
+                    "markdel": 0,
+                    "name": "SystemSettingsWrite",
+                    "details": "Редактирование системных настроек",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                }
+            ]
+        }
+    ]
+}

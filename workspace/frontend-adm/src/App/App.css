@@ -1,0 +1,536 @@
+@font-face {
+    font-family: 'nav-sans';
+    font-weight: 300;
+    src: url(../fonts/SBSansText-Light.ttf);
+}
+
+@font-face {
+    font-family: 'nav-sans';
+    font-weight: 300;
+    font-style: italic;
+    src: url(../fonts/SBSansText-LightItalic.ttf);
+}
+
+@font-face {
+    font-family: 'nav-sans';
+    font-weight: 400;
+    src: url(../fonts/SBSansText-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'nav-sans';
+    font-weight: 400;
+    font-style: italic;
+    src: url(../fonts/SBSansText-Italic.ttf);
+}
+
+@font-face {
+    font-family: 'nav-sans';
+    font-weight: 600;
+    src: url(../fonts/SBSansText-Semibold.ttf);
+}
+
+@font-face {
+    font-family: 'nav-sans';
+    font-weight: 600;
+    font-style: italic;
+    src: url(../fonts/SBSansText-SemiBoldItalic.ttf);
+}
+
+@font-face {
+    font-family: 'nav-sans';
+    font-weight: 700;
+    src: url(../fonts/SBSansText-Bold.ttf);
+}
+
+@font-face {
+    font-family: 'nav-sans';
+    font-weight: 700;
+    font-style: italic;
+    src: url(../fonts/SBSansText-BoldItalic.ttf);
+}
+
+@font-face {
+    font-family: 'nav-sans';
+    font-weight: 800;
+    src: url(../fonts/SBSansText-Heavy.ttf);
+}
+
+@font-face {
+    font-family: 'nav-sans';
+    font-weight: 400;
+    font-stretch: condensed;
+    src: url(../fonts/SBSansTextCond-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'nav-sans';
+    font-weight: 700;
+    font-stretch: condensed;
+    src: url(../fonts/SBSansTextCond-Bold.ttf);
+}
+
+:root {
+    --zindex-dropdown: 1000;
+    --zindex-sticky: 1020;
+    --zindex-fixed: 1030;
+    --zindex-offcanvas-backdrop: 1040;
+    --zindex-offcanvas: 1045;
+    --zindex-modal-backdrop: 1050;
+    --zindex-modal: 1055;
+    --zindex-popover: 1070;
+    --zindex-tooltip: 1080;
+    --zindex-toast: 1090;
+}
+
+/*variables*/
+:root[data-theme='dark'] {
+    --main-bg-color: #131824; /* цвет фона*/
+    --second-bg-color: #131824; /* цвет хедера*/
+    --primary-bg-color: rgba(124, 149, 171, 0.2); /* цвет фона списков итемов элементов rgba(124,149,171,.2) #394651  #7c95ab*/
+    --tile-bg-color: #2a2f3e; /* цвет фона контейнеров контента*/
+    --tile-bg-color-op: #2a2f3e;
+    --table-even-row-bg-color: #272b3b;
+    --table-border-color: #444444;
+    --main-text-color: #7c95ab; /* цвет текста, box shadow выпадающих списков,  */
+    --main-active-color: #fff; /*цвет активного текста*/
+    --main-effect-color: #4786ff; /*цвет эффектов выбранного элемента меню*/
+    --main-selected-color: rgba(71, 134, 255, 0.3); /* цвет фона выделенных элементов*/
+    --selection-color: #000; /* цвет выделенного текста*/
+    --selection-bg-color: rgba(255, 208, 0, 0.9); /* цвет фона выделенного текста*/
+    --clickable-bg: rgba(202, 218, 232, 0.05); /*цвет кликабельного элемента*/
+    --attention: red; /* цвет предупреждений*/
+    --selected-cell: #66afe960; /* цвет выделенной ячейки в таблице*/
+    --second-effect-color: #35456f; /* цвет эффектов выбранного элемента */
+    --table-bg-color-create: #294129; /* цвет созданной строки таблицы */
+    --table-bg-color-update: #383329; /* цвет измененной строки таблицы */
+    --element-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+    --ref-search-select-bg: rgb(96, 99, 119);
+}
+
+:root[data-theme='light'] {
+    --main-bg-color: #f5f5f5;
+    --second-bg-color: #f9fcfe;
+    --primary-bg-color: rgba(31, 29, 29, 0.05);
+    --tile-bg-color: #fff;
+    --tile-bg-color-op: #fff;
+    --table-even-row-bg-color: #fafafa;
+    --table-border-color: #dddddd;
+    --main-text-color: #708699;
+    --main-active-color: #2e312f;
+    --main-effect-color: #4786ff;
+    --main-selected-color: rgba(71, 134, 255, 0.3);
+    --selection-color: #000;
+    --selection-bg-color: rgba(255, 208, 0, 0.9);
+    --clickable-bg: rgba(116, 130, 141, 0.05);
+    --attention: red;
+    --selected-cell: #66afe960;
+    --second-effect-color: #d3e2ff; /* цвет эффектов выбранного элемента */
+    --table-bg-color-create: #e0f6e0;
+    --table-bg-color-update: #f3e6cd;
+    --element-shadow: 0 2px 4px 0 rgba(0,0,18,.2);
+}
+
+:root[data-theme='galaxy'] {
+    --main-bg-color: rgba(15, 18, 21, 0.8);
+    --second-bg-color: #0f1215;
+    --primary-bg-color: #7c86ab14;
+    --tile-bg-color: #0e101280;
+    --tile-bg-color-op: #1e283e;
+    --table-even-row-bg-color: #1f2b46;
+    --table-border-color: #444444;
+    --main-text-color: #7c89ab;
+    --main-active-color: #ffffff;
+    --main-effect-color: #4786ff;
+    --main-selected-color: rgba(71, 134, 255, 0.3);
+    --selection-color: #000;
+    --selection-bg-color: rgba(255, 208, 0, 0.9);
+    --clickable-bg: rgba(202, 218, 232, 0.05);
+    --selected-cell: #66afe960;
+    --attention: red;
+    --second-effect-color: #35456f; /* цвет эффектов выбранного элемента */
+    --table-bg-color-create: #294129;
+    --table-bg-color-update: #383329;
+    --element-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+    --ref-search-select-bg: rgb(41,66,122);
+}
+
+/*цвет кнопок меню*/
+:root {
+    --button-menu-bg-light: #f5f5f5;
+    --button-menu-color-light: #2e312f;
+    --button-menu-bg-dark: #131824;
+    --button-menu-color-dark: #fff;
+    --button-menu-bg-galaxy: linear-gradient(to right bottom, rgba(19, 22, 44, 0.867), rgba(45, 71, 114, 0.867), rgba(72, 43, 89, 0.867));
+    --button-menu-color-galaxy: #fff;
+}
+
+body {
+    font-family: 'nav-sans', sans-serif, Arial;
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 0;
+    max-height: 100vh;
+    overflow-y: hidden;
+    outline-width: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: var(--main-bg-color, #131824) !important;
+    color: var(--main-text-color, #7c95ab) !important;
+}
+
+.DesktopContainer {
+    margin-top: 70px;
+    max-height: calc(100vh - 70px);
+    height: calc(100vh - 70px);
+    overflow: auto;
+}
+
+a {
+    color: var(--main-text-color, #7c95ab);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--main-active-color, #ffff);
+}
+
+::selection {
+    color: var(--selection-color, #000) !important;
+    background-color: var(--selection-bg-color, rgba(255, 208, 0, 0.9)) !important;
+}
+
+.nav-link {
+    color: var(--main-text-color, #7c95ab);
+}
+
+.nav-link:focus {
+    color: var(--main-text-color, #7c95ab);
+}
+
+.header {
+    background: var(--second-bg-color, #131824);
+    border: 0;
+    border-radius: 0;
+    height: 60px;
+    box-shadow: none;
+
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/*не используется ??*/
+.content {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.3) 20%);
+    background-size: cover;
+}
+
+/*---*/
+
+/* Стили инпутов (не включая checkbox) и селектов bootstrap для OLD Metadata UI-KIT */
+
+input:not([type='checkbox']).form-control:not([data-uikit="metadata_ui-kit"]) {
+    background-color: var(--primary-bg-color, rgba(124, 149, 171, 0.2)) !important;
+    border: 1px solid var(--main-text-color, #7c95ab) !important;
+    color: var(--main-active-color, #ffff) !important;
+}
+
+input:not([type='checkbox']):focus.form-control:not([data-uikit="metadata_ui-kit"]) {
+    border: 1px solid var(--main-effect-color, #4786ff) !important;
+    box-shadow: none;
+}
+
+/*---*/
+
+/* Стили инпутов (не включая checkbox) и селектов bootstrap для NEW Metadata UI-KIT */
+
+input:not([type='checkbox']).form-control[data-uikit="metadata_ui-kit"],
+select.form-select[data-uikit="metadata_ui-kit"],
+textarea.form-control[data-uikit="metadata_ui-kit"] {
+    background-color: var(--primary-bg-color, #7c86ab14);
+    border: 1px solid var(--main-text-color, #444444);
+    color: var(--main-active-color, #ffff);
+    border-radius: 12px;
+}
+
+input:not([type='checkbox']):focus.form-control[data-uikit="metadata_ui-kit"],
+select:focus.form-select[data-uikit="metadata_ui-kit"],
+textarea:focus.form-control[data-uikit="metadata_ui-kit"] {
+    border: 1px solid var(--main-effect-color, #4786ff);
+    box-shadow: none;
+}
+
+/*----*/
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 50px var(--primary-bg-color) inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: var(--main-active-color, #fff);
+}
+
+::-webkit-input-placeholder {
+    color: var(--main-text-color, #7c95ab) !important;
+}
+
+textarea {
+    background-color: var(--primary-bg-color, rgba(124, 149, 171, 0.2)) !important;
+    border-color: var(--main-text-color, #7c95ab) !important;
+    color: var(--main-active-color, #ffff) !important;
+    width: 100% !important;
+}
+
+textarea:focus {
+    border-color: var(--main-effect-color, #4786ff) !important;
+    box-shadow: none !important;
+}
+
+select {
+    background-color: var(--primary-bg-color, rgba(124, 149, 171, 0.2)) !important;
+    border-color: var(--main-text-color, #7c95ab) !important;
+    color: var(--main-active-color, #ffff) !important;
+}
+
+option,
+optgroup {
+    -webkit-appearance: none;
+    background-color: var(--second-bg-color, #131824) !important;
+    color: var(--main-active-color, #fff) !important;
+}
+
+select:focus {
+    border-color: var(--main-effect-color, #4786ff) !important;
+    box-shadow: none !important;
+}
+
+.btn-sber {
+    color: var(--main-text-color, #7c95ab) !important;
+    background-color: var(--primary-bg-color, rgba(124, 149, 171, 0.2)) !important;
+    border-color: var(--main-text-color, #7c95ab) !important;
+    border-width: 1px;
+}
+
+.btn-sber:hover {
+    color: var(--main-active-color, #fff) !important;
+    border-color: var(--main-active-color, #fff) !important;
+    /*1px solid*/
+}
+
+ul.hr {
+    margin: 0; /* Обнуляем значение отступов */
+    padding: 4px;
+}
+
+/* Значение полей */
+ul.hr li {
+    display: inline; /* Отображать как строчный элемент */
+    margin-right: 5px; /* Отступ слева */
+    border: 1px solid var(--main-text-color, #7c95ab); /* Рамка вокруг текста */
+    padding: 3px; /* Поля вокруг текста */
+}
+
+body .Title {
+    color: var(--main-text-color, #7c95ab);
+}
+
+body.admin {
+    background-color: var(--main-bg-color, #131824) !important;
+    color: var(--main-text-color, #7c95ab) !important;
+}
+
+/*body.color-theme-light {*/
+/*  background-color: #f5f5f5 !important;*/
+/*  color: #708699*/
+/*}*/
+
+.logoOnline {
+    width: 60px;
+    height: 60px;
+    background-size: 46px;
+    background-image: url(../images/logo-white.svg);
+    background-repeat: no-repeat;
+    background-position: 50%;
+
+    background-color: #4786ff; /*green;*/
+}
+
+.logoOffline {
+    width: 60px;
+    height: 60px;
+    background-size: 46px;
+    background-image: url(../images/logo-white.svg);
+    background-repeat: no-repeat;
+    background-position: 50%;
+
+    background-color: red;
+}
+
+.search-input {
+    top: 67px;
+    width: 380px;
+    right: 0;
+}
+
+.entity-items-list {
+    max-width: 600px;
+}
+
+.user-menu {
+    transition: none 0s ease 0s;
+    top: 70px;
+    right: 0;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    /*-webkit-border-radius: 100px;*/
+    background-color: var(--tile-bg-color, #2a2f3e);
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: var(--main-text-color, #7c95ab);
+    /*-webkit-box-shadow: inset 0 0 6px red;*/
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--main-active-color, #fff);
+}
+
+.va-middle {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.w-max-content {
+    width: max-content;
+}
+
+.carousel-indicators button {
+    border-style: solid !important;
+    border-width: 1px !important;
+}
+
+.btn-carousel i,
+.btn-carousel:focus i {
+    color: var(--main-text-color, #7c95ab);
+}
+
+.btn-carousel:hover i {
+    color: var(--main-active-color, #fff);
+}
+
+.blockloading {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading {
+    overflow: hidden;
+}
+
+.loading::before {
+    content: '';
+    display: block;
+    position: relative; /*absolute;*/
+    left: -150px;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to right, transparent 0%, var(--main-text-color) 50%, transparent 100%);
+    animation: load 1s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes load {
+    from {
+        left: -150px;
+    }
+    to {
+        left: 100%;
+    }
+}
+
+.defaultText {
+    color: var(--main-active-color);
+}
+
+.defaultSecondText {
+    color: var(--main-text-color);
+    /*--primary-bg-color*/
+}
+
+.p-16,
+.pt-16 {
+    padding-top: 16px;
+}
+
+.p-16,
+.ps-16 {
+    padding-left: 16px;
+}
+
+.p-16,
+.pe-16 {
+    padding-right: 16px;
+}
+
+.p-16,
+.pb-16 {
+    padding-bottom: 16px;
+}
+
+.max-width-500 {
+    max-width: 500px;
+}
+/*стили для кнопки MIS*/
+.btn-mis {
+    color: var(--main-text-color, #7c95ab);
+    background-color: var(--primary-bg-color, rgba(124, 149, 171, 0.2));
+    border-color: var(--main-text-color, #7c95ab);
+    border-width: 1px;
+}
+
+.btn-mis:hover {
+    background-color: var(--primary-bg-color, rgba(124, 149, 171, 0.2));
+    color: var(--main-active-color, #fff);
+    border: 1px solid var(--main-active-color, #fff);
+}
+
+.btn-mis:focus {
+    background-color: var(--primary-bg-color, rgba(124, 149, 171, 0.2));
+}
+
+.btn-mis:focus,
+.btn-mis:active {
+    box-shadow: none !important;
+    border: 1px solid var(--main-active-color, #fff);
+    color: var(--main-active-color, #fff);
+}
+/*------*/
+
+.portal-panel {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--tile-bg-color, #2a2f3e);
+    /*height: max-content;*/
+    /*width: 100%;*/
+}
+
+.dropdown-item,
+.btn-outline-dark {
+    color: var(--main-text-color, #7c95ab);
+}
+
+#webpack-dev-server-client-overlay {
+    display: none;
+}

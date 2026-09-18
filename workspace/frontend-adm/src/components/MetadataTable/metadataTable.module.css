@@ -1,0 +1,117 @@
+.root {
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.tabs {
+    flex-shrink: 0;
+}
+
+.code {
+    margin: 0;
+    padding: 12px;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 12px;
+    line-height: 1.4;
+    border-radius: 5px;
+    background: var(--sreda-surface-secondary, #1e1e1e);
+}
+
+.emptyTable {
+    padding: 24px;
+}
+
+.wrapper {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 5px;
+
+}
+
+.horizontalScroll {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    position: relative;
+}
+
+.horizontalScroll:active {
+    cursor: grabbing;
+}
+
+.horizontalScroll_dragging {
+    touch-action: none;
+}
+
+.horizontalScroll_unrotate {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.table_cell {
+    user-select: none;
+}
+
+/* FilterPopover */
+.filterRow {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.popoverContent {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 8px;
+    min-width: 240px;
+}
+
+.popoverTitle {
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.popoverActions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.filterIconBtn {
+    width: 20px;
+    height: 20px;
+}
+
+/* DataTableHeaderCell */
+.sortIconBtn {
+    width: 18px;
+    height: 18px;
+}
+
+.sortIconBtn_idle {
+    opacity: 0.3;
+}
+
+.sortIconBtn_active {
+    opacity: 0.8;
+}
+
+.headerCell {
+    font-weight: bold;
+}
+
+.headerCellContent {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}

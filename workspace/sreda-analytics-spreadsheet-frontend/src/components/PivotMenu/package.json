@@ -1,0 +1,36 @@
+{
+    "name": "pivotMenu",
+    "version": "1.0.0",
+    "typeSBR": "ReactCMS",
+    "codeName": "PivotMenu",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "react": "^18.2.0",
+        "lite-react-statemanager": "1.0.7",
+        "react-dom": "^18.2.0",
+        "uuid": "8.3.2"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {
+        "ui": "^1.0.0",
+        "Loader": "^0.0.0",
+        "withRouter": "^0.0.0",
+        "pivot-menu-types": "^1.0.0"
+    },
+    "extensions": {}
+}

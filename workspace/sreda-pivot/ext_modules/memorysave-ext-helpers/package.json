@@ -1,0 +1,34 @@
+{
+    "name": "memorysave-ext-helpers",
+    "version": "1.5.0",
+    "description": "Модуль `memorysave-ext-helpers` предоставляет дополнительные вспомогательные функции для работы с кэшированием данных в NodeCMS проекте. Он расширяет стандартный сервис кэширования (`MemorySaveMetadataService`), добавляя возможность контроля за доступностью кеша через переменные окружения и возвращая результат выполнения оригинального метода или `null`, если кеширование отключено. Также модуль содержит метод получения идентификатора пользователя из сессии HTTP-контекста.",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "MemorySaveMetadataService.getCache.decorate": {
+            "class": "/services/MemorySaveExtHelpers.service.js",
+            "function": "getCache"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": ""
+}

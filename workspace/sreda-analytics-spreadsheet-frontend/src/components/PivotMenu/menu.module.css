@@ -1,0 +1,138 @@
+/* TODO избавиться от бутстрапа */
+.pivot_menu {
+    color: var(--ui-kit-colors-text-primary);
+    width: 100%;
+    height: 100%;
+}
+
+.tableSidebar {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    gap: var(--ui-kit-spacing-4);
+
+    overflow-y: hidden;
+    overflow-x: auto;
+    height: 100%;
+    width: 100%;
+}
+
+.btnBox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.btnBox > div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: var(--ui-kit-spacing-4);
+}
+
+.pivot_params__wrapper {
+    overflow: auto;
+    flex: 1;
+}
+
+.pivot_params {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--ui-kit-spacing-4);
+
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.pivot_params__horizontal {
+    flex-direction: column;
+    /* max-width: 100%; */
+}
+
+.pivot_params__vertical {
+    flex-direction: row;
+    /* max-height: 100%; */
+}
+
+.row {
+    display: flex;
+    gap: var(--ui-kit-spacing-4);
+    overflow: hidden;
+    flex: 1 1 0;
+}
+
+.row__horizontal {
+    flex-direction: row;
+    min-width: 100%;
+    min-height: 150px;
+    flex-wrap: wrap;
+}
+
+.row__vertical {
+    flex-direction: column;
+    min-width: 250px;
+    min-height: 100%;
+    /* Как-то не очень */
+    flex-wrap: nowrap;
+}
+
+.row.row__resizable {
+    flex-basis: auto;
+}
+
+.row__item {
+    flex: 1 1 auto;
+
+    min-width: 250px;
+    max-width: 100%;
+
+    min-height: 150px;
+    max-height: 100%;
+}
+
+.row_item__vertical {
+}
+
+.row_item__horizontal {
+    flex-basis: calc(50% - var(--ui-kit-spacing-2));
+}
+
+.handle {
+    display: block;
+    flex-shrink: 0;
+    border: solid var(--ui-kit-spacing-1) var(--ui-kit-colors-basic-secondary);
+    border-radius: var(--ui-kit-spacing-1);
+    opacity: 0.1;
+}
+
+.handle__horizontal {
+    width: 100%;
+    cursor: ns-resize;
+}
+
+.handle__vertical {
+    min-height: 100%;
+    cursor: ew-resize;
+}
+
+.badge {
+    display: block;
+    border-radius: var(--ui-kit-badge-circle-border-radius);
+    width: var(--ui-kit-badge-circle-size);
+    height: var(--ui-kit-badge-circle-size);
+    background-color: var(--ui-kit-badge-error-background-color);
+    position: absolute;
+    top: calc(0px - (var(--ui-kit-badge-circle-size) / 2));
+    right: 0;
+}
+
+.mt2{
+    margin-top: var(--ui-kit-spacing-4);
+}
+
+.ms2 {
+    margin-left: var(--ui-kit-spacing-4);
+}

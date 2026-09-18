@@ -1,0 +1,8 @@
+{
+    "main": "C:\\Work\\test\\obf\\2\\SREDA.Analytic\\workspace\\sreda-pivot\\dist-temp\\sea-main.js",
+    "output": "C:\\Work\\test\\obf\\2\\SREDA.Analytic\\workspace\\sreda-pivot\\dist-temp\\pivot.blob",
+    "assets": {
+        "bundle-obf": "C:\\Work\\test\\obf\\2\\SREDA.Analytic\\workspace\\sreda-pivot\\dist-temp\\bundle-obf.js"
+    },
+    "disableExperimentalSEAWarning": true
+}

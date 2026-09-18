@@ -1,0 +1,9 @@
+.noticeItem {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-kit-spacing-2);
+}
+
+.noticeItem:not(:first-child) {
+    margin-top: var(--ui-kit-spacing-1);
+}

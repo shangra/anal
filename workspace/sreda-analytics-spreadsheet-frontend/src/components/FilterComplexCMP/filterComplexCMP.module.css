@@ -1,0 +1,26 @@
+.popover:global(.popover) {
+    width: max-content;
+    max-width: max-content;
+    --bs-popover-bg: var(--second-bg-color, #131824) !important;
+    box-shadow: 0 0 8px -2px var(--main-text-color);
+    z-index: var(--zindex-popover, 1070);
+}
+
+.popoverBody {
+    display: flex;
+    width: max-content;
+    flex-direction: column;
+    align-items: flex-start;
+    max-height: 400px;
+    overflow-x: auto;
+    overflow-y: auto;
+    padding: 4px;
+}
+
+.icon {
+    color: var(--main-text-color, #fff);
+}
+
+.activeIcon {
+    color: var(--ui-kit-colors-text-primary);
+}

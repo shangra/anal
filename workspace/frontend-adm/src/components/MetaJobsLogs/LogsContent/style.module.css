@@ -1,0 +1,202 @@
+.logsContent {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* ── Left panel (job list) ── */
+.jobList {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    min-width: 260px;
+    border-right: 1px solid var(--ui-kit-border-color);
+}
+
+.jobListHeader {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--ui-kit-border-color);
+    background: var(--ui-kit-bg-secondary);
+}
+
+.jobListHeader h6 {
+    margin: 0;
+    font-size: 14px;
+    color: var(--ui-kit-text-primary-color);
+}
+
+.jobListLoader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.jobListError {
+    margin: 8px;
+    padding: 4px 8px;
+    font-size: 12px;
+    color: var(--ui-kit-colors-alert-error);
+    background: var(--ui-kit-colors-alert-error);
+    border-radius: 4px;
+}
+
+.jobListEmpty {
+    text-align: center;
+    color: var(--ui-kit-text-secondary-color);
+    font-size: 12px;
+    margin: 12px 0;
+}
+
+.jobListScroll {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+/* ── Job item ── */
+.jobItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--ui-kit-border-color);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease;
+}
+
+.jobItem:hover {
+    background: var(--ui-kit-colors-background-highlighted);
+}
+
+.jobItemSelected {
+    background: var(--ui-kit-colors-basic-primary) !important;
+    color: #fff;
+}
+
+.jobItemSelected .jobStatusBadge {
+    background: rgba(255, 255, 255, 0.25) !important;
+    color: #fff;
+}
+
+.jobItemName {
+    display: inline-block;
+    max-width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.jobStatusBadge {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 4px;
+    background: #198754;
+    color: #fff;
+}
+
+.jobStatusBadgeStopped {
+    background: #6c757d;
+}
+
+/* ── Right panel (logs) ── */
+.logsPanel {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.logsPanelHeader {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--ui-kit-border-color);
+    background: var(--ui-kit-bg-secondary);
+}
+
+.logsPanelHeader h6 {
+    margin: 0;
+    font-size: 14px;
+    color: var(--ui-kit-text-primary-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.logsPanelEmpty {
+    text-align: center;
+    color: var(--ui-kit-text-secondary-color);
+    margin: 32px 0;
+    font-size: 14px;
+}
+
+.logsList {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+/* ── Log item ── */
+.logItem {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--ui-kit-border-color);
+}
+
+.logItemInfo {
+    flex: 1;
+    min-width: 0;
+}
+
+.logItemCode {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ui-kit-text-primary-color);
+}
+
+.logItemDate {
+    font-size: 12px;
+    color: var(--ui-kit-text-secondary-color);
+}
+
+/* ── Paginator ── */
+.paginator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.paginatorButton {
+    padding: 4px 10px;
+    font-size: 13px;
+    border: 1px solid var(--ui-kit-border-color);
+    background: transparent;
+    color: var(--ui-kit-text-primary-color);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.paginatorButton:hover:not(:disabled) {
+    background: var(--ui-kit-colors-background-highlighted);
+}
+
+.paginatorButtonActive {
+    background: var(--ui-kit-colors-basic-primary) !important;
+    border-color: var(--ui-kit-colors-basic-primary) !important;
+    color: #fff !important;
+}
+
+.paginatorButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.paginatorEllipsis {
+    margin: 0 4px;
+    color: var(--ui-kit-text-secondary-color);
+}

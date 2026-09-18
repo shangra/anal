@@ -1,0 +1,30 @@
+.CalendarColoredBlocks {
+    background-color: var(--tile-bg-color, #2a2f3e);
+    border-radius: 8px;
+    margin-top: 15px;
+    padding: 8px;
+    --bs-gutter-x: 0rem;
+}
+
+.CalendarBoard {
+    overflow-x: hidden;
+    height: calc(100vh - 77px);
+}
+
+.CalendarTitleParent {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+.CalendarTitle {
+    grid-area: 1 / 1 / 2 / 6;
+}
+.CalendarTitleFavorite {
+    grid-area: 1 / 5 / 2 / 6;
+}
+
+.FavoriteIcon {
+    font-size: x-large;
+}

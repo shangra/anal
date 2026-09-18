@@ -1,0 +1,19 @@
+{
+    "current": [
+        {
+            "Metadata": [
+                {
+                    "id": "b44b4843-f919-4362-b95c-4c354b2505bd",
+                    "markdel": 0,
+                    "parent": "00000000-0000-0000-0000-000000000000",
+                    "class_id": "b44b4843-f919-4362-b95c-4c354b2505bd",
+                    "class": "Infoservice",
+                    "name": "Инфосервисы",
+                    "description": "Инфосервисы",
+                    "manifest": "{}",
+                    "rank": 8
+                }
+            ]
+        }
+    ]
+}

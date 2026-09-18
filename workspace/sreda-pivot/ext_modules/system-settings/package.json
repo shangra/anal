@@ -1,0 +1,38 @@
+{
+    "name": "system-settings",
+    "version": "1.5.18",
+    "description": "Получение информации о серверах, выключение сервера, запуск профилировщика",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "sequelize": "^6.26.0"
+    },
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-access": "^1.5.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "routes": {
+        "/systemsettings": {
+            "router": "SystemSettings.router.js"
+        }
+    }
+}

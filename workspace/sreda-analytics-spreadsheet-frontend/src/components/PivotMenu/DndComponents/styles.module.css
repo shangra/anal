@@ -1,0 +1,28 @@
+.overlay {
+    cursor: grabbing;
+}
+
+.target {
+    position: relative;
+}
+
+.target__area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: solid var(--ui-kit-spacing-1) var(--ui-kit-colors-basic-primary);
+    border-radius: var(--ui-kit-spacing-4);
+}
+
+.isDraggingItem {
+    pointer-events: none !important;
+    border-radius: 8px;
+    width: max-content;
+    cursor: pointer;
+    user-select: none;
+    font-size: 12px;
+}
+
+

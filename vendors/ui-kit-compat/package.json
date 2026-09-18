@@ -1,0 +1,20 @@
+{
+  "name": "ui-kit",
+  "version": "1.6.17-compat.9",
+  "description": "Sreda Analytics ui-kit compatibility layer for admin (replace with real vendors/ui-kit/*.tgz when available)",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "style": "style.css",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "style.css",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "react": ">=17",
+    "react-dom": ">=17"
+  },
+  "sredaCompat": true,
+  "license": "UNLICENSED"
+}

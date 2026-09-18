@@ -1,0 +1,29 @@
+{
+  "name": "metadata-hier/actions/add",
+  "version": "0.0.1",
+  "typeSBR": "ReactCMS",
+  "codeName": "AddAction",
+  "lazy": false,
+  "description": "AddAction",
+  "main": "index.tsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "dependencies": {
+    "react": "^18.2.0"
+  },
+  "dependenciesNodeCMS": {},
+  "dependenciesReactCMS": {},
+  "extensions": {}
+}

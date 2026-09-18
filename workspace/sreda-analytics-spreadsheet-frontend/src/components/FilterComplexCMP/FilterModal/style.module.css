@@ -1,0 +1,88 @@
+.filterItem {
+    background-color: var(--primary-bg-color);
+    border: 1px solid var(--main-text-color, #444444);
+    border-radius: var(--ui-kit-spacing-4);
+    margin: var(--ui-kit-spacing-4) 0 0 0;
+}
+
+.filterBtns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.filterParams {
+    border-top: 1px solid var(--main-text-color, #444444);
+    padding: var(--ui-kit-spacing-3);
+}
+
+.filterText {
+    width: 100%;
+    margin: auto;
+}
+
+.caret {
+    transition: transform 0.3s ease;
+}
+
+.rotate:before {
+    transform: rotate(90deg);
+}
+
+.container {
+    width: 640px !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.wrap {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-kit-spacing-8);
+    margin-top:var(--ui-kit-spacing-8);
+}
+
+.actionsBtns {
+    display: flex; 
+    gap:var(--ui-kit-spacing-4);
+}
+
+.pasteArea {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-kit-spacing-8);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.pasteArea textarea {
+    flex: 1;
+    min-width: 0;
+    min-height: var(--ui-kit-spacing-30);
+    padding: var(--ui-kit-spacing-4) var(--ui-kit-spacing-6);;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+
+.pasteAreaBtns {
+    display: flex;
+    gap: var(--ui-kit-spacing-8);
+    justify-content: flex-end;
+}
+
+.unparsedSection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-kit-spacing-4);
+}
+
+.unparsedHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+

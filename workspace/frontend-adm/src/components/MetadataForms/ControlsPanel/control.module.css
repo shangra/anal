@@ -1,0 +1,14 @@
+.ControlPanel {
+    display: flex;
+    border-top: 1px solid var(--ui-kit-colors-border-primary);
+    padding: 10px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    background: var(--main-bg-color);
+    z-index: 10;
+}
+
+.ControlPanel > * {
+    margin: 5px !important;
+}

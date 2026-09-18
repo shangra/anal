@@ -1,0 +1,19 @@
+{
+    "name": "middleware-rest-cors",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `middleware-rest-cors` представляет собой промежуточное ПО (middleware), предназначенное для настройки политики CORS (Cross-Origin Resource Sharing). \n\nПри каждом запросе он устанавливает заголовки HTTP-ответа, разрешая доступ к ресурсам со всех доменов (`*`), поддерживая различные методы запросов (например, GET, POST, OPTIONS и другие), а также позволяя передачу пользовательских данных через запросы с авторизацией (`Access-Control-Allow-Credentials`).\n\nТаким образом, этот модуль упрощает взаимодействие между фронтенд-приложениями и бэкендом при кросс-доменных запросах.",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {}
+}

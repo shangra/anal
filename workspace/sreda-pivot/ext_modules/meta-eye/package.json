@@ -1,0 +1,75 @@
+{
+    "name": "meta-eye",
+    "version": "1.0.1",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `meta-eye` предоставляет функционал для просмотра метаданных различных сущностей системы через REST API. Он добавляет кнопку «MetaEye» к формам разных сервисов (например, InfoService, GuideService), которая позволяет пользователю открыть просмотр конкретной сущности. При вызове соответствующего маршрута (`/metadata/metaeye/eye/{id}`), сервис извлекает из базы данных информацию о заданной сущности по её идентификатору и возвращает эти данные клиенту.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "middleware-rest-in-transaction": "^1.5.0",
+        "metadata-cmp": "^1.5.4"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "InfoserviceService.form.after": {
+            "class": "/services/metaEye.service.js",
+            "function": "formAfter"
+        },
+        "GuideService.form.after": {
+            "class": "/services/metaEye.service.js",
+            "function": "formAfter"
+        },
+        "DocumentsService.form.after": {
+            "class": "/services/metaEye.service.js",
+            "function": "formAfter"
+        },
+        "RegistryInformationService.form.after": {
+            "class": "/services/metaEye.service.js",
+            "function": "formAfter"
+        },
+        "RegistryAccumulativeService.form.after": {
+            "class": "/services/metaEye.service.js",
+            "function": "formAfter"
+        },
+        "InfoserviceGuideService.form.after": {
+            "class": "/services/metaEye.service.js",
+            "function": "formAfter"
+        },
+        "InfoserviceFlatGuideService.form.after": {
+            "class": "/services/metaEye.service.js",
+            "function": "formAfter"
+        },
+        "RlsService.form.after": {
+            "class": "/services/metaEye.service.js",
+            "function": "formAfter"
+        },
+        "ConditionService.form.after": {
+            "class": "/services/metaEye.service.js",
+            "function": "formAfter"
+        },
+        "CubesService.form.after": {
+            "class": "/services/metaEye.service.js",
+            "function": "formAfter"
+        }
+    },
+    "routes": {
+        "/metadata/metaeye": {
+            "router": "metaEye.router.js"
+        }
+    }
+}

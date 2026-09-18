@@ -1,0 +1,21 @@
+{
+    "name": "middleware-rest-validate",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `middleware-rest-validate` представляет собой промежуточное ПО (middleware), предназначенное для проверки данных запросов в REST API. Он использует библиотеку `express-validator`, чтобы проверять корректность переданных пользователем данных. Если обнаружены ошибки валидации, то генерируется ошибка типа `BadRequest` с указанием конкретных ошибок, иначе запрос передается дальше по цепочке обработчиков.",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "homepage": "",
+    "dependencies": {
+        "express-validator": "^6.14.0"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {}
+}

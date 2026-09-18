@@ -1,0 +1,52 @@
+{
+    "current": [
+        {
+            "Metadata": [
+                {
+                    "id": "9bc031cc-220e-4843-a172-612d80e8a337",
+                    "markdel": 0,
+                    "parent": "20901b97-d1cf-4472-a27b-b0442e436c9a",
+                    "class_id": "20901b97-d1cf-4472-a27b-b0442e436c9a",
+                    "class": "Forms",
+                    "name": "СтандартнаяФормаВыбора",
+                    "description": "Стандартная форма выбора",
+                    "manifest": "{\"owner_id\":\"20901b97-d1cf-4472-a27b-b0442e436c9a\",\"class_id\":\"20901b97-d1cf-4472-a27b-b0442e436c9a\",\"class\":\"Forms\",\"name\":\"СтандартнаяФормаВыбора\",\"description\":\"Стандартная форма выбора\",\"settings\":{\"id\":\"9bc031cc-220e-4843-a172-612d80e8a337\",\"codetemplate\":\"<MetadataForms.DataManager\\n    metaOwner={'[[ metaOwner ]]'} \\n    options={[[ options | encodejson ]]} \\n>\\n    <MetadataForms.ControlsPanel>\\n        <MetadataForms.Buttons.Add to=\\\"list\\\" />\\n        <MetadataForms.Buttons.Edit to=\\\"list\\\" />\\n        <MetadataForms.Buttons.Copy to=\\\"list\\\"/>\\n        <MetadataForms.Buttons.DeleteMark to=\\\"list\\\"/>\\n        <MetadataForms.Buttons.Delete to=\\\"list\\\"/>\\n\\n        <MetadataForms.Buttons.Conducting to=\\\"list\\\" />    \\n        \\n        <MetadataForms.Buttons.Filter to=\\\"list\\\"/>                    \\n        <MetadataForms.Buttons.Reload to=\\\"list\\\"/>\\n    </MetadataForms.ControlsPanel>\\n    <MetadataForms.ElementsList \\n        name=\\\"list\\\"\\n    />\\n</MetadataForms.DataManager>\"},\"events\":{}}",
+                    "rank": 0
+                },
+                {
+                    "id": "7b53d199-377b-4186-a094-7c0ba46bcf16",
+                    "markdel": 0,
+                    "parent": "20901b97-d1cf-4472-a27b-b0442e436c9a",
+                    "class_id": "20901b97-d1cf-4472-a27b-b0442e436c9a",
+                    "class": "Forms",
+                    "name": "СтандартнаяФормаСписка",
+                    "description": "Стандартная форма списка",
+                    "manifest": "{\"owner_id\":\"20901b97-d1cf-4472-a27b-b0442e436c9a\",\"class_id\":\"20901b97-d1cf-4472-a27b-b0442e436c9a\",\"class\":\"Forms\",\"name\":\"СтандартнаяФормаСписка\",\"description\":\"Стандартная форма списка\",\"settings\":{\"id\":\"7b53d199-377b-4186-a094-7c0ba46bcf16\",\"codetemplate\":\"<MetadataForms.DataManager\\n    metaOwner={'[[ metaOwner ]]'} \\n    options={[[ options | encodejson ]]} \\n>\\n    <MetadataForms.ControlsPanel>\\n        <MetadataForms.Buttons.Add to=\\\"list\\\" />\\n        <MetadataForms.Buttons.Edit to=\\\"list\\\" />\\n        <MetadataForms.Buttons.Copy to=\\\"list\\\" />\\n        <MetadataForms.Buttons.Delete to=\\\"list\\\"/>\\n        <MetadataForms.Buttons.DeleteMark to=\\\"list\\\"/>\\n        <MetadataForms.Buttons.Filter to=\\\"list\\\"/>\\n        <MetadataForms.Buttons.Reload to=\\\"list\\\"/>\\n    </MetadataForms.ControlsPanel>\\n<MetadataForms.ElementsList\\n    name=\\\"list\\\"\\n/>\\n</MetadataForms.DataManager>\"},\"events\":{}}",
+                    "rank": 0
+                },
+                {
+                    "id": "bccaf748-4244-4ff1-97b6-3a3291b5e818",
+                    "markdel": 0,
+                    "parent": "20901b97-d1cf-4472-a27b-b0442e436c9a",
+                    "class_id": "20901b97-d1cf-4472-a27b-b0442e436c9a",
+                    "class": "Forms",
+                    "name": "СтандартнаяФормаГруппы",
+                    "description": "Стандартная форма группы",
+                    "manifest": "{\"owner_id\":\"20901b97-d1cf-4472-a27b-b0442e436c9a\",\"class_id\":\"20901b97-d1cf-4472-a27b-b0442e436c9a\",\"class\":\"Forms\",\"name\":\"СтандартнаяФормаГруппы\",\"description\":\"Стандартная форма группы\",\"settings\":{\"id\":\"bccaf748-4244-4ff1-97b6-3a3291b5e818\",\"codetemplate\":\"<MetadataForms.DataManager\\n    metaOwner={'[[ metaOwner ]]'} \\n    options={[[ options | encodejson ]]} \\n>\\n    <MetadataForms.ControlsPanel>\\n        <MetadataForms.Buttons.Add to=\\\"list\\\" />\\n        <MetadataForms.Buttons.Edit to=\\\"list\\\" />\\n        <MetadataForms.Buttons.Copy to=\\\"list\\\"/>\\n        <MetadataForms.Buttons.DeleteMark to=\\\"list\\\"/>\\n        <MetadataForms.Buttons.Delete to=\\\"list\\\"/>\\n        <MetadataForms.Buttons.Filter to=\\\"list\\\"/>                    \\n        <MetadataForms.Buttons.Reload to=\\\"list\\\"/>\\n    </MetadataForms.ControlsPanel>\\n    <MetadataForms.ElementsList \\n        name=\\\"list\\\"\\n    />\\n</MetadataForms.DataManager>\"},\"events\":{}}",
+                    "rank": 0
+                },
+                {
+                    "id": "f1772c06-1d4f-47fb-8516-747bed27fe00",
+                    "markdel": 0,
+                    "parent": "20901b97-d1cf-4472-a27b-b0442e436c9a",
+                    "class_id": "20901b97-d1cf-4472-a27b-b0442e436c9a",
+                    "class": "Forms",
+                    "name": "СтандартнаяФормаЭлемента",
+                    "description": "Стандартная форма элемента",
+                    "manifest": "{\"owner_id\":\"20901b97-d1cf-4472-a27b-b0442e436c9a\",\"class_id\":\"20901b97-d1cf-4472-a27b-b0442e436c9a\",\"class\":\"Forms\",\"name\":\"СтандартнаяФормаЭлемента\",\"description\":\"Стандартная форма элемента\",\"settings\":{\"id\":\"f1772c06-1d4f-47fb-8516-747bed27fe00\",\"codetemplate\":\"<div style={{height:'100%', overflowY:'auto'}}>\\n    <MetadataForms.DataManager\\n        metaOwner={'[[ metaOwner ]]'} \\n        options={[[ options | encodejson ]]}>\\n        <MetadataForms.Container>\\n            <MetadataForms.InputsList>\\n                {this.renderFieldList()}\\n                {this.renderTabularParts()}\\n            </MetadataForms.InputsList>\\n            <MetadataForms.ControlsPanel align=\\\"Справа\\\">\\n                <MetadataForms.Buttons.SaveButton/>\\n                <MetadataForms.Buttons.CloseButton/>\\n                <MetadataForms.Buttons.SaveAndCloseButton/>\\n            </MetadataForms.ControlsPanel>\\n        </MetadataForms.Container>\\n    </MetadataForms.DataManager>\\n</div>\",\"codeclient\":\"const renderFieldList = async () => {\\n    const fieldsList = this.fieldsList;\\n    \\n    if (!fieldsList || !fieldsList.length) {\\n        return <></>; \\n    }\\n    \\n    return fieldsList.map((item) => (\\n        <MetadataForms.MetaInput name={item} key={item}/>\\n    ));\\n}\\n\\nconst renderTabularParts = async () => {\\n    const tabularList = this.tabularPartList;\\n    \\n    if (!tabularList || !tabularList.length) {\\n        return <></>;\\n    }\\n    \\n    return (\\n    <MetadataForms.Tabs>\\n       {tabularList.map((item) => (\\n            <MetadataForms.Tab \\n                label={item} \\n                key={item}\\n            >\\n                <MetadataForms.TabularPart \\n                    name={item}\\n                    key={item}\\n                    buttons={[\\n                        <MetadataForms.Buttons.AddRowButton name={\\\"AddRow\\\"}/>,\\n                        <MetadataForms.Buttons.DeleteRowButton name={\\\"DeleteRow\\\"}/>,\\n                        <MetadataForms.Buttons.CopyRowButton name={\\\"CopyRow\\\"}/>,\\n                        <MetadataForms.Buttons.MoveRowButtons name={\\\"MoveRow\\\"}/>\\n                    ]}\\n                />\\n            </MetadataForms.Tab>\\n       ))}\\n    </MetadataForms.Tabs>\\n    )\\n}\",\"codeserver\":\"\",\"linkTemplate\":\"\"},\"events\":{}}",
+                    "rank": 0
+                }
+            ]
+        }
+    ]
+}

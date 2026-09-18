@@ -1,0 +1,35 @@
+{
+    "name": "code-manager",
+    "version": "1.5.1",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль **code-manager** предоставляет функциональность для управления подпрограммами (кодовыми блоками), включая их создание, обновление, удаление и выполнение. Он поддерживает иерархическую структуру данных через родительские связи между элементами кода и обеспечивает права доступа для различных операций над подпрограммами. Модуль также включает логику выполнения пользовательского кода в изолированном контексте виртуальной машины Node.js.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "sequelize": "^6.26.0"
+    },
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-access": "^1.5.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "routes": {
+        "/code": {
+            "router": "code.router.js"
+        }
+    }
+}

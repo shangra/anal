@@ -1,0 +1,81 @@
+this.state.test > 15
+    ? React.createElement(
+          React.Fragment,
+          null,
+          React.createElement(HeaderCMP, {
+              jsonFileName: '/dynpage/settings/main.json',
+          }),
+          React.createElement(
+              'div',
+              {
+                  className: 'DesktopContainer',
+              },
+              React.createElement(
+                  'div',
+                  {
+                      className: 'row pb-2 ms-2 me-2',
+                  },
+                  React.createElement(
+                      MetadataPivot,
+                      {
+                          infoserviceId: 'c8aaab58-9f7e-498d-b614-582e9af1c12e',
+                      },
+                      React.createElement(
+                          'div',
+                          {
+                              className: 'pb-2 d-flex align-items-center flex-column col-md-12 p-0',
+                          },
+                          React.createElement(
+                              'div',
+                              {
+                                  className: 'row ColoredBlocks mt-0 w-100',
+                                  style: {
+                                      minHeight: '85px',
+                                      padding: '5px',
+                                  },
+                              },
+                              React.createElement(
+                                  'div',
+                                  {
+                                      className: 'col-3',
+                                  },
+                                  React.createElement(PivotMenu.RoundingColumns, null),
+                              ),
+                              React.createElement(
+                                  'div',
+                                  {
+                                      className: 'col-8',
+                                  },
+                                  React.createElement(
+                                      'div',
+                                      {
+                                          className: 'flex flex-row px-2',
+                                      },
+                                      React.createElement(StyleEditorCMP, {
+                                          onChange: this.onChangeStyleOptions,
+                                          styleOptions: this.state.currentStyleOptions,
+                                      }),
+                                  ),
+                              ),
+                              React.createElement(
+                                  'div',
+                                  {
+                                      className: 'col-1 flex flex-row-reverse',
+                                  },
+                                  React.createElement(PivotMenu.MenuIcon, null),
+                              ),
+                          ),
+                      ),
+                      React.createElement(PivotTable, {
+                          styleEditorOptions: this.state.styleEditorOptions,
+                          setStyleEditorOptions: this.setStyleEditorOptions,
+                          className: 'd-flex align-items-center flex-column col-md-12 p-0',
+                          placeholder: 'ui.SberCat',
+                          enableDownload: true,
+                          bottomSummary: [{}],
+                      }),
+                  ),
+              ),
+          ),
+      )
+    : React.createElement(TEST, null);

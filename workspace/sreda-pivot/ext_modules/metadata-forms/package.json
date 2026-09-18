@@ -1,0 +1,41 @@
+{
+    "name": "metadata-forms",
+    "version": "1.5.5",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль **metadata-forms** предназначен для управления метаданными формами внутри системы NodeCMS. Он предоставляет функционал для создания, чтения, обновления и удаления форм через REST API, а также поддерживает визуализацию форм с помощью шаблонов и скриптов. Дополнительно он обеспечивает проверку доступа к формам и аутентификацию пользователей перед выполнением операций.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-access": "^1.5.0",
+        "middleware-rest-check-auth": "^1.5.0",
+        "metadata-cmp": "^1.5.4",
+        "wrapper": "1.5.5"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "MetadataService.getClassesMetadata.after": {
+            "class": "/services/Forms.service.js",
+            "function": "getClassesMetadata"
+        }
+    },
+    "routes": {
+        "/metadata/formsmetadata": {
+            "router": "Forms.router.js"
+        }
+    }
+}

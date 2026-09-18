@@ -1,0 +1,31 @@
+.errorModalContent {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    color: var(--main-active-color);
+    gap: 20px;
+}
+
+.mainContentInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-left: 65px;
+}
+
+.errorModalControllers {
+    display: inline-flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.errorModalAdditionalInfo {
+    max-width: 360px;
+    overflow: hidden auto;
+    max-height: 220px;
+    word-break: break-word;
+    display: block;
+    color: var(--main-active-color);
+}

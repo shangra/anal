@@ -1,0 +1,60 @@
+.sidebarTab {
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    box-sizing: content-box;
+    transition: 0.15s all ease-in-out;
+    white-space: nowrap;
+    overflow: hidden;
+    border-radius: var(--ui-kit-spacing-2);
+    background-color: var(--ui-kit-colors-background-control);
+}
+
+.sidebarTabTitle {
+    overflow: hidden;
+    white-space: nowrap;
+    padding-inline: var(--ui-kit-spacing-4);
+    text-overflow: ellipsis;
+}
+
+.activeSidebarTab {
+    background-color: var(--ui-kit-colors-background-highlighted);
+}
+
+.sidebarTabRight, .sidebarTabLeft {
+    writing-mode: vertical-lr;
+    padding-inline: var(--ui-kit-spacing-4);
+    padding-block: var(--ui-kit-spacing-2);
+}
+
+.sidebarTabRight .sidebarTabTitle, .sidebarTabLeft .sidebarTabTitle { 
+    height: 150px;
+}
+
+.sidebarTabBottom {
+    padding-block: var(--ui-kit-spacing-4);
+    padding-inline: var(--ui-kit-spacing-2);
+}
+
+.sidebarTabBottom .sidebarTabTitle { 
+    width: 150px;
+}
+
+.sidebarTabIcons {
+    display: flex;
+    gap: 8px;
+}
+
+.sidebarTabIcon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebarTabIcon svg {
+    width: 16px;
+    height: 16px;
+}

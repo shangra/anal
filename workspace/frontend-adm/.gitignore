@@ -1,0 +1,27 @@
+node_modules
+.idea
+.gigaide
+.npmrc
+.env
+*.log
+
+# Generated files for templates
+/src/components/index.js
+/src/components/constants.js
+/src/components/utilities.js
+/src/components/rootComponents.js
+
+# Module Federation directories
+/*build*
+/*build*/**
+@mf-types/
+
+# test 
+/coverage
+/reports
+/junit.xml
+
+
+.gigacode
+
+# not admin-panel ext_modules

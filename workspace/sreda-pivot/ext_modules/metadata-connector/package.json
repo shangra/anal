@@ -1,0 +1,48 @@
+{
+    "name": "metadata-connector",
+    "version": "1.5.9",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `metadata-connector` предоставляет функциональность для управления соединениями с внешними источниками данных в приложении NodeCMS. Он позволяет создавать, редактировать и удалять такие соединения, обеспечивая при этом безопасное хранение паролей через шифрование. Кроме того, модуль поддерживает проверку состояния подключений и интеграцию с системой контроля доступа.",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache --forceExit -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "express-validator": "^6.14.0"
+    },
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-access": "^1.5.0",
+        "middleware-rest-check-auth": "^1.5.0",
+        "middleware-rest-validate": "^1.5.0",
+        "query-builder": "^1.0.0",
+        "metadata-cmp": "^1.5.4",
+        "utils": "^1.5.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "MetadataService.getClassesMetadata.after": {
+            "class": "/services/Connectors.service.js",
+            "function": "getClassesMetadata"
+        }
+    },
+    "routes": {
+        "/metadata/connectors": {
+            "router": "Connectors.router.js"
+        }
+    }
+}

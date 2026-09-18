@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-kit-date-picker-years-gap);
+  width: var(--ui-kit-date-picker-months-main-container-width);
+  height: var(--ui-kit-date-picker-year-main-container-height);
+  overflow-y: auto;
+}
+
+.years-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 1px;
+  overflow-y: auto;
+}
+
+.year-container {
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: content-box;
+  width: var(--ui-kit-date-picker-year-container-width);
+  flex-grow: 0;
+}
+
+.header {
+  width: 100%;
+  margin-bottom: 12px;
+}

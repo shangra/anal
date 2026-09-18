@@ -1,0 +1,16 @@
+.container {
+  width: var(--ui-kit-date-picker-months-main-container-width);
+  height: var(--ui-kit-date-picker-months-main-container-height);
+}
+
+.months-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(auto, 1fr);
+  gap: var(--ui-kit-date-picker-months-horizontal-gap) var(--ui-kit-date-picker-months-vertical-gap);
+  justify-items: center;
+}
+
+.month-name {
+  text-transform: capitalize;
+}

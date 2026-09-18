@@ -1,0 +1,42 @@
+{
+    "name": "connector-postgres",
+    "version": "1.0.3",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `connector-postgres` предоставляет возможность интегрировать базу данных PostgreSQL в NodeCMS путем реализации стандартного интерфейса подключаемых модулей-коннекторов. Он включает класс `ConnectorPostgres`, который содержит методы для загрузки драйвера PostgreSQL (`loadConnectorsBefore`) и настройки отображения типов баз данных в пользовательском интерфейсе (`formAfter`). Основной функционал взаимодействия с базой данных реализован в классе `Postgres`, наследующемся от абстрактного класса коннектора и обеспечивающем подключение к базе данных, выборку записей, обновление, удаление и другие операции CRUD, а также синхронизацию схемы таблиц и создание индексов.",
+    "main": "",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "pg": "^8.15.6",
+        "dayjs": "^1.11.13",
+        "sequelize": "^6.26.0"
+    },
+    "dependenciesNodeCMS": {
+        "metadata-connector": "^1.6.0",
+        "postgres-ext-query-builder": "^1.0.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "ConnectorClass.loadConnectors.before": {
+            "class": "/services/ConnectorPostgres.service.js",
+            "function": "loadConnectorsBefore"
+        },
+        "ConnectorsService.form.after": {
+            "class": "/services/ConnectorPostgres.service.js",
+            "function": "formAfter"
+        }
+    }
+}

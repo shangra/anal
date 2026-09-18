@@ -1,0 +1,56 @@
+{
+    "name": "rls-ext-metadata",
+    "version": "1.5.2",
+    "enabled": true,
+    "dependencies": {},
+    "routes": {
+        "/rls": {
+            "router": "RlsExtMetadata.router.js"
+        }
+    },
+    "extensions": {
+        "MetadataService.setMetadata.after": {
+            "class": "/services/RlsExtMetadata.service.js",
+            "function": "createMetadataAfter"
+        },
+        "MetadataService.setMetadata.before": {
+            "class": "/services/RlsExtMetadata.service.js",
+            "function": "addMetadataBefore"
+        },
+        "RlsCoreService.getChildrenNested.before": {
+            "class": "/services/RlsExtMetadata.service.js",
+            "function": "extendChildrenGetter"
+        },
+        "RlsCoreService.addPermissions.before": {
+            "class": "/services/RlsExtMetadata.service.js",
+            "function": "setMapping"
+        },
+        "RlsCoreService.delPermissions.before": {
+            "class": "/services/RlsExtMetadata.service.js",
+            "function": "setMapping"
+        },
+        "RlsCoreService.getPermissions.before": {
+            "class": "/services/RlsExtMetadata.service.js",
+            "function": "setMapping"
+        },
+        "RlsCoreService.delParentPermissionsNested.before": {
+            "class": "/services/RlsExtMetadata.service.js",
+            "function": "setMapping"
+        },
+        "RlsCoreService.addParentPermissionsNested.before": {
+            "class": "/services/RlsExtMetadata.service.js",
+            "function": "setMapping"
+        },
+        "RlsCoreService.getAccessStatus.before": {
+            "class": "/services/RlsExtMetadata.service.js",
+            "function": "setMapping"
+        }
+    },
+    "typeSBR": "NodeCMS",
+    "dependenciesNodeCMS": {
+        "metadata-cmp": "^1.5.4",
+        "rls-core": "^1.5.27",
+        "middleware-rest-check-access": "^1.5.0"
+    },
+    "description": "Модуль `rls-ext-metadata` предоставляет расширения функциона системы управления правами доступа (`RLS`) к метаданным данным приложения NodeCMS. Он добавляет проверку прав пользователей перед операциями с метаданными данными и обеспечивает автоматическое добавление родительских разрешений при создании новых объектов метаданных данных. Также он изменяет поведение стандартного метода восстановления после загрузки данных модели `Metadata`, чтобы автоматически добавлять разрешения владельца."
+}

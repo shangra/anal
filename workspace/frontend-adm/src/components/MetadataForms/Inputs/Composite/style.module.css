@@ -1,0 +1,6 @@
+.compositeInputWrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    min-width: 200px;
+    width: 100%;
+}

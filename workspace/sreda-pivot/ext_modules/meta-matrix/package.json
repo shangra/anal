@@ -1,0 +1,50 @@
+{
+    "name": "meta-matrix",
+    "version": "1.0.1",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль **meta-matrix** является частью системы управления контентом (NodeCMS) и отвечает за работу с метаданными элементов контента. Он предоставляет интерфейс для получения информации о типах данных и их структуре через RESTful API. Модуль содержит логику обработки запросов: маршрутизацию API-запросов, бизнес-логику для работы с данными и предоставление результатов клиенту.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "metadata-cmp": "^1.5.4"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "UsersService.form.after": {
+            "class": "/services/metaMatrix.service.js",
+            "function": "formAfter"
+        },
+        "GroupsService.form.after": {
+            "class": "/services/metaMatrix.service.js",
+            "function": "formAfter"
+        },
+        "RolesService.form.after": {
+            "class": "/services/metaMatrix.service.js",
+            "function": "formAfter"
+        },
+        "RulesService.form.after": {
+            "class": "/services/metaMatrix.service.js",
+            "function": "formAfter"
+        }
+    },
+    "routes": {
+        "/metadata/metamatrix": {
+            "router": "metaMatrix.router.js"
+        }
+    }
+}

@@ -1,0 +1,73 @@
+{
+    "name": "memorysave-metadata",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль memorysave-metadata предоставляет функциональность для кэширования метаданных объектов системы NodeCMS. Он позволяет очищать кэш метаданных вручную или автоматически при изменении данных. Модуль также добавляет кнопки очистки кеша в интерфейс администратора.",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-access": "^1.5.0",
+        "metadata-cmp": "^1.5.4",
+        "metadata-infoservice": "^1.5.5",
+        "utils": "^1.5.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "ReadClass.getData.decorate": {
+            "class": "/services/MemorySaveMetadata.service.js",
+            "function": "getDataDecorate"
+        },
+        "ReadClass.countData.decorate": {
+            "class": "/services/MemorySaveMetadata.service.js",
+            "function": "countDataDecorate"
+        },
+        "InfoserviceClass.read.decorate": {
+            "class": "/services/MemorySaveMetadata.service.js",
+            "function": "read"
+        },
+        "InfoServiceFlatGuidClass.read.decorate": {
+            "class": "/services/MemorySaveMetadata.service.js",
+            "function": "read"
+        },
+        "InfoServiceGuideClass.read.decorate": {
+            "class": "/services/MemorySaveMetadata.service.js",
+            "function": "read"
+        },
+        "InfoserviceService.form.after": {
+            "class": "/services/MemorySaveMetadata.service.js",
+            "function": "formAfter"
+        },
+        "InfoserviceGuideService.form.after": {
+            "class": "/services/MemorySaveMetadata.service.js",
+            "function": "formAfter"
+        },
+        "InfoserviceFlatGuideService.form.after": {
+            "class": "/services/MemorySaveMetadata.service.js",
+            "function": "formAfter"
+        },
+        "CubesService.form.after": {
+            "class": "/services/MemorySaveMetadata.service.js",
+            "function": "withRefsFormAfter"
+        },
+        "ReportsService.form.after": {
+            "class": "/services/MemorySaveMetadata.service.js",
+            "function": "withRefsFormAfter"
+        }
+    },
+    "routes": {
+        "/metadata/cachedmetadata": {
+            "router": "MemorySaveMetadata.router.js"
+        }
+    }
+}

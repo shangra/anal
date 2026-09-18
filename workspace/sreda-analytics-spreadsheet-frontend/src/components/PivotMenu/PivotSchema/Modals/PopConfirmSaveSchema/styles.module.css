@@ -1,0 +1,7 @@
+.custom-popover-class div:nth-child(1) {
+    overflow: hidden;
+}
+
+.custom-popover-class svg {
+    vertical-align: text-top;
+}

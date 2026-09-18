@@ -1,0 +1,30 @@
+{
+    "name": "rest-express",
+    "version": "1.5.1",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `rest-express` предоставляет обертку над библиотекой Express для упрощения работы с REST API в проекте NodeCMS. Он включает базовые настройки сервера Express, такие как журналирование запросов (`logger`), обработку форм данных (`urlencoded`, `json`) и статических файлов (`static`). Также добавляет встроенную поддержку валидации запросов через middleware с использованием библиотеки `express-validator`.",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "homepage": "",
+    "dependencies": {
+        "express": "^4.21.2",
+        "cookie-parser": "^1.4.6",
+        "morgan": "^1.10.0",
+        "express-validator": "^6.14.0"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "platform": {
+        "restmodule": "rest-express"
+    }
+}

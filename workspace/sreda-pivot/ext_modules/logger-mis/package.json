@@ -1,0 +1,16 @@
+{
+    "name": "logger-mis",
+    "version": "1.5.4",
+    "enabled": true,
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "dependencies": {},
+    "extensions": {},
+    "typeSBR": "NodeCMS",
+    "dependenciesNodeCMS": {},
+    "description": "Модуль `logger-mis` предназначен для ведения логов запросов и ответов HTTP-сервера NodeCMS версии 1.5.4. Он сохраняет информацию о запросах и ответах пользователя в файле журнала (`http.log`), включая метаданные сессии, заголовки запросов и ответы сервера, а также данные об используемых виджетах и темах интерфейса. Модуль активируется только при включенной переменной окружения `WRITE_HTTP_LOG`."
+}

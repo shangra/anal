@@ -1,0 +1,15 @@
+{
+    "verbose": true,
+    "silent": false,
+    "moduleNameMapper": {
+        "axios": "axios/dist/node/axios.cjs"
+    },
+    "testResultsProcessor": "jest-sonar-reporter",
+    "testEnvironment": "node",
+    "passWithNoTests": true,
+    "detectOpenHandles": true,
+    "setupFilesAfterEnv": [
+        "./tests/setup"
+    ],
+    "globalTeardown": "./tests/global-teardown"
+}

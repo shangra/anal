@@ -1,0 +1,17 @@
+{
+    "name": "postgres-ext-query-builder",
+    "version": "0.1.1",
+    "description": "Модуль `postgres-ext-query-builder` расширяет стандартные возможности построения SQL-запросов, предоставляя дополнительные функции для работы с базой данных PostgreSQL версий 14+. Он поддерживает специфические особенности PostgreSQL, включая рекурсивные общие табличные выражения (CTE), создание материализованных представлений, работу с типами данных и генерацию оптимизационных подсказок через расширение `pg_hint_plan`. Модуль упрощает разработку сложных запросов к базе данных за счет интеграции всех этих функций в единый инструментальный набор.",
+    "main": "index.js",
+    "license": "UNLICENSED",
+    "typeSBR": "NodeCMS",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --coverage --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "dependencies": {
+        "query-builder": "^1.0.0"
+    }
+}

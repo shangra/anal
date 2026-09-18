@@ -1,0 +1,30 @@
+{
+    "name": "metadata-logic",
+    "version": "1.5.1",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `metadata-logic` предоставляет логику для работы с метаданными системы NodeCMS версии 1.5.1. Он включает класс `LogicClass`, который отвечает за обработку опций и проверку количества данных перед запросом информации из инфосервисов, а также класс `RefsClass`, предназначенный для обработки ссылок между объектами, включая чтение данных связанных объектов и формирование структуры этих связей. Модуль обеспечивает механизмы оптимизации запросов через кэширование результатов в памяти и поддержку сложных операций чтения иерархических данных и их полей.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "metadata-cmp": "^1.5.4",
+        "utils": "^1.5.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "routes": {}
+}

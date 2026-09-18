@@ -1,0 +1,31 @@
+{
+    "name": "metadata-users",
+    "version": "1.5.6",
+    "typeSBR": "NodeCMS",
+    "description": "Модуль `metadata-users` отвечает за хранение и управление информацией о пользователях в системе NodeCMS версии 1.5.1. Он позволяет создавать объекты пользователей с уникальными атрибутами (идентификатором, логином, статусом аккаунта и именем), а также предоставляет возможность добавления массива дополнительных характеристик к каждому пользователю. Этот модуль является основой для аутентификации и авторизации пользователей внутри системы.",
+    "dependencies": {},
+    "scripts": {
+        "test": "jest --config ../../jest.config.json"
+    },
+    "dependenciesNodeCMS": {
+        "metadata-cmp": "^1.5.4",
+        "auth": "^1.5.0",
+        "metadata-forms": "^1.5.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "MetadataService.getClassesMetadata.after": {
+            "class": "/services/Users.service.js",
+            "function": "getClassesMetadata"
+        },
+        "MetadataService.getTreeChildrenV3.after": {
+            "class": "/services/Users.service.js",
+            "function": "getTreeChildrenV3"
+        }
+    },
+    "routes": {
+        "/metadata/users": {
+            "router": "Users.router.js"
+        }
+    }
+}

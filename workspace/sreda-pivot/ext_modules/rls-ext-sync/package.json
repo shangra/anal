@@ -1,0 +1,64 @@
+{
+    "name": "rls-ext-sync",
+    "version": "1.5.2",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `rls-ext-sync` предназначен для управления правами доступа к данным (RLS — Row Level Security) в проекте NodeCMS. Он синхронизирует настройки прав доступа при изменении метаданных таблиц или документов, а также добавляет соответствующие поля формы для включения RLS. Кроме того, он создает представления базы данных для хранения иерархических связей между элементами метаданных.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "metadata-connector": "^1.5.3",
+        "metadata-cmp": "^1.5.4",
+        "rls-core": "^1.5.27"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "DocumentsClass.synch.after": {
+            "class": "/services/RlsExtSync.service.js",
+            "function": "syncAfter"
+        },
+        "DocumentsService.form.after": {
+            "class": "/services/RlsExtSync.service.js",
+            "function": "formAfter"
+        },
+        "DocumentsService.read.before": {
+            "class": "/services/RlsExtSync.service.js",
+            "function": "readBefore"
+        },
+        "GuideService.form.after": {
+            "class": "/services/RlsExtSync.service.js",
+            "function": "formAfter"
+        },
+        "GuideClass.synch.after": {
+            "class": "/services/RlsExtSync.service.js",
+            "function": "syncAfter"
+        },
+        "GuideClass.read.before": {
+            "class": "/services/RlsExtSync.service.js",
+            "function": "readBefore"
+        },
+        "TableService.form.after": {
+            "class": "/services/RlsExtSync.service.js",
+            "function": "formAfter"
+        },
+        "TableService.synch.after": {
+            "class": "/services/RlsExtSync.service.js",
+            "function": "syncAfter"
+        },
+        "TableService.read.before": {
+            "class": "/services/RlsExtSync.service.js",
+            "function": "readBefore"
+        },
+        "metaSynhDbmodelService.drop.before": {
+            "class": "/services/RlsExtSync.service.js",
+            "function": "dropBefore"
+        }
+    }
+}

@@ -1,0 +1,17 @@
+FROM --platform=linux/amd64 base.registry-ci.delta.sbrf.ru/base/docker.io/node:22.10-alpine3.19
+
+ARG PORT=3000
+ENV PORT=${PORT}
+
+WORKDIR /app
+
+COPY . .
+
+RUN --mount=type=ssh --mount=type=secret,id=npmrc,dst=/root/.npmrc \
+    npm cache clean --force; \
+    npm install --global cross-env; \
+    npm ci --legacy-peer-deps
+
+EXPOSE ${PORT}
+
+CMD ["npm", "run", "start"]

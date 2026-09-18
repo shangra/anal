@@ -1,0 +1,19 @@
+{
+    "name": "middleware-rest-check-access",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `middleware-rest-check-access` реализует промежуточное ПО для проверки доступа пользователей к REST API на основе заданных правил доступа. Он принимает массив строковых идентификаторов прав доступа и необязательный флаг `oneOf`, определяющий логику проверки (`все права должны быть разрешены` или `хотя бы одно право должно быть разрешено`). Если пользователь не имеет достаточных разрешений, вызывается обработчик ошибки с сообщением об ограничении доступа.",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {}
+}

@@ -1,0 +1,93 @@
+module.exports = {
+    up: async (queryInterface, Sequelize) => {
+        // URule - правила доступа
+        await queryInterface.bulkInsert(
+            {
+                tableName: 'URule',
+                schema: process.env.DB_SCHEMA,
+            },
+            [
+                {
+                    id: '6ca8cd55-d548-4a5c-ba0f-be34d01f8072',
+                    markdel: 0,
+                    name: 'UpdateSelfMetadata',
+                    details: 'Доступ к записи только своих метаданных',
+                    createdUser: 'cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4',
+                    updatedUser: 'cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4',
+                },
+                {
+                    id: 'ecb07a38-d00c-4093-ba31-1dafde72fd00',
+                    markdel: 0,
+                    name: 'MetadataRead',
+                    details: 'Чтение метаданных ',
+                    createdUser: 'cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4',
+                    updatedUser: 'cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4',
+                },
+                {
+                    id: '232a43fb-ed52-414e-8562-75a814a1e8d1',
+                    markdel: 0,
+                    name: 'MetadataWrite',
+                    details: 'Редактирование метаданных',
+                    createdUser: 'cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4',
+                    updatedUser: 'cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4',
+                },
+                {
+                    id: '2158f2d9-d42b-4860-b4c2-a5f60e3d434d',
+                    markdel: 0,
+                    name: 'MetadataAccessRead',
+                    details: 'Просмотр доступа к метаданным',
+                    createdUser: 'cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4',
+                    updatedUser: 'cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4',
+                },
+                {
+                    id: 'b5397f7f-94a2-4780-8aec-d899105bc6bf',
+                    markdel: 0,
+                    name: 'MetadataAccessWrite',
+                    details: 'Редактирование доступа к метаданным',
+                    createdUser: 'cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4',
+                    updatedUser: 'cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4',
+                },
+                {
+                    id: '0e4a560f-b60e-445a-9f52-db1c7250d910',
+                    markdel: 0,
+                    name: 'MetadataDataWrite',
+                    details: 'Редактирование данных на основе метаданных',
+                    createdUser: 'cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4',
+                    updatedUser: 'cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4',
+                },
+                {
+                    id: '4a1ab32e-109a-43f7-bdae-8710dacc8c72',
+                    markdel: 0,
+                    name: 'MetadataDataRead',
+                    details: 'Чтение данных на основе метаданных',
+                    createdUser: 'cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4',
+                    updatedUser: 'cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4',
+                },
+            ],
+            {},
+        );
+    },
+
+    down: async (queryInterface, Sequelize) => {
+        await queryInterface.bulkDelete(
+            {
+                tableName: 'URule',
+                schema: process.env.DB_SCHEMA,
+            },
+            null,
+            {
+                where: {
+                    id: [
+                        '6ca8cd55-d548-4a5c-ba0f-be34d01f8072',
+                        'ecb07a38-d00c-4093-ba31-1dafde72fd00',
+                        '232a43fb-ed52-414e-8562-75a814a1e8d1',
+                        '2158f2d9-d42b-4860-b4c2-a5f60e3d434d',
+                        'b5397f7f-94a2-4780-8aec-d899105bc6bf',
+                        '0e4a560f-b60e-445a-9f52-db1c7250d910',
+                        '4a1ab32e-109a-43f7-bdae-8710dacc8c72',
+                    ],
+                },
+            },
+        );
+    },
+};

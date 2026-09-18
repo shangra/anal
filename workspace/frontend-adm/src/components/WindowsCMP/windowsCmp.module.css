@@ -1,0 +1,104 @@
+@import './theme.module.css';
+
+.contentWindows {
+    flex: 1;
+    min-height: 0;
+    height: auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.window {
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    top: 70px;
+    width: 600px;
+    min-height: 350px;
+    position: absolute;
+    max-height: min(calc(100vh - 48px), 3000px);
+    background: var(--second-bg-color, #2a2f3e);
+    border: 1px solid black;
+    resize: both;
+    overflow: hidden;
+    border-top-left-radius: var(--window-border-radius);
+    border-top-right-radius: var(--window-border-radius);
+}
+
+.windowHeaderWrapper {
+    display: flex;
+    min-width: 0;
+    width: 100%;
+}
+
+.windowHeader {
+    padding: 16px;
+    background-color: var(--window-background-color);
+    width: 100%;
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+}
+
+.windowHeader>div {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+}
+
+.windowHeaderTitle {
+    color: var(--window-header-title-color) !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+}
+
+.windowHeaderBtns {
+    background-color: var(--window-background-color);
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+    white-space: nowrap;
+}
+
+.windowSystemContainer {
+    position: fixed;
+    top: 60px;
+    left: 30px;
+    bottom: 0;
+    height: 100%;
+}
+
+.windowSystemContainerLeft {
+    top: 60px;
+    left: 30px;
+    bottom: 0;
+    height: 100%;
+}
+
+.windowSystemContainerRight {
+    top: 60px;
+    right: 0;
+    bottom: 0;
+}
+
+.windowSystemContainerBottom {
+    left: 30px;
+    right: 0;
+    bottom: 0;
+}
+
+.windowSystemContent {
+    position: relative;
+    height: 100%;
+}

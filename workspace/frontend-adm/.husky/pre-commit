@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+case "$branch" in
+    SRDMDLTKLN*)
+        npm run prettier && npm run eslint && git add -A
+        ;;
+esac

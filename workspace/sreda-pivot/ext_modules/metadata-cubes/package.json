@@ -1,0 +1,73 @@
+{
+    "name": "metadata-cubes",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --coverage --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-access": "^1.5.0",
+        "metadata-cmp": "^1.5.4",
+        "utils": "^1.0.0",
+        "metadata-infoservice": "^1.5.0",
+        "meta-aggregate-calc-field": "^1.0.0",
+        "metadata-cubes-query": "^1.5.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "MetadataService.getClassesMetadata.after": {
+            "class": "/services/Cubes.service.js",
+            "function": "getClassesMetadata"
+        }
+    },
+    "routes": {
+        "/metadata/cubes/measures/aggregations": {
+            "router": "MeasuresAggregations.router.js"
+        },
+        "/metadata/cubes/fields/aggregations": {
+            "router": "FieldsAggregations.router.js"
+        },
+        "/metadata/cubes/infoservices": {
+            "router": "Infoservices.router.js"
+        },
+        "/metadata/cubes/fields": {
+            "router": "Fields.router.js"
+        },
+        "/metadata/cubes/measures": {
+            "router": "Measures.router.js"
+        },
+        "/metadata/cubes/dimensions": {
+            "router": "Dimensions.router.js"
+        },
+        "/metadata/cubes/fieldslist": {
+            "router": "FieldsList.router.js"
+        },
+        "/metadata/cubes/fizfieldslist": {
+            "router": "FizFieldsList.router.js"
+        },
+        "/metadata/cubes/infoserviselist": {
+            "router": "InfoserviseList.router.js"
+        },
+        "/metadata/cubes/binds": {
+            "router": "Binds.router.js"
+        },
+        "/metadata/cubes": {
+            "router": "Cubes.router.js"
+        }
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "current": [
+        {
+            "URole": [
+                {
+                    "id": "43106426-ffe3-4e1d-b623-6d210c6be0ff",
+                    "code": 1,
+                    "markdel": 0,
+                    "name": "SU",
+                    "color": "",
+                    "details": "SU",
+                    "updatedAt": "2022-07-22T12:07:42.313Z",
+                    "createdAt": "2022-07-22T12:07:42.313Z",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                }
+            ]
+        }
+    ]
+}

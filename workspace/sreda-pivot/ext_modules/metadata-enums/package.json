@@ -1,0 +1,42 @@
+{
+    "name": "metadata-enums",
+    "version": "1.5.2",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `metadata-enums` предназначен для управления перечисляемыми типами данных (`перечислениями`) и их значениями в системе NodeCMS. Он предоставляет API для создания, чтения, обновления и удаления этих перечислений, а также обеспечивает доступ к связанным значениям через соответствующие маршруты REST API. Модуль использует сервисные классы и контроллеры для обработки запросов и взаимодействия с базой данных.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-access": "^1.5.0",
+        "metadata-cmp": "^1.5.4"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "MetadataService.getClassesMetadata.after": {
+            "class": "/services/Enums.service.js",
+            "function": "getClassesMetadata"
+        }
+    },
+    "routes": {
+        "/metadata/enums/values": {
+            "router": "Values.router.js"
+        },
+        "/metadata/enums": {
+            "router": "Enums.router.js"
+        }
+    }
+}

@@ -1,0 +1,61 @@
+.activeWindowPanelWrapper {
+    position: fixed;
+}
+
+.activeWindowPanel {
+    width: 100%;
+    height: 100%;
+    background-color: var(--second-bg-color);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.activeWindowPanelBody {
+    height: calc(100% - 40px);
+    overflow: auto;
+}
+
+.activeWindowPanelWrapperLeft {
+    left: 48px;
+    top: 0;
+    bottom: 0;
+    -webkit-box-shadow: 5px 0 10px 2px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 5px 0 10px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: 5px 0 10px 2px rgba(0, 0, 0, 0.15);
+}
+
+.activeWindowPanelWrapperRight {
+    right: 48px;
+    top: 0;
+    bottom: 0;
+    -webkit-box-shadow: -5px 0 10px 2px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: -5px 0 10px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: -5px 0 10px 2px rgba(0, 0, 0, 0.15);
+}
+
+.activeWindowPanelWrapperBottom {
+    left: 0;
+    right: 0;
+    bottom: 48px;
+    z-index: 11;
+    -webkit-box-shadow: 0 -5px 10px 2px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0 -5px 10px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 -5px 10px 2px rgba(0, 0, 0, 0.15);
+}
+
+.activeWindowPanelWrapperHidden {
+    display: none;
+}
+
+.activeWindowPanelHidden {
+    display: none;
+}
+
+.activeWindowPanelHeader {
+    background-color: var(--tile-bg-color-op);
+    display: flex;
+    justify-content: flex-end;
+    padding: 6px 12px;
+    gap: 6px;
+}

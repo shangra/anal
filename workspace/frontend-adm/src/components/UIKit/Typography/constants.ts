@@ -1,0 +1,5 @@
+export {
+    TYPOGRAPHY_COLOR,
+    TYPOGRAPHY_VARIANT,
+    TYPOGRAPHY_WEIGHT
+} from 'ui-kit'

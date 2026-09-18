@@ -1,0 +1,94 @@
+{
+    "current": [
+        {
+            "RoleRules": [
+                {
+                    "id": "4c0f1d55-1b73-4bdd-a5b8-d06ae3840a33",
+                    "role_id": "43106426-ffe3-4e1d-b623-6d210c6be0ff",
+                    "rule_id": "90499885-ae60-440b-a59f-cfd3958110cd",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "dcc94d59-8d08-40c7-90ba-adf7d42fc511",
+                    "role_id": "43106426-ffe3-4e1d-b623-6d210c6be0ff",
+                    "rule_id": "09d683ab-8ff0-43a9-ba16-2c68bf3bc9c6", 
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "ac57673e-35aa-43f2-9d6a-498eb2595dec",
+                    "role_id": "43106426-ffe3-4e1d-b623-6d210c6be0ff",
+                    "rule_id": "ef75e99b-51dd-47a5-914d-9b6d1df3cc20", 
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "e5b8a9aa-38ad-44d0-b920-d6a182876b95",
+                    "role_id": "43106426-ffe3-4e1d-b623-6d210c6be0ff",
+                    "rule_id": "396c8ea0-7181-45e5-bb55-90916cab5cd4",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "bb6687d4-69c8-44cf-81f5-b24702818950",
+                    "role_id": "43106426-ffe3-4e1d-b623-6d210c6be0ff",
+                    "rule_id": "12e32c9d-6e4f-4d57-ae22-5cddaabf343c",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "6493163d-dc67-4324-89f6-16fb330284aa",
+                    "role_id": "43106426-ffe3-4e1d-b623-6d210c6be0ff",
+                    "rule_id": "d5193eee-7426-4ce9-87c3-4268cc88a274",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+
+                {
+                    "id": "1aea04ad-27b5-40ae-9045-175e1c5e871c",
+                    "role_id": "43106426-ffe3-4e1d-b623-6d210c6be0ff",
+                    "rule_id": "178741de-ba31-48a0-b2ee-cca297a5c763",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "9c9337f3-8a96-42fa-a2a9-3ae4ab2ffc39",
+                    "role_id": "43106426-ffe3-4e1d-b623-6d210c6be0ff",
+                    "rule_id": "1bff8bf4-cffd-464f-a650-6112b89da4b6",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "56bc6e99-d868-4fa2-a3b4-0eb488da34aa",
+                    "role_id": "43106426-ffe3-4e1d-b623-6d210c6be0ff",
+                    "rule_id": "1c313772-27bc-4404-bbab-d3e9bae83657",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "c3e65c6a-a59a-48f6-92f2-322eb9119930",
+                    "role_id": "43106426-ffe3-4e1d-b623-6d210c6be0ff",
+                    "rule_id": "220ba56c-f6fd-422e-9352-2040eb0dc804",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+
+                {
+                    "id": "ceecd331-26f6-44d9-bb95-2cbb7ac431b5",
+                    "role_id": "43106426-ffe3-4e1d-b623-6d210c6be0ff",
+                    "rule_id": "fdf02195-d597-42d8-86da-8b4343cd6bfc",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                },
+                {
+                    "id": "98f55dec-996f-4769-9f78-099969d2669f",
+                    "role_id": "43106426-ffe3-4e1d-b623-6d210c6be0ff",
+                    "rule_id": "6b11cc95-0637-4dfa-8698-c2763bca91fa",
+                    "createdUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4",
+                    "updatedUser": "cba95ae9-1740-4dd7-8d6e-e9ce168f3ee4"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+{
+    "name": "user-device",
+    "version": "1.5.3",
+    "description": "Получение информации об устройствах пользователя, добавление новых устройств",
+    "enabled": true,
+    "dependencies": {
+        "express-http-context": "^1.2.4"
+    },
+    "extensions": {},
+    "routes": {
+        "/devices": {
+            "router": "Device.router.js"
+        }
+    },
+    "typeSBR": "NodeCMS",
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-auth": "^1.0.0",
+        "store": "^1.5.19"
+    }
+}

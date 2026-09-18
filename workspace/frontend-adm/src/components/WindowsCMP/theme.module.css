@@ -1,0 +1,5 @@
+:root {
+    --window-border-radius: var(--ui-kit-spacing-6);
+    --window-background-color: var(--tile-bg-color-op);
+    --window-header-title-color: var(--main-active-color);
+}

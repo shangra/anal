@@ -1,0 +1,19 @@
+{
+    "name": "middleware-rest-validator",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `middleware-rest-validator` предоставляет промежуточное ПО (middleware), которое используется для настройки заголовков CORS (Cross-Origin Resource Sharing). Он устанавливает несколько важных HTTP-заголовков, таких как `Access-Control-Allow-Origin`, `Access-Control-Allow-Methods`, `Access-Control-Allow-Headers` и `Access-Control-Allow-Credentials`. Это позволяет веб-приложению разрешать запросы из разных доменов и обеспечивать корректную работу API при запросах с клиентской стороны. Однако название модуля (\"middleware-rest-validator\") не соответствует его функциональности — он реализует поведение больше похожее на функционал CORS-мидлваре, чем на валидатор REST-запросов.",
+    "main": "index.js",
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {}
+}

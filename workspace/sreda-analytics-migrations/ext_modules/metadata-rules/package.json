@@ -1,0 +1,15 @@
+{
+    "name": "metadata-rules",
+    "version": "1.5.4",
+    "typeSBR": "NodeCMS",
+    "description": "Модуль `metadata-rules` отвечает за управление метаданными правил в приложении NodeCMS. Он предоставляет REST API для выполнения операций CRUD (создание, чтение, обновление, удаление) над этими правилами. Модуль также обеспечивает проверку прав доступа к ресурсам и обработку возможных ошибок при работе с данными.",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "metadata-cmp": "^1.5.4",
+        "auth": "^1.5.0",
+        "metadata-forms": "^1.5.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "routes": {}
+}

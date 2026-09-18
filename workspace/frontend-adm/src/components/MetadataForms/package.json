@@ -1,0 +1,39 @@
+{
+    "name": "metadataforms",
+    "version": "1.0.0",
+    "description": "",
+    "typeSBR": "ReactCMS",
+    "codeName": "MetadataForms",
+    "lazy": false,
+    "rootComponent": false,
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {
+        "CommonInput": "^1.0.0",
+        "DRQueryBuilder": "^1.0.0",
+        "ErrorBoundary": "^1.0.0",
+        "FormMetadata": "^1.0.0",
+        "Metadata": "^1.0.0",
+        "ModalDetailedError": "^1.0.0",
+        "Utils": "^1.0.0",
+        "WindowsCMP": "^1.0.0"
+    },
+    "extensions": {},
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "filenameWithConstantsForTemplate": "",
+    "filenameWithUtilitiesForTemplate": ""
+}

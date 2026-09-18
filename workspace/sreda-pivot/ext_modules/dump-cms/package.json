@@ -1,0 +1,26 @@
+{
+    "name": "dump-cms",
+    "version": "1.5.36",
+    "description": "Создание и восстановление бекапов таблиц через файлы json-формата (дампы)",
+    "enabled": true,
+    "scripts": {
+        "build": "LOG_LEVEL=1 node ../../core/command/build",
+        "pretest": "npm run build -- -d ../__mocks__",
+        "test": "cd ../../ && NODE_ENV=test jest --runInBand --no-cache -i ext_modules/$npm_package_name/__tests__/tests",
+        "posttest": "rm -rf ../__mocks__"
+    },
+    "dependencies": {
+        "sequelize": "^6.26.0"
+    },
+    "extensions": {},
+    "routes": {
+        "/dumpdb": {
+            "router": "DumpDB.router.js"
+        }
+    },
+    "typeSBR": "NodeCMS",
+    "dependenciesNodeCMS": {
+        "middleware-rest-check-access": "^1.0.0",
+        "middleware-rest-upload-file": "^1.0.0"
+    }
+}

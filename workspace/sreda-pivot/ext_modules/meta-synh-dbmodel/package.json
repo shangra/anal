@@ -1,0 +1,80 @@
+{
+    "name": "meta-synh-dbmodel",
+    "version": "1.0.2",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `meta-synh-dbmodel` предназначен для синхронизации структуры метаданных между таблицами базы данных и структурой метаданных приложения NodeCMS. Он предоставляет сервис для автоматического обновления полей и таблиц при изменении схемы метаданных, а также реализует механизм добавления кнопки для ручной синхронизации через интерфейс пользователя.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "express": "^4.17.2"
+    },
+    "dependenciesNodeCMS": {
+        "metadata-cmp": "^1.0.2"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "ChartAccountsService.form.after": {
+            "class": "/services/metaSynhDbmodel.service.js",
+            "function": "formAfter"
+        },
+        "GuideService.form.after": {
+            "class": "/services/metaSynhDbmodel.service.js",
+            "function": "formAfter"
+        },
+        "DocumentsService.form.after": {
+            "class": "/services/metaSynhDbmodel.service.js",
+            "function": "formAfter"
+        },
+        "RegistryAccountingService.form.after": {
+            "class": "/services/metaSynhDbmodel.service.js",
+            "function": "formAfter"
+        },
+        "RegistryAccumulativeService.form.after": {
+            "class": "/services/metaSynhDbmodel.service.js",
+            "function": "formAfter"
+        },
+        "TableService.form.after": {
+            "class": "/services/metaSynhDbmodel.service.js",
+            "function": "formAfter"
+        },
+        "MLService.form.after": {
+            "class": "/services/metaSynhDbmodel.service.js",
+            "function": "formAfter"
+        },
+        "MetadataService.delMetadata.after": {
+            "class": "/services/metaSynhDbmodel.service.js",
+            "function": "metadataDeleteAfter"
+        },
+        "RegistryInformationService.form.after": {
+            "class": "/services/metaSynhDbmodel.service.js",
+            "function": "formAfter"
+        },
+        "TransferService.form.after": {
+            "class": "/services/metaSynhDbmodel.service.js",
+            "function": "formAfter"
+        },
+        "BrokerService.form.after": {
+            "class": "/services/metaSynhDbmodel.service.js",
+            "function": "formAfter"
+        }
+    },
+    "routes": {
+        "/metadata/metasynhdbmodel": {
+            "router": "metaSynhDbmodel.router.js"
+        }
+    }
+}

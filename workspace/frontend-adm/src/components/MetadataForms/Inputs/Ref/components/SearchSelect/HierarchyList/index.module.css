@@ -1,0 +1,14 @@
+.hierarchyList {
+    padding-left: 5px;
+    background: transparent;
+    color: var(--main-active-color);
+}
+
+.kit-tree {
+    --ui-kit-tree-layout-direction: row-reverse;
+}
+
+.kit-tree__expand-container {
+    width: var(--ui-kit-tree-expand-container-size) !important;
+    height: var(--ui-kit-tree-expand-container-size) !important;
+}

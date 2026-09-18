@@ -1,0 +1,1 @@
+## New EXTENDED Component: middleware-rest-check-access

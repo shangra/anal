@@ -1,0 +1,34 @@
+.day {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    margin-top: var(--ui-kit-date-picker-tr-top-margin);
+  }
+
+  .day_starting {
+    border-top-left-radius: var(--ui-kit-date-picker-day-border-radius);
+    border-bottom-left-radius: var(--ui-kit-date-picker-day-border-radius);
+    background-color: var(--ui-kit-date-picker-day-ranging-background-color);
+  }
+  
+  .day_ending {
+    border-top-right-radius: var(--ui-kit-date-picker-day-border-radius);
+    border-bottom-right-radius: var(--ui-kit-date-picker-day-border-radius);
+    background-color: var(--ui-kit-date-picker-day-ranging-background-color);
+  }
+  
+  .day_ranging {
+    background-color: var(--ui-kit-date-picker-day-ranging-background-color);
+  }
+
+  
+.day_first_in_row {
+  border-top-left-radius: var(--ui-kit-date-picker-day-border-radius);
+  border-bottom-left-radius: var(--ui-kit-date-picker-day-border-radius);
+}
+
+.day_last_in_row {
+  border-top-right-radius: var(--ui-kit-date-picker-day-border-radius);
+  border-bottom-right-radius: var(--ui-kit-date-picker-day-border-radius);
+}

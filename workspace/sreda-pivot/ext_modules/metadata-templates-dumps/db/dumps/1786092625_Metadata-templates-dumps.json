@@ -1,0 +1,19 @@
+{
+    "current": [
+        {
+            "Metadata": [
+                {
+                    "id": "4f25292b-b055-4c36-a4f0-a21dfdb16083",
+                    "markdel": 0,
+                    "parent": "20901b97-d1cf-4472-a27b-b0442e436c9a",
+                    "class_id": "20901b97-d1cf-4472-a27b-b0442e436c9a",
+                    "class": "Forms",
+                    "name": "ФормаСпискаШаблона",
+                    "description": "Форма Списка Шаблона",
+                   "manifest": "{\"owner_id\":\"20901b97-d1cf-4472-a27b-b0442e436c9a\",\"class_id\":\"20901b97-d1cf-4472-a27b-b0442e436c9a\",\"class\":\"Forms\",\"name\":\"ФормаСпискаШаблона\",\"description\":\"Форма Списка Шаблона\",\"settings\":{\"id\":\"4f25292b-b055-4c36-a4f0-a21dfdb16083\",\"codetemplate\":\"<div style={{ height: '100%', overflowY: 'auto' }}>\\n    <MetadataForms.DataManager\\n        metaOwner={'[[ metaOwner ]]'} \\n        options={[[ options | encodejson ]]} \\n  server='backend'  >\\n        <MetadataForms.Container>\\n            <MetadataForms.InputsList>\\n                {this.renderFieldList()}\\n                <AdminUiKit.FullCodeTextEditor fieldName=\\\"data\\\" />\\n                <AdminUiKit.FullCodeTextEditor fieldName=\\\"script\\\" />\\n                {this.renderTabularParts()}\\n            </MetadataForms.InputsList>\\n            <MetadataForms.ControlsPanel align=\\\"Справа\\\">\\n                <MetadataForms.Buttons.SaveButton/>\\n                <MetadataForms.Buttons.CloseButton/>\\n                <MetadataForms.Buttons.SaveAndCloseButton/>\\n            </MetadataForms.ControlsPanel>\\n        </MetadataForms.Container>\\n    </MetadataForms.DataManager>\\n</div>\",\"codeclient\":\"const renderFieldList = async () => {\\n    const fieldsList = this.fieldsList;\\n    \\n    if (!fieldsList || !fieldsList.length) {\\n        return <></>; \\n    }\\n    \\n    return fieldsList.map((item) => (\\n        <MetadataForms.MetaInput name={item} key={item}/>\\n    ));\\n}\\n\\nconst renderTabularParts = async () => {\\n    const tabularList = this.tabularPartList;\\n    \\n    if (!tabularList || !tabularList.length) {\\n        return <></>;\\n    }\\n    \\n    const consumersTable = tabularList.find((item) => item === \\\"Потребители\\\");\\n    const nonConsumersTable = tabularList.find(item => item !== \\\"Потребители\\\");\\n    \\n    return tabularList.map((item) => {\\n        return <MetadataForms.TabularPart \\n            name={item}\\n            key={item}\\n            buttons={[\\n                <MetadataForms.Buttons.AddRowButton name={\\\"AddRow\\\"}/>,\\n                <MetadataForms.Buttons.DeleteRowButton name={\\\"DeleteRow\\\"}/>, \\n                <MetadataForms.Buttons.MoveRowButtons name={\\\"MoveRow\\\"}/>\\n            ]}\\n        />\\n    });\\n}\"},\"events\":{}}",
+                    "rank": 0
+                }
+            ]
+        }
+    ]
+}

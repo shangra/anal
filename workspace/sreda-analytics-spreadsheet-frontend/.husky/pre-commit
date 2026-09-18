@@ -1,0 +1,9 @@
+OS="$(uname)"
+
+if [[ "$OS" == "Linux" || "$OS" == "Darwin" ]]; then
+    # Код для Linux/macOS
+    .husky/scripts_by_os/linux_mac/pre-commit.sh
+else 
+    # Код для Windows
+    .husky/scripts_by_os/windows/pre-commit.sh
+fi

@@ -1,0 +1,1 @@
+## New EXTENDED Component: analytics-ext-metadata-cmp 

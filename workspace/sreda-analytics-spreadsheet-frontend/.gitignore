@@ -1,0 +1,30 @@
+node_modules
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode
+.vscode-test
+
+.idea
+.npmrc
+
+.env*
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+*.log
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode
+.vscode-test
+
+# Generated files for templates
+/src/components/index.js
+/src/components/constants.js
+/src/components/utilities.js
+/src/components/rootComponents.js
+
+# Module Federation directories
+/*build*/
+@mf-types/

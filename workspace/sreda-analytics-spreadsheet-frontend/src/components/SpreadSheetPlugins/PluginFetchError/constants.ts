@@ -1,0 +1,7 @@
+export const PLUGIN_FETCH_ERROR_KEY = 'PluginFetchError' as const;
+
+export const PLUGIN_FETCH_ERROR_ACTION = {
+    OPEN: 'PLUGIN_FETCH_ERROR/OPEN',
+    CLOSE: 'PLUGIN_FETCH_ERROR/CLOSE',
+    EVENT: 'PLUGIN_FETCH_ERROR/EVENT',
+} as const;

@@ -1,0 +1,7 @@
+export const PLUGIN_CELL_FORMATTING_KEY = 'PluginCellFormatting' as const;
+
+export const PERCENT_MULTIPLIER = 100;
+
+export const CELL_FORMATTING_ACTION = {
+    FORMAT_PAINTER_APPLY: 'CELL_FORMATTING_ACTION/FORMAT_PAINTER_APPLY',
+} as const;

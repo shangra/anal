@@ -1,0 +1,24 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 12px;
+    overflow-x: auto;
+    min-width: fit-content;
+}
+
+.controls {
+    display: flex;
+    gap: 8px;
+}
+
+.content {
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+}
+
+.notRootGroupWrapper {
+    background-color: var(--ui-kit-colors-background-control);
+    border-radius: var(--ui-kit-spacing-2);
+}

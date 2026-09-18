@@ -1,0 +1,112 @@
+{
+    "name": "meta-dumpdb",
+    "version": "1.5.1",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль meta-dumpdb предназначен для выгрузки объектов метаданных из системы NodeCMS. Он предоставляет сервисные функции для создания кнопок выгрузки и реализации самой процедуры выгрузки как отдельных объектов, так и связанных объектов с учетом их зависимостей. Модуль также поддерживает маршрутизацию запросов через REST API.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {
+        "metadata-cmp": "^1.5.4",
+        "dump-cms": "^1.5.31",
+        "utils": "^1.5.0"
+    },
+    "dependenciesReactCMS": {},
+    "extensions": {
+        "InterfaceService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfterWithRefs"
+        },
+        "ConnectorsService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfterWithRefs"
+        },
+        "CubesService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfterWithRefs"
+        },
+        "ReportsService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfterWithRefs"
+        },
+        "ChartAccountsService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfter"
+        },
+        "GuideService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfter"
+        },
+        "DocumentsService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfter"
+        },
+        "EnumsService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfter"
+        },
+        "FormsService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfter"
+        },
+        "InfoserviceService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfterWithRefs"
+        },
+        "InfoserviceGuideService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfter"
+        },
+        "InfoserviceFlatGuideService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfter"
+        },
+        "TableService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfter"
+        },
+        "AccountingPlanService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfter"
+        },
+        "RegistryAccumulativeService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfter"
+        },
+        "RegistryAccountingService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfter"
+        },
+        "RegistryInformationService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfter"
+        },
+        "TransferService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfter"
+        },
+        "CodeManagerService.form.after": {
+            "class": "/services/metaDumpDB.service.js",
+            "function": "formAfter"
+        }
+    },
+    "routes": {
+        "/metadata/metadumpdb": {
+            "router": "metaDumpDB.router.js"
+        }
+    }
+}

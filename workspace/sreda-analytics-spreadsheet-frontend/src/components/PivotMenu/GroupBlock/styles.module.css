@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--ui-kit-spacing-2);
+    padding: var(--ui-kit-spacing-2) var(--ui-kit-spacing-4);
+    line-height: var(--ui-kit-typography-body-line-height);
+}
+
+.container > button[data-test-id="icon-button"] {
+    min-width: var(--ui-kit-button-small-height);
+    min-height: var(--ui-kit-button-small-height);
+}
+
+.title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--ui-kit-spacing-2);
+    white-space: nowrap;
+}
+
+.folder_icon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: var(--ui-kit-checkbox-icon-size);
+    min-width: var(--ui-kit-checkbox-icon-size);
+    height: var(--ui-kit-checkbox-icon-size);
+    min-height: var(--ui-kit-checkbox-icon-size);
+}

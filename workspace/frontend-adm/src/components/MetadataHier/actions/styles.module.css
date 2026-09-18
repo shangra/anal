@@ -1,0 +1,23 @@
+.buttonContainer * {
+    padding: 0;
+    margin: 0;
+}
+
+
+.buttonContainer {
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 5px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    color: var(--ui-kit-colors-text-primary)
+}
+
+.buttonContainer:hover {
+    background-color: var(--ui-kit-colors-basic-primary);
+}
+
+.buttonContainer:hover > svg {
+    fill: var(--ui-kit-icon-color-white);
+}

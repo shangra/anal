@@ -1,0 +1,29 @@
+{
+    "name": "metadata-templates-dumps",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `metadata-templates-dumps` отвечает за хранение и обработку метаданных шаблонов форм в системе NodeCMS версии 1.5.0. Он описывает структуру и компоненты формы списка шаблонов, включая поля ввода данных, редактируемые области текста и элементы панели управления (кнопки \"Сохранить\" и \"Закрыть\"). Модуль также предоставляет функции рендеринга полей формы и табличных компонентов, необходимые для корректного отображения пользовательского интерфейса.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "sequelize": "^6.26.0"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "routes": {}
+}

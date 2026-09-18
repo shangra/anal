@@ -1,0 +1,38 @@
+.rootControl {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.rootCombinatorSelect {
+    border-radius: 5px;
+    padding: 0 5px;
+}
+
+.fields {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.select {
+    max-width: 150px;
+}
+
+.select:hover {
+    border: 1px solid var(--main-active-color, #fff) !important;
+}
+
+.button {
+    padding: 5px;
+    font-size: 14px;
+}
+
+.delete-button {
+    padding: 5px 10px;
+}
+
+.input {
+    padding: 5px;
+    font-size: 14px;
+}

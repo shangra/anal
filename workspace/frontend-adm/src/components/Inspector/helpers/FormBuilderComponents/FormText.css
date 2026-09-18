@@ -1,0 +1,26 @@
+.textarea {
+    height: 100%; 
+    white-space: nowrap;
+}
+
+.textarea > label {
+    height: 100%;
+}
+.textarea textarea {
+    height: 100%;
+}
+
+.inputShortText {
+    width: 100%;
+    border: 1px solid var(--ui-kit-input-enabled-border-color);
+    padding: var(--ui-kit-input-container-padding);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 100%;
+}
+
+.textInputButton {
+    border-radius: 0 !important;
+    min-width: 32px !important;
+}

@@ -1,0 +1,17 @@
+{
+    "name": "compression",
+    "version": "1.5.0",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `compression` отвечает за сжатие HTTP-ответов сервера перед отправкой клиенту для уменьшения объема передаваемых данных и повышения производительности сети. Он использует библиотеку `compression`, предоставляющую функцию компрессии контента. В данном файле реализован фильтр, который позволяет пропускать запросы без компрессии, если заголовок запроса содержит поле `'x-no-compression'`.",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "homepage": "",
+    "dependencies": {
+        "compression": "^1.7.4"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {}
+}

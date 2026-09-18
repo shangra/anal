@@ -1,0 +1,27 @@
+{
+    "name": "json-body-ext-rest-express",
+    "version": "1.5.1",
+    "typeSBR": "NodeCMS",
+    "enabled": true,
+    "description": "Модуль `json-body-ext-rest-express` предназначен для расширения функциональности Express-приложения путём добавления middleware для обработки JSON-тел запросов. \n\nОн использует стандартный метод Express (`json`) для парсинга тела запроса, форматированного как JSON, и позволяет установить ограничение на размер принимаемых данных через переменную окружения `JSON_REQUEST_LIMIT`. Если такая переменная не задана, то по умолчанию устанавливается лимит в 10 мегабайт.\n\nТаким образом, этот модуль упрощает обработку POST-запросов с данными в формате JSON, обеспечивая возможность гибко настраивать ограничения на их объём.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "routes": {}
+}

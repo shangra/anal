@@ -1,0 +1,32 @@
+.container {
+    border-radius: var(--ui-kit-spacing-3);
+    overflow: hidden;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--ui-kit-spacing-6) var(--ui-kit-spacing-8);
+    background-color: var(--ui-kit-colors-white);
+}
+
+.item:not(:last-child) {
+    border-bottom: 1px solid var(--ui-kit-colors-text-secondary);
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-kit-spacing-6);
+}
+
+.textContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.bold {
+    font-weight: bold;
+}
+

@@ -1,0 +1,15 @@
+const MEMORY_OPERATION_GET = 'get';
+const MEMORY_OPERATION_SET = 'set';
+const MEMORY_OPERATION_DEL = 'del';
+const CLUSTER_MSG_MEMORY_OPERATION = 'clusterMsgMemoryOperation';
+const CLUSTER_MSG_MEMORY_OPERATION_RESULT = 'clusterMsgMemoryOperationResult';
+const MEMORY_OPERATION_ERROR_MSG = 'Ошибка обращения к хранилищу кэша';
+
+module.exports = {
+    MEMORY_OPERATION_GET,
+    MEMORY_OPERATION_SET,
+    MEMORY_OPERATION_DEL,
+    CLUSTER_MSG_MEMORY_OPERATION,
+    CLUSTER_MSG_MEMORY_OPERATION_RESULT,
+    MEMORY_OPERATION_ERROR_MSG,
+};
