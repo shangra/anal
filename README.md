@@ -23,6 +23,8 @@ npm start
 
 Логин по умолчанию: `su` / `su`.
 
+Если логин даёт 500 и в логе `no pg_hba.conf entry … no encryption` — в корневом `.env` должно быть `DB_SSL=require`, затем снова `npm run env` и `npm start`. Для локальной Postgres без SSL: `DB_SSL=disable`.
+
 ## Команды из корня
 
 | Команда | Что делает |

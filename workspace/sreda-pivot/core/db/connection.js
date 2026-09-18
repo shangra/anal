@@ -34,18 +34,7 @@ class Connection {
         }
 
         const dbConfig = config ?? {};
-
-        /**
-         * add ssl certs
-         */
-        if (dbConfig.ca || dbConfig.cert || dbConfig.key) {
-            dbConfig.dialectOptions = {
-                ssl: {
-                    ...Connection.getCerts(dbConfig),
-                    require: true,
-                },
-            };
-        }
+        Connection.applySsl(dbConfig);
 
         // Конструктор Sequelize не устанавливает соединение, поэтому отсутствие
         // настроек БД не должно валить=require модулей на старте: без диалекта
@@ -73,6 +62,42 @@ class Connection {
         Object.freeze(this);
 
         return Connection.instance;
+    }
+
+    /**
+     * SSL к Postgres: облачные стенды требуют шифрование
+     * (ошибка «no pg_hba.conf entry … no encryption»).
+     * DB_SSL=require|true — всегда; disable|false — никогда;
+     * пусто — SSL если хост не localhost.
+     */
+    static applySsl(dbConfig) {
+        const flag = String(process.env.DB_SSL || process.env.PGSSLMODE || '').toLowerCase();
+        const host = String(dbConfig.host || process.env.DB_HOST || '');
+        const isLocal = host === '127.0.0.1' || host === 'localhost' || host === '::1';
+        const disabled = flag === 'false' || flag === 'disable' || flag === '0' || flag === 'off';
+        const forced = flag === 'true' || flag === '1' || flag === 'require' || flag === 'prefer';
+        const wantSsl = !disabled && (forced || (!flag && !isLocal));
+        const rejectUnauthorized = process.env.DB_SSL_REJECT_UNAUTHORIZED === 'true';
+
+        if (dbConfig.ca || dbConfig.cert || dbConfig.key) {
+            dbConfig.dialectOptions = {
+                ssl: {
+                    ...Connection.getCerts(dbConfig),
+                    require: true,
+                    rejectUnauthorized,
+                },
+            };
+            return;
+        }
+
+        if (wantSsl) {
+            dbConfig.dialectOptions = {
+                ssl: {
+                    require: true,
+                    rejectUnauthorized,
+                },
+            };
+        }
     }
 
     /**
