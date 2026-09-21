@@ -94,9 +94,9 @@ class QueryClass {
         /** @type {{ sql: string, name: string }[]} */
         let withOptions = [];
         if (!isEmptyObject(volatile)) {
-            volatileOptions = Object.entries(volatile).map(([name, sql]) => ({ sql, name }));
+            volatileOptions = Object.entries(volatile || {}).map(([name, sql]) => ({ sql, name }));
         } else {
-            withOptions = Object.entries(withs).map(([name, sql]) => ({ sql, name }));
+            withOptions = Object.entries(withs || {}).map(([name, sql]) => ({ sql, name }));
         }
 
         if (gVolatileSql) {

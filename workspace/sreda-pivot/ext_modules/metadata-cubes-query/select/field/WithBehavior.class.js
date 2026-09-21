@@ -79,11 +79,15 @@ class WithBehaviorClass extends BaseClass {
 
         const treeObject = await this.meta.tableInfo(this.meta, this.id);
 
-        this.guideFields = treeObject?.AllFieldsGUID || treeObject?.FieldsGUID;
+        this.guideFields = treeObject?.AllFieldsGUID || treeObject?.FieldsGUID || {};
+        this.treeFields = this.treeFields || {};
 
         this.getConnectionFields();
 
-        const { IdField, ParentField } = await this.meta.getSettings(this.id, treeObject);
+        const settings = this.id && treeObject
+            ? await this.meta.getSettings(this.id, treeObject)
+            : {};
+        const { IdField, ParentField } = settings || {};
 
         const pkName = IdField?.field;
         const parentName = ParentField?.field;
@@ -438,9 +442,21 @@ class WithBehaviorClass extends BaseClass {
             withOutOrder: true,
         };
 
-        const { query, connectionFields: fields } = await this.meta.query(this.id, qoptions);
-
-        return { table: query.table.slice(0, -1), query, fields }
+        const result = await this.meta.query(this.id, qoptions);
+        const query = result?.query ?? result;
+        const tableSql = typeof query === 'string' ? query : query?.table;
+        if (!tableSql) {
+            return {
+                table: '',
+                query: { table: '', alias: 't' },
+                fields: result?.connectionFields || connectionFields || [],
+            };
+        }
+        return {
+            table: String(tableSql).replace(/;$/, ''),
+            query: typeof query === 'object' ? query : { table: tableSql, alias: 't' },
+            fields: result?.connectionFields || connectionFields || [],
+        };
     }
 
     /**
@@ -454,7 +470,7 @@ class WithBehaviorClass extends BaseClass {
     async getPkField(treeObject) {
         let viewAlias = null;
         let view = null;
-        for (const keyName in treeObject.Keys) {
+        for (const keyName in (treeObject?.Keys || {})) {
             const guidKey = treeObject.Keys[keyName];
             const findKey = guidKey.settings.primarykey; // Если не ищем какой-то особенный ключ, то ищем только первичный
             if (findKey) {

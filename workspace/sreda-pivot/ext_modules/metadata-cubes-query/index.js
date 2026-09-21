@@ -207,7 +207,7 @@ class CubeQueryBuilderClass extends LevelClass {
         await this.console(`Получили ограничение доступов`, { query: options?.metaAccessWhere });
 
         // получим все агрегируемые меры
-        const attrs = Object.keys(cubeObject?.AllMeasures);
+        const attrs = Object.keys(cubeObject?.AllMeasures || {});
 
         const flatWhere = WhereFormater.flat({
             ...options.systemWhere,
@@ -219,7 +219,7 @@ class CubeQueryBuilderClass extends LevelClass {
             //Для открытия витрины
             options.attributes = [];
 
-            for (const fieldName in treeObject.Fields) {
+            for (const fieldName in (treeObject.Fields || {})) {
                 const field = treeObject.Fields[fieldName];
 
                 cols.push(field);

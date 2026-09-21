@@ -151,7 +151,7 @@ class QueryRefclass extends Extensions {
         /** @type {Record<string, Record<string, number>>} */
         const hasRef = {};
 
-        Object.keys(refs).forEach((key) => {
+        Object.keys(refs || {}).forEach((key) => {
             refData[key] = {};
             maskRefData[key] = {};
             hasRef[key] = {};

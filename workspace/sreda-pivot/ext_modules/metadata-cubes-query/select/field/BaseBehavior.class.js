@@ -72,7 +72,7 @@ class BaseBehaviorClass extends DefaultClass {
             and.push(rows.map((row) => [row[IdField.field], row.children || []]).flat(Infinity));
         }
 
-        if (dictionaryWhere[attribute] !== undefined) {
+        if (dictionaryWhere?.[attribute] !== undefined) {
             const treeObject = await this.meta.tableInfo(this.meta, this.id);
 
             const { IdField, ParentField } = await this.meta.getSettings(this.id, treeObject);
@@ -101,28 +101,38 @@ class BaseBehaviorClass extends DefaultClass {
      * @protected
      */
     getConnectionFields() {
-        /** @type {IConnectionField[]} */
-        this.connectionFields = Object.values(this.field.refFields).map(({ field, refField }) => {
-            const right = this.guideFields[refField.value];
-            const left = this.treeFields[field.value];
+        const refs = this.field?.refFields;
+        const list = refs && typeof refs === 'object' ? Object.values(refs) : [];
+        const guideFields = this.guideFields && typeof this.guideFields === 'object' ? this.guideFields : {};
+        const treeFields = this.treeFields && typeof this.treeFields === 'object' ? this.treeFields : {};
 
-            return {
-                right: {
-                    field: right.field,
-                    type: right.type
-                },
-                left: {
-                    field: left.field,
-                    type: left.type
+        /** @type {IConnectionField[]} */
+        this.connectionFields = list
+            .map((item) => {
+                const field = item?.field;
+                const refField = item?.refField;
+                if (!field || !refField) {
+                    return null;
                 }
-            }
-        });
+                const rightKey = refField.value ?? refField;
+                const leftKey = field.value ?? field;
+                const right = guideFields[rightKey];
+                const left = treeFields[leftKey];
+                if (!right?.field || !left?.field) {
+                    return null;
+                }
+                return {
+                    right: { field: right.field, type: right.type },
+                    left: { field: left.field, type: left.type },
+                };
+            })
+            .filter(Boolean);
 
         /** @type {string[]} */
         this.connectionAliases = this.connectionFields.map(({ right }) => right.field);
         /** @type {Record<string, IFieldRecursive>} */
         this.leftRightMapping = this.connectionFields.reduce((acc, { left, right }) => {
-            acc[right.field] = left
+            acc[right.field] = left;
             return acc;
         }, {});
     }
@@ -135,7 +145,7 @@ class BaseBehaviorClass extends DefaultClass {
      * @returns 
      */
     async getRows({ where, pk, parent, hierarchy }) {
-        const attributes = [...Object.keys(where), pk.field, parent?.field].filter(Boolean);
+        const attributes = [...Object.keys(where || {}), pk?.field, parent?.field].filter(Boolean);
 
         const qoptions = {
             attributes,
@@ -211,7 +221,7 @@ class BaseBehaviorClass extends DefaultClass {
     getPK(keys) {
         /** @type {string} */
         let fieldsPK = null;
-        Object.keys(keys).forEach((key) => {
+        Object.keys(keys || {}).forEach((key) => {
             if (keys[key].settings?.primarykey) {
                 fieldsPK = Object.keys(keys[key].fields ?? {})[0];
             }

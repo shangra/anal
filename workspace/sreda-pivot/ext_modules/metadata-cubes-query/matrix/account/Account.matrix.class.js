@@ -409,7 +409,7 @@ class AccountClass {
         /** @type {string} */
         let field = null;
         let pKey = null;
-        Object.keys(keys).forEach((key) => {
+        Object.keys(keys || {}).forEach((key) => {
             if (keys[key].settings?.primarykey) {
                 field = Object.keys(keys[key].fields ?? {})[0];
                 pKey = key;

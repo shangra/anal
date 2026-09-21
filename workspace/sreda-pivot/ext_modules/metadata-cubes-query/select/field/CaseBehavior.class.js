@@ -556,7 +556,7 @@ class CaseBehaviorClass extends BaseClass {
 
         const rows = await this.connector.querySql(query, { type: 'SELECT' });
 
-        const rightLeftMapping = Object.entries(this.leftRightMapping).reduce((acc, [key, value]) => {
+        const rightLeftMapping = Object.entries(this.leftRightMapping || {}).reduce((acc, [key, value]) => {
             acc[value.field] = key;
             return acc;
         }, {});

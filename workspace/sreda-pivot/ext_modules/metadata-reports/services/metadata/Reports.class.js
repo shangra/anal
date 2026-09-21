@@ -443,17 +443,17 @@ class ReportsClass extends LevelClass {
 
             // TODO: должен быть выбор на фронте
             if (!localOptions.settings.dateDimension) {
-                localOptions.settings.dateDimension = Object.values(treeObject.AllFields || treeObject.Fields).find((field) => field.dateDimension);
+                localOptions.settings.dateDimension = Object.values(treeObject.AllFields || treeObject.Fields || {}).find((field) => field.dateDimension);
             }
 
             // TODO: должен быть выбор на фронте
             if (!localOptions.settings.accountDimension) {
-                localOptions.settings.accountDimension = Object.values(treeObject.AllFields || treeObject.Fields).find((field) => field.accountDimension);
+                localOptions.settings.accountDimension = Object.values(treeObject.AllFields || treeObject.Fields || {}).find((field) => field.accountDimension);
             }
 
-            const funcs = Object.entries(aggFunc).map(([key, values]) => {
+            const funcs = Object.entries(aggFunc || {}).map(([key, values]) => {
 
-                return values.map((value) => {
+                return (values || []).map((value) => {
                     if (!value.name || !value.field) return;
 
                     return {
@@ -471,7 +471,7 @@ class ReportsClass extends LevelClass {
             const Infoservice = new exInfoservicesClass({ id: InfoserviceGUID });
             const layerTableInfo = await Infoservice.tableInfo(Infoservice, InfoserviceGUID);
 
-            localOptions.order = this.setOrder(layerTableInfo.Fields, localOptions.attributes, localOptions.order);
+            localOptions.order = this.setOrder(layerTableInfo?.Fields || {}, localOptions.attributes || [], localOptions.order || []);
 
             const qb = new CubeQueryBuilderClass({ id: InfoserviceGUID, isProcessing: options.processing });
 
@@ -489,7 +489,7 @@ class ReportsClass extends LevelClass {
                 withoutTotal: true
             });
 
-            data.rows.forEach(row => { row.layer = layer.name })
+            (data?.rows || []).forEach(row => { row.layer = layer.name })
 
             return data;
         });
@@ -508,7 +508,7 @@ class ReportsClass extends LevelClass {
      */
     setOrder(fields, attributes, order) {
         const mappedOrders = {};
-        order.forEach(([key]) => mappedOrders[key]);
+        (order || []).forEach(([key]) => mappedOrders[key]);
 
         /** @type {[string, string][]} */
         const defaultOrders = [];

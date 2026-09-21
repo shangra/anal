@@ -260,7 +260,7 @@ class ViewSubFieldClass extends BaseBehaviorClass {
 
         const fields = await this.connector.model(table);
 
-        result = Object.keys(fields).filter((columnName) => columnName.startsWith(`${attribute}__lvl`)).length;
+        result = Object.keys(fields || {}).filter((columnName) => columnName.startsWith(`${attribute}__lvl`)).length;
 
         await MemorySaveInstance.set(key, result, { isLocal: false });
 

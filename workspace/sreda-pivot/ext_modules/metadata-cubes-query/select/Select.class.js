@@ -320,7 +320,11 @@ class SelectClass {
         /** @type {ILevel[]} */
         const afterSub = [];
 
-        layerArr.forEach(({ before, current, after }) => {
+        layerArr.forEach((item) => {
+            if (!item) {
+                return;
+            }
+            const { before, current, after } = item;
             before && beforeSub.push(...before);
             current && currentSub.push(...current);
             after && afterSub.push(...after);
@@ -377,6 +381,9 @@ class SelectClass {
 
             // Фабрика поведений для обработки иерархий
             const behaviour = await builder.init(data);
+            if (!behaviour || typeof behaviour.query !== 'function') {
+                return {};
+            }
 
             return await behaviour.query({ ...options, previousLevels }, field, viewName);
         });
@@ -390,7 +397,11 @@ class SelectClass {
         /** @type {ILevel[]} */
         const afterSub = [];
 
-        layerArr.forEach(({ before, current, after }) => {
+        layerArr.forEach((item) => {
+            if (!item) {
+                return;
+            }
+            const { before, current, after } = item;
             before && beforeSub.push(...before);
             current && currentSub.push(...current);
             after && afterSub.push(...after);
@@ -756,9 +767,9 @@ class SelectClass {
         /** @type {{ sql: string, name: string }[]} */
         let withOptions = [];
         if (!isEmptyObject(volatile)) {
-            volatileOptions = Object.entries(volatile).map(([name, sql]) => ({ sql, name }));
+            volatileOptions = Object.entries(volatile || {}).map(([name, sql]) => ({ sql, name }));
         } else {
-            withOptions = Object.entries(withs).map(([name, sql]) => ({ sql, name }));
+            withOptions = Object.entries(withs || {}).map(([name, sql]) => ({ sql, name }));
         }
 
         const table = this.connector.union({ withOptions, volatileOptions, sqls: [sql] })
