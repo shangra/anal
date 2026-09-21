@@ -12,12 +12,17 @@ class RlsExtMetadataService {
     extensionMapping = { metadata: 'Metadata' };
 
     async createMetadataAfter(innerResult) {
+        if (!innerResult?.id) {
+            return innerResult;
+        }
         let sessionStorage = httpContext.get('sessionStorage');
+        const parentId =
+            innerResult.parent || '00000000-0000-0000-0000-000000000000';
         // добавляем все доступы родителя, если подключено расширение rlsCore
 
         const options = {
             filter: (item) => {
-                const userGroups = Object.keys(sessionStorage.user.groups);
+                const userGroups = Object.keys(sessionStorage?.user?.groups || {});
                 const AllRead = '90499885-ae60-440b-a59f-cfd3958110cd';
 
                 let result = true;
@@ -55,7 +60,7 @@ class RlsExtMetadataService {
                 const Administrator = '12e32c9d-6e4f-4d57-ae22-5cddaabf343c';
                 const Permission = {
                     table_name: 'Metadata',
-                    table_id: innerResult.parent,
+                    table_id: parentId,
                     owner: 'rules',
                     type: 'view',
                     owner_id: Administrator,
@@ -78,7 +83,7 @@ class RlsExtMetadataService {
             },
         };
         await RlsCoreService.addParentPermissionsNested(
-            innerResult.parent,
+            parentId,
             innerResult.id,
             'metadata',
             options
