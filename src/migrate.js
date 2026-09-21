@@ -47,7 +47,7 @@ export async function runMigrationsDb(box, modules, { dryRun = false } = {}) {
   if (!env.DB_HOST || !env.DB_USER || !env.DB_DATABASE) {
     throw new Error(
       `${mod.id}: в ${mod.envFile || '.env'} нет DB_HOST/DB_USER/DB_DATABASE.\n` +
-        'Заполните корневой .env и выполните npm run env.',
+        'Заполните корневой .env (DB_HOST, DB_USER, DB_PASS, DB_DATABASE) и снова npm run db / npm start.',
     );
   }
 
@@ -72,7 +72,7 @@ async function askAndWritePivotLicense(modules) {
   }
   const envPath = path.join(pivot.absDir, pivot.envFile || '.env');
   if (!(await pathExists(envPath))) {
-    throw new Error(`Нет ${envPath}. Сначала выполните npm run env.`);
+    throw new Error(`Нет ${envPath}. Заполните корневой .env и выполните npm run db.`);
   }
 
   const key = await promptLicenseKey();

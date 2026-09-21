@@ -1,19 +1,39 @@
 # SREDA Analytic — коробка
 
-Запуск с **Windows и macOS** из корня репозитория (рядом с `package.json`). Нужны Node.js 18+ и PostgreSQL.
+Запуск с **Windows и macOS** из корня репозитория (рядом с `package.json`). Нужны Node.js 18+ и доступ к PostgreSQL заказчика.
+
+## Что заполняет заказчик
+
+Один файл: корневой `.env`. Туда — хост, порт, логин, пароль, база, схема. Остальное коробка пишет сама при `npm start` и `npm run db` (в том числе TLS к Postgres).
 
 ## Первый запуск
 
 ```bash
 cp .env.example .env
-# заполните DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_DATABASE, DB_SCHEMA
+```
+
+На Windows PowerShell: `Copy-Item .env.example .env`
+
+В `.env` заполните:
+
+```
+DB_HOST=...
+DB_PORT=5432
+DB_USER=...
+DB_PASS=...
+DB_DATABASE=...
+DB_SCHEMA=...
+```
+
+Дальше из корня:
+
+```bash
 npm install
-npm run env
 npm run db
 npm start
 ```
 
-На Windows PowerShell: `Copy-Item .env.example .env` вместо `cp`.
+Если схема в БД заказчика **уже есть**, `npm run db` можно пропустить.
 
 После старта:
 
@@ -23,16 +43,16 @@ npm start
 
 Логин по умолчанию: `su` / `su`.
 
-Если логин даёт 500 и в логе `no pg_hba.conf entry … no encryption` — в корневом `.env` должно быть `DB_SSL=require`, затем снова `npm run env` и `npm start`. Для локальной Postgres без SSL: `DB_SSL=disable`.
+`DB_SSL` в `.env` не обязателен: для удалённого хоста включается TLS, для `localhost` — нет. Если БД заказчика проброшена на `127.0.0.1` туннелем, добавьте `DB_SSL=require`.
 
 ## Команды из корня
 
 | Команда | Что делает |
 | --- | --- |
 | `npm install` | зависимости коробки и модулей |
-| `npm run env` | `.env` модулей из корневого `.env` |
-| `npm run db` | миграции |
-| `npm start` | pivot + аналитика + админка |
+| `npm run db` | разложить `.env` + миграции |
+| `npm start` | разложить `.env` + pivot + аналитика + админка |
+| `npm run env` | только разложить `.env` (обычно не нужно) |
 | `npm start -- --only pivot` | только бэкенд |
 | `npm start -- --no-open` | без открытия браузера |
 | `npm run list` | состав коробки |

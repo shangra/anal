@@ -25,7 +25,7 @@ export async function generateModuleEnvs(box, modules, { envFile, dryRun = false
   }
 
   logger.info(
-    `БД из .env: ${ctx.dbDialect}://${ctx.dbUser}@${ctx.dbHost}:${ctx.dbPort}/${ctx.dbDatabase} schema=${ctx.dbSchema}`,
+    `БД из .env: ${ctx.dbDialect}://${ctx.dbUser}@${ctx.dbHost}:${ctx.dbPort}/${ctx.dbDatabase} schema=${ctx.dbSchema} ssl=${ctx.dbSsl}`,
   );
 
   const written = [];
@@ -122,8 +122,8 @@ function buildContext(env, box, modules) {
   const spreadsheetHost = `localhost:${spreadsheetPort}`;
   const pivotEsBHost = `localhost:${pivotPort}`;
   const dbHost = take('DB_HOST');
-  const isLocalDb =
-    dbHost === '127.0.0.1' || dbHost === 'localhost' || dbHost === '::1';
+  const isLocalDb = isLoopbackHost(dbHost);
+  const dbSsl = resolveDbSsl(opt('DB_SSL', ''), isLocalDb, dbHost);
 
   return {
     missing,
@@ -146,7 +146,7 @@ function buildContext(env, box, modules) {
     corsOrigin: jsonOrigins(esbHost, adminHost, spreadsheetHost),
     sessionSecret: opt('SESSION_SECRET', 'qwerty'),
     connectorSalt: opt('CONNECTOR_SALT', '123'),
-    dbSsl: opt('DB_SSL', isLocalDb ? 'disable' : 'require'),
+    dbSsl,
     dbSslRejectUnauthorized: opt('DB_SSL_REJECT_UNAUTHORIZED', 'false'),
     mfTypesPort: opt('MF_TYPES_PORT', '33702'),
     serverKey: opt('SERVER_KEY', ''),
@@ -155,6 +155,30 @@ function buildContext(env, box, modules) {
     clientCa: opt('CLIENT_CA', ''),
     licenseKey: opt('LICENSE_KEY', ''),
   };
+}
+
+function isLoopbackHost(host) {
+  const h = String(host || '').trim().toLowerCase();
+  return h === '127.0.0.1' || h === 'localhost' || h === '::1';
+}
+
+function resolveDbSsl(explicit, isLocalDb, dbHost) {
+  const flag = String(explicit || '').trim().toLowerCase();
+  if (flag) {
+    if (!isLocalDb && (flag === 'disable' || flag === 'false' || flag === '0' || flag === 'off')) {
+      logger.warn(
+        `DB_SSL=${explicit} при хосте ${dbHost}: облачный Postgres обычно требует TLS. Оставляю как задано. Если логин 500 / no encryption — уберите DB_SSL из корневого .env.`,
+      );
+    }
+    return flag === 'true' || flag === '1' ? 'require' : explicit;
+  }
+  const auto = isLocalDb ? 'disable' : 'require';
+  logger.info(
+    isLocalDb
+      ? `DB_SSL не задан, локальный хост ${dbHost} → ${auto}`
+      : `DB_SSL не задан, удалённый хост ${dbHost} → ${auto}`,
+  );
+  return auto;
 }
 
 function jsonOrigins(...hosts) {

@@ -180,6 +180,13 @@ async function runRuntime(args) {
     return;
   }
 
+  if (args.command === 'db' || args.command === 'start') {
+    await generateModuleEnvs(box, all, {
+      envFile: args.envFile,
+      dryRun: args.dryRun,
+    });
+  }
+
   if (args.command === 'db') {
     await runMigrationsDb(box, all, { dryRun: args.dryRun });
     return;
@@ -362,17 +369,17 @@ sreda-builder ${VERSION}
 Коробочный запуск и сборка аналитики (Windows и macOS, команды из корня).
 
 Использование:
-  npm start
-  npm run env
-  npm run db
+  скопировать .env.example → .env, заполнить DB_*
   npm install
+  npm run db
+  npm start
 
 Команды:
-  start       Запустить коробку (pivot, аналитика, админка)
+  start       Сгенерировать .env модулей и запустить коробку
   ui          Только оболочка лаунчера (переходы аналитика / админка)
   install     Поставить зависимости во все модули
-  env         Сгенерировать .env модулей из глобального .env
-  db          Применить миграции (npm run db в модуле migrations)
+  env         Только переложить корневой .env в модули (start и db делают это сами)
+  db          Сгенерировать .env модулей и применить миграции
   list        Показать состав коробки
   validate    Проверить, что пути модулей существуют
   build       Собрать пакеты
@@ -397,7 +404,6 @@ sreda-builder ${VERSION}
 
 Примеры:
   npm install
-  npm run env
   npm run db
   npm start
   npm start -- --only pivot,spreadsheet
