@@ -88,8 +88,11 @@ class ConnectorClass extends LevelClass {
         if (!settings.database) {
             settings.database = process.env.DB_DATABASE;
         }
-        // Схему коннектора куба нельзя брать из DB_SCHEMA коробки (там метаданные: pivot15).
-        // Иначе факт/справочники ищутся как pivot15.dim_* и Postgres отвечает «relation does not exist».
+        // Схему коробки (pivot15 и т.п.) нельзя использовать для фактов/справочников куба.
+        const boxSchema = String(process.env.DB_SCHEMA || '').trim();
+        if (boxSchema && String(settings.schema || '').trim() === boxSchema) {
+            delete settings.schema;
+        }
 
         settings.pool =
             typeof settings.pool === 'string' && settings.pool.trim()
