@@ -165,7 +165,12 @@ class CubeQueryBuilderClass extends LevelClass {
      * @returns {Promise<{ entity: LevelClassI }>}
      */
     async getEntity(id) {
-        const entity = await Metadata.getParentInstance(id);
+        let entity = await Metadata.getParentInstance(id);
+
+        if (typeof entity?.query !== 'function') {
+            const InfoserviceClass = require('../metadata-infoservice/services/metadata/Infoservice.class');
+            entity = new InfoserviceClass({ id });
+        }
 
         return { entity };
     }

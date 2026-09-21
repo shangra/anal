@@ -590,6 +590,38 @@ class InfoserviceClass extends LevelClass {
     }
 
     /**
+     * SQL нижнего слоя для cube-query.
+     * Infoservice — плоская таблица, в отличие от Guide/MatrixGuide раньше не имел query().
+     *
+     * @param {string} id
+     * @param {object} [inputOptions]
+     * @returns {Promise<{ query: Ifrom, connector: object, table: string, metadata: object }>}
+     */
+    async query(id, inputOptions = {}) {
+        const options = structuredClone(inputOptions || {});
+        const item = await this.getItem(id);
+        const { table, sqlalias, onoff, blockMessage = '' } = item.manifest?.settings || {};
+
+        if (onoff) {
+            throw ApiError.ResourseBlocked(
+                blockMessage || `Таблица ${table} заблокирована для запросов в инфосервисе ${item?.name}`
+            );
+        }
+
+        const { connector } = await this.getConnector(item);
+        const from = this.getUserQuery(sqlalias, table);
+        const SQL = await connector.findSQL(from, { ...options, order: options.order || [] });
+        const alias = (from && typeof from === 'object' && from.alias) || table;
+
+        return {
+            query: { table: SQL, alias },
+            connector,
+            table,
+            metadata: item,
+        };
+    }
+
+    /**
      * Достает срез данных.
      *
      * @param {string} id - ID инфосервиса.
