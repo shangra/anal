@@ -267,24 +267,34 @@ class AbstractConnector extends Extensions {
     parseWith({ withOption, alias }) {
         let { name, query, connectionFields, mapping, type } = withOption;
 
-        if (!['inner', 'left', 'right', 'cross'].includes(type)) type = 'inner';
+        const fields = (connectionFields || []).filter(
+            (item) => item?.left?.field && item?.right?.field
+        );
+        const cteSql = String(query || '').replace(/;$/, '').trim();
 
-        const id = GlobalService.md5(query);
+        if (!['inner', 'left', 'right', 'cross'].includes(type)) type = 'inner';
+        if (!cteSql || !fields.length) {
+            type = 'no';
+        }
+
+        const id = GlobalService.md5(cteSql || name || 'empty');
 
         const prefix = 'with_';
 
         const rightSideName = name || `${prefix}${id}`;
 
-        const join = `${type} JOIN ${rightSideName} ON `
-            + connectionFields
-                .map(({ left, right }) => `"${alias}".${this.cast(`"${left.field}"`, left.type)} = "${rightSideName}".${this.cast(`"${right.field}"`, right.type)}`)
-                .join(' AND ');
+        const join = fields.length
+            ? `${type} JOIN ${rightSideName} ON `
+                + fields
+                    .map(({ left, right }) => `"${alias}".${this.cast(`"${left.field}"`, left.type)} = "${rightSideName}".${this.cast(`"${right.field}"`, right.type)}`)
+                    .join(' AND ')
+            : '';
 
-        const cte = `${rightSideName} as (${query})`;
+        const cte = cteSql ? `${rightSideName} as (${cteSql})` : '';
 
-        const volatile = this.volatile(query, prefix)?.sql;
+        const volatile = cteSql ? this.volatile(cteSql, prefix)?.sql : undefined;
 
-        const attributes = mapping.map(({ left, right }) => [`"${rightSideName}"."${left.field}"`, `"${right.field}"`]);
+        const attributes = (mapping || []).map(({ left, right }) => [`"${rightSideName}"."${left.field}"`, `"${right.field}"`]);
 
         return {
             id,
@@ -358,7 +368,7 @@ class AbstractConnector extends Extensions {
                 mergeDeep(withs, withCte);
                 mergeDeep(volatile, lVolatile);
 
-                sql.table = `${table} ${joinCte}`;
+                sql.table = joinCte ? `${table} ${joinCte}` : table;
             }
         }
 
@@ -405,7 +415,7 @@ class AbstractConnector extends Extensions {
 
             withQueries.push(cte);
 
-            if (type !== 'no') {
+            if (type !== 'no' && join) {
                 withJoins.push(join);
                 withAttributes.push(...attributes);
             }
@@ -477,7 +487,7 @@ class AbstractConnector extends Extensions {
                 volatile[id] = lVolatile;
             }
 
-            if (type !== 'no') {
+            if (type !== 'no' && join) {
                 withJoins.push(join);
                 withAttributes.push(...attributes);
             }
