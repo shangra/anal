@@ -43,31 +43,61 @@ class MetaQueryExplainService extends Extensions {
         return await ExplainRequest.del(id);
     }
 
-    // decorates PivotTableService._get
-    // expect args (result, id, params, options)
+    // decorates PivotTableService._get / ReportService._get
+    // Extensions may pass named fargs or positional (result, id, params, options)
     async init(inner, fargs, original) {
-        const {
-            result: { answerId },
-            id,
-            params,
-            options,
-        } = fargs;
+        const callArgs = Array.isArray(fargs?.$args)
+            ? fargs.$args
+            : Array.isArray(fargs?.args)
+              ? fargs.args
+              : Array.isArray(fargs)
+                ? fargs
+                : null;
 
-        if (params.explain) {
-            // params.explain -- это флажок от PivotTableService._get (HTTPCTX_PROP_EXPLAIN -- про другое)
-            // и если _там_ профилирование ВКЛЮЧЕНО, то инициализируем контекст для накопления данных
-            httpContext.set(HTTPCTX_PROP_EXPLAIN, { answerId, steps: [] });
+        const result =
+            (fargs && typeof fargs === 'object' && !Array.isArray(fargs) && fargs.result) ||
+            (inner && typeof inner === 'object' && inner.answerId && inner) ||
+            (Array.isArray(callArgs) ? callArgs[0] : null) ||
+            {};
+
+        const answerId = result.answerId;
+        const id =
+            (typeof fargs?.id === 'string' && fargs.id) ||
+            (Array.isArray(callArgs) ? callArgs[1] : undefined);
+        const params =
+            (fargs && typeof fargs === 'object' && !Array.isArray(fargs) && fargs.params && typeof fargs.params === 'object'
+                ? fargs.params
+                : null) ||
+            (Array.isArray(callArgs) && callArgs[2] && typeof callArgs[2] === 'object' ? callArgs[2] : {}) ||
+            {};
+        const options =
+            (Array.isArray(callArgs) ? callArgs[3] : undefined) ||
+            (fargs && typeof fargs === 'object' && !Array.isArray(fargs) ? fargs.options : undefined);
+
+        const applyOriginal = () => {
+            if (typeof original !== 'function') {
+                return inner;
+            }
+            if (Array.isArray(callArgs) && callArgs.length) {
+                return original.apply(this, callArgs);
+            }
+            return original.apply(this, [result, id, params, options]);
+        };
+
+        if (!params.explain || !answerId) {
+            return applyOriginal();
         }
 
-        const promise = original.apply(this, [fargs.result, id, params, options]);
+        // params.explain -- это флажок от PivotTableService._get (HTTPCTX_PROP_EXPLAIN -- про другое)
+        // и если _там_ профилирование ВКЛЮЧЕНО, то инициализируем контекст для накопления данных
+        httpContext.set(HTTPCTX_PROP_EXPLAIN, { answerId, steps: [] });
 
-        if (!params.explain) {
-            return promise;
-        }
+        const promise = applyOriginal();
 
-        let result, error;
+        let explained;
+        let error;
         try {
-            result = await promise;
+            explained = await promise;
         } catch (e) {
             error = e;
         }
@@ -81,9 +111,10 @@ class MetaQueryExplainService extends Extensions {
 
         // ... после этой манипуляции все .addConsole гарантированно отработали и теперь наш контекст консистентен:
         const ctx = httpContext.get(HTTPCTX_PROP_EXPLAIN);
+        const steps = Array.isArray(ctx?.steps) ? ctx.steps : [];
 
         await Promise.all(
-            ctx.steps.map(async (step) => {
+            steps.map(async (step) => {
                 if (!step.context) return;
                 const { id: metaId } = await ExplainRequestMeta.new(
                     { answerId, meta: JSON.stringify(step.context) },
@@ -104,7 +135,7 @@ class MetaQueryExplainService extends Extensions {
             throw error;
         }
 
-        return result;
+        return explained;
     }
 
     // decorates InfoserviceClass.console
