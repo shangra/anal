@@ -6,8 +6,86 @@
 const { Sequelize } = require('sequelize');
 const PatroniSwitcher = require('patroni-switcher');
 const fs = require('fs');
+const pg = require('pg');
 
 const config = require('./config');
+
+function sslFlag() {
+    return String(process.env.DB_SSL || process.env.PGSSLMODE || '').toLowerCase();
+}
+
+function sslDisabled() {
+    const flag = sslFlag();
+    return flag === 'false' || flag === 'disable' || flag === '0' || flag === 'off';
+}
+
+function sslForced() {
+    const flag = sslFlag();
+    return flag === 'true' || flag === '1' || flag === 'require' || flag === 'prefer';
+}
+
+function isLocalHost(host) {
+    const h = String(host || '');
+    return h === '127.0.0.1' || h === 'localhost' || h === '::1';
+}
+
+function wantSsl(host) {
+    if (sslDisabled()) {
+        return false;
+    }
+    if (sslForced()) {
+        return true;
+    }
+    return !isLocalHost(host);
+}
+
+function sslOptions() {
+    return {
+        require: true,
+        rejectUnauthorized:
+            process.env.DB_SSL_REJECT_UNAUTHORIZED === 'true' ||
+            process.env.REJECT_UNAUTH === 'true',
+    };
+}
+
+function injectClientSsl(config) {
+    if (typeof config === 'string') {
+        if (!wantSsl() && !sslForced()) {
+            return config;
+        }
+        if (/sslmode=/i.test(config)) {
+            return config;
+        }
+        if (sslDisabled()) {
+            return config;
+        }
+        const sep = config.includes('?') ? '&' : '?';
+        return `${config}${sep}sslmode=no-verify`;
+    }
+    const cfg = { ...(config || {}) };
+    if (cfg.ssl || sslDisabled()) {
+        return cfg;
+    }
+    if (!wantSsl(cfg.host)) {
+        return cfg;
+    }
+    cfg.ssl = sslOptions();
+    return cfg;
+}
+
+function patchPgClient() {
+    if (pg.Client && pg.Client.__sredaSslPatched) {
+        return;
+    }
+    const Orig = pg.Client;
+    class SredaPgClient extends Orig {
+        constructor(clientConfig) {
+            super(injectClientSsl(clientConfig));
+        }
+    }
+    SredaPgClient.__sredaSslPatched = true;
+    pg.Client = SredaPgClient;
+}
 
 /**
  * Класс подключения к базе данных.
@@ -33,32 +111,44 @@ class Connection {
             return Connection.instance;
         }
 
-        const dbConfig = config ?? {};
+        const dbConfig = { ...(config ?? {}) };
+        const host = String(dbConfig.host || process.env.DB_HOST || '');
+
+        patchPgClient();
+        dbConfig.dialectModule = pg;
 
         /**
          * add ssl certs
-         * Inbox: SSL только если заданы DB_SSL_CA/KEY/CERT.
-         * Облачный Postgres (ошибка «no encryption») — тот же dialectOptions.ssl,
-         * что у PostgresConnector при settings.ssl, без файлов сертификатов.
          */
         if (dbConfig.ca || dbConfig.cert || dbConfig.key) {
-            dbConfig.dialectOptions = {
-                ssl: {
-                    ...Connection.getCerts(dbConfig),
-                    require: true,
-                    rejectUnauthorized: Connection.sslRejectUnauthorized(),
-                },
+            const ssl = {
+                ...Connection.getCerts(dbConfig),
+                ...sslOptions(),
             };
-        } else if (Connection.wantSsl(dbConfig)) {
+            dbConfig.ssl = ssl;
             dbConfig.dialectOptions = {
-                ssl: {
-                    require: true,
-                    rejectUnauthorized: Connection.sslRejectUnauthorized(),
-                },
+                ...(dbConfig.dialectOptions || {}),
+                ssl,
             };
+        } else if (wantSsl(host)) {
+            process.env.PGSSLMODE = process.env.PGSSLMODE || 'require';
+            const ssl = sslOptions();
+            dbConfig.ssl = ssl;
+            dbConfig.dialectOptions = {
+                ...(dbConfig.dialectOptions || {}),
+                ssl,
+            };
+            console.info(`PG SSL enabled for ${host || '(no host)'}`);
         }
 
+        // Конструктор Sequelize не устанавливает соединение, поэтому отсутствие
+        // настроек БД не должно валить=require модулей на старте: без диалекта
+        // бросается исключение и приложение не стартует вовсе.
+        // Ошибка проявится только при реальном запросе к БД.
         if (!dbConfig.use_env_variable && !dbConfig.dialect) {
+            console.warn(
+                'DB_DIALECT не задан. Использован диалект по умолчанию: postgres'
+            );
             dbConfig.dialect = 'postgres';
         }
 
@@ -76,22 +166,6 @@ class Connection {
         Object.freeze(this);
 
         return Connection.instance;
-    }
-
-    static sslRejectUnauthorized() {
-        return (
-            process.env.DB_SSL_REJECT_UNAUTHORIZED === 'true' ||
-            process.env.REJECT_UNAUTH === 'true'
-        );
-    }
-
-    static wantSsl(dbConfig) {
-        const flag = String(process.env.DB_SSL || process.env.PGSSLMODE || '').toLowerCase();
-        const host = String(dbConfig.host || process.env.DB_HOST || '');
-        const isLocal = host === '127.0.0.1' || host === 'localhost' || host === '::1';
-        const disabled = flag === 'false' || flag === 'disable' || flag === '0' || flag === 'off';
-        const forced = flag === 'true' || flag === '1' || flag === 'require' || flag === 'prefer';
-        return !disabled && (forced || (!flag && !isLocal));
     }
 
     /**
