@@ -55,9 +55,6 @@ class RlsCoreModel {
     }
 
     static async getTableIdPermissions(table_id, table_name, options = {}) {
-        if (table_id == null || table_id === '') {
-            return [];
-        }
         const { transaction } = options;
         return Rls.findAll({
             where: {

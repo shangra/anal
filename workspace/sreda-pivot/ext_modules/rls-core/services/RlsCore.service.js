@@ -148,14 +148,11 @@ class RlsCoreService extends Extensions {
             console.warn('Отсутствует mapping для table_name');
             capitalizedTable_name = table_name;
         }
-        let parentPermissions = [];
-        if (parentId) {
-            parentPermissions = await RlsModel.getTableIdPermissions(
-                parentId,
-                capitalizedTable_name,
-                { transaction }
-            );
-        }
+        let parentPermissions = await RlsModel.getTableIdPermissions(
+            parentId,
+            capitalizedTable_name,
+            { transaction }
+        );
 
         //Внешние правила копирования прав
         if (options.filter) parentPermissions = parentPermissions.filter(options.filter);

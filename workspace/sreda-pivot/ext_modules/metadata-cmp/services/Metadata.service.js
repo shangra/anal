@@ -383,9 +383,7 @@ class MetadataService extends Extensions {
      */
     async setMetadata(metadata, transaction) {
         /** @type {{ owner_id: string}} */
-        const owner_id =
-            metadata.owner_id || '00000000-0000-0000-0000-000000000000';
-        metadata.owner_id = owner_id;
+        const { owner_id } = metadata;
         /** @type {{ class_id: string}} */
         const { class_id } = metadata;
         /** @type {string} */
