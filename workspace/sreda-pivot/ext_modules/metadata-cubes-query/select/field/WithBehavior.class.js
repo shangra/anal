@@ -84,10 +84,10 @@ class WithBehaviorClass extends BaseClass {
 
         this.getConnectionFields();
 
-        const settings = this.id && treeObject
+        const tableSettings = this.id && treeObject
             ? await this.meta.getSettings(this.id, treeObject)
             : {};
-        const { IdField, ParentField } = settings || {};
+        const { IdField, ParentField } = tableSettings || {};
 
         const pkName = IdField?.field;
         const parentName = ParentField?.field;
