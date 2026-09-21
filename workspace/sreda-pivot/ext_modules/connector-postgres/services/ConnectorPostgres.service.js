@@ -1,4 +1,4 @@
-const Connector = require('./connector/PostgresConnector');
+const Connector = require('../../metadata-connector/services/metadata/connectors/Postgres');
 
 class ConnectorPostgres {
     async loadConnectorsBefore(res, params) {

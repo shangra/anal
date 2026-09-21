@@ -30,7 +30,14 @@ class ConnectorClass extends LevelClass {
         };
     }
 
-    async loadConnectors(ConnectorList) {
+    async loadConnectors(list) {
+        // Диалекты с findSQL/generateCte — ими пользуются кубы, отчёты и инфосервисы.
+        // AST-коннектор из connector-postgres.findSQL не имеет и ломает весь срез.
+        list.postgres = require('./connectors/Postgres');
+        list.greenplum = require('./connectors/GreenPlum');
+        list.clickhouse = require('./connectors/ClickHouseConnector');
+        list.trino = require('./connectors/TrinoConnector');
+        list.rest = require('./connectors/RESTConnector');
         ConnectorListLoad = true;
     }
 

@@ -171,8 +171,25 @@ class QueryClass {
     async parseFizLayer(id, layers) {
         const [mainLvl, ...subLayers] = layers;
 
-        /** @type {{ query: Ifrom }} */
-        const { query: layerSql } = await this.entity.query(id, mainLvl);
+        let layerSql;
+        if (typeof this.entity?.query === 'function') {
+            try {
+                const out = await this.entity.query(id, mainLvl);
+                layerSql = out?.query ?? out;
+            } catch {
+                layerSql = null;
+            }
+        }
+        if (typeof layerSql === 'string') {
+            layerSql = { table: layerSql, alias: 't' };
+        }
+        if (!layerSql || typeof layerSql !== 'object' || !(layerSql.table || layerSql.raw)) {
+            if (typeof this.connector?.findSQL !== 'function') {
+                throw new Error('Коннектор не реализует findSQL');
+            }
+            const SQL = await this.connector.findSQL(mainLvl?.from || mainLvl?.table || 't', mainLvl || {});
+            layerSql = typeof SQL === 'object' ? SQL : { table: SQL, alias: 't' };
+        }
 
         const { sql, withs, volatile } = await this.connector.generateCte(layerSql, subLayers);
 

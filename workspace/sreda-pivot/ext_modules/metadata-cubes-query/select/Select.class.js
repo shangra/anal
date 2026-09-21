@@ -747,7 +747,7 @@ class SelectClass {
     async getLayerSql({ layer, entity, id }) {
         const [base, ...levels] = layer;
 
-        const { query } = await entity.query(id, base);
+        const query = await this.resolveBaseQuery({ entity, id, base });
 
         const { sql, withs, volatile } = await this.connector.generateCte(query, levels);
 
@@ -765,6 +765,39 @@ class SelectClass {
         const alias = 'cte';
 
         return { table, alias };
+    }
+
+    /**
+     * Базовый FROM: Guide/Matrix query() если умеет, иначе таблица слоя через this.connector.findSQL.
+     */
+    async resolveBaseQuery({ entity, id, base }) {
+        if (typeof entity?.query === 'function') {
+            try {
+                const out = await entity.query(id, base);
+                const query = out?.query ?? out;
+                if (typeof query === 'string' && query) {
+                    return { table: query, alias: this.table || 't' };
+                }
+                if (query && typeof query === 'object' && (query.table || query.raw)) {
+                    return query;
+                }
+            } catch {
+                // плоский Infoservice / AST-коннектор — собираем FROM сами
+            }
+        }
+
+        if (typeof this.connector?.findSQL !== 'function') {
+            throw new Error(
+                'Коннектор не реализует findSQL. Нужен metadata/connectors/Postgres, не AST PostgresConnector.'
+            );
+        }
+
+        const from =
+            this.table && typeof this.table === 'object'
+                ? this.table
+                : { table: this.table, alias: this.table };
+        const SQL = await this.connector.findSQL(from, base || {});
+        return { table: SQL, alias: from.alias || this.table || 't' };
     }
 
     sanitizeAttributes(attributes, attributesForDel) {
