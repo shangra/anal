@@ -389,7 +389,7 @@ class CubesClass extends LevelClass {
     async read(id, options = {}) {
         const meta = new CubesClass({ id });
         const treeObject = await this.tableInfo(meta, id);
-        for (const { ref } of Object.values(treeObject.Infoservices)) {
+        for (const { ref } of Object.values(treeObject?.Infoservices || {})) {
             if (!ref) continue;
 
             const metaId = await Metadata.getParentInstance(ref, {}, exInfoservicesClass);
@@ -496,17 +496,17 @@ class CubesClass extends LevelClass {
                 const meta = await Metadata.getParentInstance(InfoserviceGUID, {});
                 const tableInfo = await meta.tableInfo(meta, InfoserviceGUID);
 
-                const check = this.check({ InfoserviceFields: Object.keys(tableInfo.Fields), Fields, Values });
+                    const check = this.check({ InfoserviceFields: Object.keys(tableInfo?.Fields || {}), Fields, Values });
 
                 if (check) {
                     // TODO: должен быть выбор на фронте
                     if (!options.settings.dateDimension) {
-                        options.settings.dateDimension = Object.values(treeObject.AllFields || treeObject.Fields).find((field) => field.dateDimension);
+                        options.settings.dateDimension = Object.values(treeObject.AllFields || treeObject.Fields || {}).find((field) => field.dateDimension);
                     }
 
                     // TODO: должен быть выбор на фронте
                     if (!options.settings.accountDimension) {
-                        options.settings.accountDimension = Object.values(treeObject.AllFields || treeObject.Fields).find((field) => field.accountDimension);
+                        options.settings.accountDimension = Object.values(treeObject.AllFields || treeObject.Fields || {}).find((field) => field.accountDimension);
                     }
 
                     // const infoserviceMeta = Object.values(treeObject.Infoservices).find(i => i.ref === InfoserviceGUID);
@@ -524,7 +524,7 @@ class CubesClass extends LevelClass {
                     // FYI: This is deprecated logic. Sometimes using top level class Infoservice id, sometimes Cubes subclass InfoserviceList.
                     // FYI: Best practice must be Cubes subclass InfoserviceList. Will change it later.
                     // TODO: UI must use Cubes subclass InfoserviceList.
-                    const [layerId] = Object.entries(treeObject.Infoservices).find(([, { ref }]) => ref == InfoserviceGUID) ?? [];
+                    const [layerId] = Object.entries(treeObject.Infoservices || {}).find(([, { ref }]) => ref == InfoserviceGUID) ?? [];
 
                     await this.console(`Обрабатываем итоги`);
                     result.totals = await this.parseTotals({ data: result, cubeInfo, id: layerId, options });
@@ -807,17 +807,22 @@ class CubesClass extends LevelClass {
         let dataTable;
 
         const localOptions = structuredClone(options);
+        const settings = localOptions.settings ||= {};
+        const index = settings.index || [];
+        const columns = settings.columns || [];
+        const fieldsMap = layer?.AllFields || layer?.Fields || {};
+        const layerFields = layer?.Fields || {};
 
-        const attributes = [...localOptions.settings.index, ...localOptions.settings.columns];
+        const attributes = [...index, ...columns];
         const group = [...attributes];
 
         // проверяет что в переданных полях есть поля на которые выставленна сортировка по умолчанию
         // если такие есть то он докидывет в список подколей измерения поля которые участвуют в сортровке
-        for (const field in layer.Fields) {
+        for (const field in layerFields) {
             // проверяем что поле находится в списке выбранных измерений в колонках или строках
-            if (!(localOptions.settings.index.includes(field) || localOptions.settings.columns.includes(field))) continue;
+            if (!(index.includes(field) || columns.includes(field))) continue;
 
-            const { isOrderOn, refOrderField, ref } = layer.AllFields[field] || {};
+            const { isOrderOn, refOrderField, ref } = fieldsMap[field] || {};
 
             // проверяем что сортировка включена и выставленно поле сортировки
             if (!(isOrderOn && refOrderField)) continue;
@@ -825,33 +830,37 @@ class CubesClass extends LevelClass {
             // Проверяем, что есть ссылка
             if (!ref) continue;
 
-            const meta = await Metadata.getParentInstance(ref.value, undefined, exInfoservicesClass);
-            const treeObject = await meta.tableInfo(meta, ref.value);
+            const refId = typeof ref === 'object' ? ref.value : ref;
+            const meta = await Metadata.getParentInstance(refId, undefined, exInfoservicesClass);
+            const treeObject = await meta.tableInfo(meta, refId);
 
-            const orderRefField = treeObject.AllFieldsGUID[refOrderField.value];
+            const orderRefKey = typeof refOrderField === 'object' ? refOrderField.value : refOrderField;
+            const orderRefFieldMeta = treeObject?.AllFieldsGUID?.[orderRefKey] || treeObject?.FieldsGUID?.[orderRefKey];
 
             // проверяем что такое поле существует
-            if (!orderRefField) continue;
+            if (!orderRefFieldMeta) continue;
 
-            const orderField = orderRefField.field;
+            const orderField = orderRefFieldMeta.field;
 
             // проверяем что такого поле еще нет в списке
-            if ((localOptions.settings.fields?.[field]?.children || []).includes(orderField)) continue;
+            if ((settings.fields?.[field]?.children || []).includes(orderField)) continue;
 
-            localOptions.settings.fields[field] ||= {};
-            localOptions.settings.fields[field].children ||= [];
-            localOptions.settings.fields[field].children.push(orderRefField.field);
+            settings.fields ||= {};
+            settings.fields[field] ||= {};
+            settings.fields[field].children ||= [];
+            settings.fields[field].children.push(orderRefFieldMeta.field);
         }
 
-        const filteredAttr = this.transformFields(attributes).filter((column) => layer.Fields[column]);
+        const filteredAttr = this.transformFields(attributes).filter((column) => layerFields[column]);
 
         if (filteredAttr.length !== attributes.length) {
             return dataTable;
         }
 
-        for (const fieldName in localOptions.settings.aggfunc) {
-            const func = localOptions.settings.aggfunc[fieldName];
-            func.forEach((val) => {
+        for (const fieldName in (settings.aggfunc || {})) {
+            const func = settings.aggfunc[fieldName];
+            (Array.isArray(func) ? func : [func]).forEach((val) => {
+                if (!val) return;
                 const res = this.parseAggregateFunc({
                     fieldName,
                     func: val,
@@ -866,19 +875,23 @@ class CubesClass extends LevelClass {
             ...localOptions,
             attributes,
             group,
-            isMask: localOptions.settings?.isMask,
-            totals: localOptions.settings.totals,
-            where: localOptions.settings.where,
-            systemWhere: localOptions.settings.systemWhere ?? {},
-            order: localOptions.settings.order,
+            isMask: settings.isMask,
+            totals: settings.totals,
+            where: settings.where,
+            systemWhere: settings.systemWhere ?? {},
+            order: settings.order,
             withOutCount: localOptions.withOutCount ?? true,
             withOutOrder: true,
         };
 
         dataTable = await qb.read(layerId, newOptions, layer, cube);
 
-        dataTable.hierarchyFields = newOptions.group.reduce((acc, group) => {
-            acc[group] = layer.Fields[group] || {};
+        if (!dataTable) {
+            return dataTable;
+        }
+
+        dataTable.hierarchyFields = newOptions.group.reduce((acc, groupName) => {
+            acc[groupName] = layerFields[groupName] || {};
 
             return acc;
         }, {});
@@ -899,11 +912,12 @@ class CubesClass extends LevelClass {
         const field = func?.field ?? fieldName;
         const sqlVal = func?.name ?? func;
         /** @deprecated Spaghetti while UI can't use other */
-        const layerId = func.layer.manifest?.settings?.ref ?? func.layer.ref;
+        const layerRef = func?.layer;
+        const layerId = layerRef?.manifest?.settings?.ref ?? layerRef?.ref;
         const windowFunc = func?.windowFunc;
         const aggrFields = func?.aggrFields?.map(i => i.replace("\"\"", '"'));
 
-        if (!(layer === layerId || layer === layerId.value)) return null;
+        if (!layerId || !(layer === layerId || layer === layerId.value)) return null;
 
         if (typeof fieldName === 'string' && fieldName.trim() !== '') {
             const name = `${fieldName}${aggrDelimeter}${sqlVal.toUpperCase()}`;
