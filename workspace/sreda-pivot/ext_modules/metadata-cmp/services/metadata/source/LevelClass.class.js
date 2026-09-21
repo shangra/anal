@@ -312,6 +312,36 @@ class LevelClass extends Extensions {
         return keys;
     }
 
+    /**
+     * Физическое имя колонки из атрибута выборки: строка, [field, alias], { field, name, alias }.
+     * @param {unknown} attr
+     * @returns {unknown}
+     */
+    getFizField(attr) {
+        if (attr == null || attr === '') {
+            return attr;
+        }
+        if (Array.isArray(attr)) {
+            return this.getFizField(attr[0]);
+        }
+        if (typeof attr === 'object') {
+            return this.getFizField(attr.field ?? attr.name ?? attr.alias);
+        }
+        const text = String(attr);
+        if (text.includes(':->:')) {
+            return text.split(':->:')[0];
+        }
+        return text;
+    }
+
+    /**
+     * @param {unknown[]} attrs
+     * @returns {unknown[]}
+     */
+    getFizFields(attrs) {
+        return (Array.isArray(attrs) ? attrs : []).map((item) => this.getFizField(item));
+    }
+
 }
 
 module.exports = LevelClass;
