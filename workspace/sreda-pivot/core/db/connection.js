@@ -131,6 +131,7 @@ class Connection {
                 ssl,
             };
         } else if (wantSsl(host)) {
+            process.env.PGSSLMODE = process.env.PGSSLMODE || 'require';
             const ssl = sslOptions();
             dbConfig.ssl = ssl;
             dbConfig.dialectOptions = {

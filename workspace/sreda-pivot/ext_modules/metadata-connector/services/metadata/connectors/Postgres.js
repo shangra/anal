@@ -97,8 +97,6 @@ class Postgres extends AbstractConnector {
     async connect(connectionSettings) {
         if (!this.connector) {
             const settings = { ...connectionSettings };
-            settings.dialect = settings.dialect || 'postgres';
-            settings.dialectModule = pg;
 
             if (settings.ca || settings.cert || settings.key) {
                 const creds = await this.getSslCredentials(settings);
@@ -122,16 +120,9 @@ class Postgres extends AbstractConnector {
                 settings.native = settings.gss;
             }
 
-            const target = settings.connection_string
-                ? 'connection_string'
-                : `${settings.host || '127.0.0.1'}:${settings.port || 5432}/${settings.database || ''}`;
-            console.info(`Cube Postgres connect ${target}`);
-
             this.connector = settings.connection_string
                 ? new Sequelize(settings.connection_string, settings)
                 : new Sequelize(settings.database, settings.user, settings.password, settings);
-
-            this._connectTarget = target;
         }
     }
 
@@ -624,7 +615,7 @@ class Postgres extends AbstractConnector {
                     e.message = 'Нет доступных соединений с базой данных.';
                     break;
                 case 'SequelizeConnectionRefusedError':
-                    e.message = `В соединении с базой данных отказано (${this._connectTarget || [this.Model?.host, this.Model?.port].filter(Boolean).join(':') || 'неизвестный хост'}). Это коннектор куба, не метаданные: проверьте хост/порт в карточке коннектора и VPN.`;
+                    e.message = 'В соединении с базой данных отказано.';
                     break;
                 case 'SequelizeConnectionTimedOutError':
                     e.message = 'Истекло время попытки соединения с базой данных.';
