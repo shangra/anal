@@ -107,6 +107,13 @@ class Postgres extends AbstractConnector {
                         require: true,
                     },
                 };
+            } else if (settings.ssl) {
+                settings.dialectOptions = {
+                    ssl: {
+                        require: true,
+                        rejectUnauthorized: settings.rejectUnauthorized,
+                    },
+                };
             }
 
             if (settings.gss) {

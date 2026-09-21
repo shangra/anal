@@ -33,53 +33,65 @@ class Connection {
             return Connection.instance;
         }
 
-        Connection.applySsl(config);
+        const dbConfig = config ?? {};
+
+        /**
+         * add ssl certs
+         * Inbox: SSL только если заданы DB_SSL_CA/KEY/CERT.
+         * Облачный Postgres (ошибка «no encryption») — тот же dialectOptions.ssl,
+         * что у PostgresConnector при settings.ssl, без файлов сертификатов.
+         */
+        if (dbConfig.ca || dbConfig.cert || dbConfig.key) {
+            dbConfig.dialectOptions = {
+                ssl: {
+                    ...Connection.getCerts(dbConfig),
+                    require: true,
+                    rejectUnauthorized: Connection.sslRejectUnauthorized(),
+                },
+            };
+        } else if (Connection.wantSsl(dbConfig)) {
+            dbConfig.dialectOptions = {
+                ssl: {
+                    require: true,
+                    rejectUnauthorized: Connection.sslRejectUnauthorized(),
+                },
+            };
+        }
+
+        if (!dbConfig.use_env_variable && !dbConfig.dialect) {
+            dbConfig.dialect = 'postgres';
+        }
 
         Connection.instance = /** @type {ISequelize} */ (
-            config.use_env_variable
-                ? new Sequelize(process.env[config.use_env_variable], config)
+            dbConfig.use_env_variable
+                ? new Sequelize(process.env[dbConfig.use_env_variable], dbConfig)
                 : new PatroniSwitcher(
-                      config.database,
-                      config.username,
-                      config.password,
-                      config
+                      dbConfig.database,
+                      dbConfig.username,
+                      dbConfig.password,
+                      dbConfig
                   )
         );
-        // : new Sequelize(config.database, config.username, config.password, config);
 
         Object.freeze(this);
 
         return Connection.instance;
     }
 
-    static applySsl(dbConfig) {
+    static sslRejectUnauthorized() {
+        return (
+            process.env.DB_SSL_REJECT_UNAUTHORIZED === 'true' ||
+            process.env.REJECT_UNAUTH === 'true'
+        );
+    }
+
+    static wantSsl(dbConfig) {
         const flag = String(process.env.DB_SSL || process.env.PGSSLMODE || '').toLowerCase();
         const host = String(dbConfig.host || process.env.DB_HOST || '');
         const isLocal = host === '127.0.0.1' || host === 'localhost' || host === '::1';
         const disabled = flag === 'false' || flag === 'disable' || flag === '0' || flag === 'off';
         const forced = flag === 'true' || flag === '1' || flag === 'require' || flag === 'prefer';
-        const wantSsl = !disabled && (forced || (!flag && !isLocal));
-        const rejectUnauthorized = process.env.DB_SSL_REJECT_UNAUTHORIZED === 'true';
-
-        if (dbConfig.ca || dbConfig.cert || dbConfig.key) {
-            dbConfig.dialectOptions = {
-                ssl: {
-                    ...Connection.getCerts(dbConfig),
-                    require: true,
-                    rejectUnauthorized,
-                },
-            };
-            return;
-        }
-
-        if (wantSsl) {
-            dbConfig.dialectOptions = {
-                ssl: {
-                    require: true,
-                    rejectUnauthorized,
-                },
-            };
-        }
+        return !disabled && (forced || (!flag && !isLocal));
     }
 
     /**

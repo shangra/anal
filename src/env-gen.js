@@ -121,11 +121,14 @@ function buildContext(env, box, modules) {
   const adminHost = `localhost:${adminPort}`;
   const spreadsheetHost = `localhost:${spreadsheetPort}`;
   const pivotEsBHost = `localhost:${pivotPort}`;
+  const dbHost = take('DB_HOST');
+  const isLocalDb =
+    dbHost === '127.0.0.1' || dbHost === 'localhost' || dbHost === '::1';
 
   return {
     missing,
     nodeEnv: opt('NODE_ENV', 'development'),
-    dbHost: take('DB_HOST'),
+    dbHost,
     dbPort: take('DB_PORT', '5432'),
     dbUser: take('DB_USER'),
     dbPass: take('DB_PASS'),
@@ -143,7 +146,7 @@ function buildContext(env, box, modules) {
     corsOrigin: jsonOrigins(esbHost, adminHost, spreadsheetHost),
     sessionSecret: opt('SESSION_SECRET', 'qwerty'),
     connectorSalt: opt('CONNECTOR_SALT', '123'),
-    dbSsl: opt('DB_SSL', ''),
+    dbSsl: opt('DB_SSL', isLocalDb ? 'disable' : 'require'),
     dbSslRejectUnauthorized: opt('DB_SSL_REJECT_UNAUTHORIZED', 'false'),
     mfTypesPort: opt('MF_TYPES_PORT', '33702'),
     serverKey: opt('SERVER_KEY', ''),
