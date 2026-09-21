@@ -143,9 +143,9 @@ class QueryBuilderClass extends Extensions {
             let volatileOptions = [];
             let sqls = [];
 
-            queries.forEach(({ sql, withOptions: wOptions, volatileOptions: vOptions, options }) => {
-                wOptions.length && withOptions.push(...wOptions);
-                vOptions.length && volatileOptions.push(...vOptions);
+            queries.forEach(({ sql, withOptions: wOptions, volatileOptions: vOptions }) => {
+                wOptions?.length && withOptions.push(...wOptions);
+                vOptions?.length && volatileOptions.push(...vOptions);
 
                 sqls.push(sql);
             });
@@ -178,7 +178,7 @@ class QueryBuilderClass extends Extensions {
             await this.logger.console(`Закончили формировать итоги`);
         }
 
-        const optionsFields = [...options.settings.index, ...options.settings.columns];
+        const optionsFields = [...(options.settings?.index || []), ...(options.settings?.columns || [])];
         const maskFields = options.maskFields ?? [];
         const isMaskField = optionsFields.some(i => (maskFields.includes(i)));
 

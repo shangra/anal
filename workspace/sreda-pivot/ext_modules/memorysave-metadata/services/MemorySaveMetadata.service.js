@@ -128,7 +128,7 @@ class MemorySaveMetadataService extends Extensions {
 
         const Infoservices = new Set();
         const Refs = new Set();
-        for (const Infoservice of Object.values(info.Infoservices)) {
+        for (const Infoservice of Object.values(info?.Infoservices || {})) {
             const { value: iref } = ref_extract(Infoservice?.ref);
             if (!iref) continue;
 
@@ -147,16 +147,32 @@ class MemorySaveMetadataService extends Extensions {
         return [...Infoservices, ...Refs];
     }
 
+    /**
+     * ReadClass.getData(connector, from, id, options) / countData(connector, from, id).
+     * Extensions.buildFunctionParams перетирает id/options первым аргументом, поэтому берём $args.
+     * @private
+     */
+    resolveReadArgs(functionParams) {
+        const args = functionParams?.$args || functionParams?._args || functionParams?.args || [];
+        const list = Array.isArray(args) ? args : [];
+        return {
+            connector: list[0] ?? functionParams?.connector,
+            from: list[1] ?? functionParams?.from ?? {},
+            id: list[2] ?? (typeof functionParams?.id === 'string' ? functionParams.id : undefined),
+            options: list[3] ?? functionParams?.options ?? {},
+        };
+    }
+
     async getDataDecorate(innerResult, functionParams, originalMethod) {
-        const { connector, from, options, id } = functionParams;
+        const { connector, from, options, id } = this.resolveReadArgs(functionParams);
 
-        const volNames = (from.volatileOptions || []).map((i) => i.name).sort();
-        const withNames = (from.withOptions || []).map((i) => i.name).sort();
+        const volNames = (from?.volatileOptions || []).map((i) => i.name).sort();
+        const withNames = (from?.withOptions || []).map((i) => i.name).sort();
 
-        const settings = options.settings;
+        const settings = options?.settings || {};
 
-        const aggFuncs = Object.entries(settings.aggFuncs || {}).map(
-            ([key, value]) => `${key}_____${value.name}`
+        const aggFuncs = Object.entries(settings.aggFuncs || settings.aggfunc || {}).map(
+            ([key, value]) => `${key}_____${value?.name || value}`
         );
 
         const hashData = {
@@ -165,23 +181,23 @@ class MemorySaveMetadataService extends Extensions {
             withNames,
             volNames,
 
-            attributes: [...settings.index, ...settings.columns, ...aggFuncs],
+            attributes: [...(settings.index || []), ...(settings.columns || []), ...aggFuncs],
             aggfunc: options?.settings?.aggfunc || {},
 
             index: options?.settings?.index || [],
             columns: options?.settings?.columns || [],
 
-            where: settings?.where || options.where || {},
-            maskWhere: settings?.maskWhere || options.maskWhere || {},
-            systemWhere: settings?.systemWhere || options.systemWhere || {},
-            metaAccessWhere: settings?.metaAccessWhere || options.metaAccessWhere || {},
+            where: settings?.where || options?.where || {},
+            maskWhere: settings?.maskWhere || options?.maskWhere || {},
+            systemWhere: settings?.systemWhere || options?.systemWhere || {},
+            metaAccessWhere: settings?.metaAccessWhere || options?.metaAccessWhere || {},
 
             totals: settings.totals || {},
 
-            order: options.withOutOrder ? options.order : [],
+            order: options?.withOutOrder ? (options.order || []) : [],
 
-            limit: options.limit,
-            offset: options.offset,
+            limit: options?.limit,
+            offset: options?.offset,
 
             isReport: settings.isReport,
         };
@@ -195,11 +211,11 @@ class MemorySaveMetadataService extends Extensions {
     }
 
     async countDataDecorate(innerResult, functionParams, originalMethod) {
-        const { connector, from, options, id } = functionParams;
+        const { connector, from, id } = this.resolveReadArgs(functionParams);
 
         const key = this.generateReadKey(from, [id]);
 
-        return this.getData(originalMethod, key, [connector, from, options, id]);
+        return this.getData(originalMethod, key, [connector, from, id]);
     }
 
     /**
