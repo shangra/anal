@@ -192,6 +192,13 @@ async function runRuntime(args) {
     return;
   }
 
+  if (args.command === 'start' && !args.dryRun) {
+    await runMigrationsDb(box, all, {
+      skipIfReady: true,
+      skipLicense: true,
+    });
+  }
+
   const missing = selected.filter((mod) => !mod.exists && !mod.optional);
   if (missing.length > 0) {
     const lines = missing.map((mod) => `  ${mod.id}: ${mod.absDir}`).join('\n');
@@ -375,11 +382,11 @@ sreda-builder ${VERSION}
   npm start
 
 Команды:
-  start       Сгенерировать .env модулей и запустить коробку
+  start       .env модулей, при пустой DB_SCHEMA — миграции, затем сервисы
   ui          Только оболочка лаунчера (переходы аналитика / админка)
   install     Поставить зависимости во все модули
   env         Только переложить корневой .env в модули (start и db делают это сами)
-  db          Сгенерировать .env модулей и применить миграции
+  db          Сгенерировать .env и заново накатить миграции в DB_SCHEMA
   list        Показать состав коробки
   validate    Проверить, что пути модулей существуют
   build       Собрать пакеты
