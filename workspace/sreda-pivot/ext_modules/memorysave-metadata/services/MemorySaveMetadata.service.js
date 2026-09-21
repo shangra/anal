@@ -163,11 +163,24 @@ class MemorySaveMetadataService extends Extensions {
         };
     }
 
+    pickOriginal(originalMethod, functionParams) {
+        if (typeof originalMethod === 'function') {
+            return originalMethod;
+        }
+        const args = functionParams?.$args || functionParams?._args || [];
+        return [functionParams?.originalMethod, ...args].find((item) => typeof item === 'function');
+    }
+
     async getDataDecorate(innerResult, functionParams, originalMethod) {
+        const run = this.pickOriginal(originalMethod, functionParams);
+        if (typeof run !== 'function') {
+            return innerResult;
+        }
+
         const { connector, from, options, id } = this.resolveReadArgs(functionParams);
 
-        const volNames = (from?.volatileOptions || []).map((i) => i.name).sort();
-        const withNames = (from?.withOptions || []).map((i) => i.name).sort();
+        const volNames = (from?.volatileOptions || []).map((i) => i?.name).filter(Boolean).sort();
+        const withNames = (from?.withOptions || []).map((i) => i?.name).filter(Boolean).sort();
 
         const settings = options?.settings || {};
 
@@ -202,7 +215,7 @@ class MemorySaveMetadataService extends Extensions {
             isReport: settings.isReport,
         };
 
-        return this.getData(originalMethod, `${this.PREFIX}:${id}_${hash(hashData)}`, [
+        return this.getData(run, `${this.PREFIX}:${id}_${hash(hashData)}`, [
             connector,
             from,
             id,
@@ -211,11 +224,16 @@ class MemorySaveMetadataService extends Extensions {
     }
 
     async countDataDecorate(innerResult, functionParams, originalMethod) {
+        const run = this.pickOriginal(originalMethod, functionParams);
+        if (typeof run !== 'function') {
+            return innerResult;
+        }
+
         const { connector, from, id } = this.resolveReadArgs(functionParams);
 
         const key = this.generateReadKey(from, [id]);
 
-        return this.getData(originalMethod, key, [connector, from, id]);
+        return this.getData(run, key, [connector, from, id]);
     }
 
     /**
@@ -228,6 +246,10 @@ class MemorySaveMetadataService extends Extensions {
      * @param {any[]} params
      */
     async getData(originalMethod, key, params) {
+        if (typeof originalMethod !== 'function' || typeof key !== 'string' || !Array.isArray(params)) {
+            return undefined;
+        }
+
         const applicationCache = await this.getCache(key);
         if (applicationCache) {
             console.log(`MemorySaveMetadataService: Get cache key ${key}`);
@@ -235,16 +257,15 @@ class MemorySaveMetadataService extends Extensions {
             return applicationCache;
         }
 
-        return originalMethod.apply(this, params).then(async (i) => {
-            const isEnabled = await this.isCacheEnabled();
-            if (isEnabled) {
-                console.log(`MemorySaveMetadataService: Set cache key ${key}`);
+        const rows = await originalMethod(...params);
+        const isEnabled = await this.isCacheEnabled();
+        if (isEnabled) {
+            console.log(`MemorySaveMetadataService: Set cache key ${key}`);
 
-                await MemorySave.set(key, i);
-            }
+            await MemorySave.set(key, rows);
+        }
 
-            return i;
-        });
+        return rows;
     }
 
     /**

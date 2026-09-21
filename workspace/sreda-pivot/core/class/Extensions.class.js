@@ -1258,14 +1258,22 @@ class Extensions {
                 originalMethod,
             ]);
         } catch (e) {
-            Extensions.log('invokeHook retry args', {
+            Extensions.log('invokeHook failed', {
                 hook: hook.name || 'anonymous',
+                functionState,
                 message: e.message,
             });
-            try {
-                next = await run(call.method, call.hookThis, args);
-            } catch (e2) {
-                next = await run(hook, call.hookThis, args);
+            // Старый before-хук ждал позиционные аргументы метода.
+            // decorate/after так вызывать нельзя: любой сбой внутри хука
+            // превращался во второй вызов с connector/from вместо originalMethod.
+            if (functionState === 'before') {
+                try {
+                    next = await run(call.method, call.hookThis, args);
+                } catch (e2) {
+                    throw e;
+                }
+            } else {
+                throw e;
             }
         }
 
@@ -1333,6 +1341,9 @@ class Extensions {
                     message: e.message,
                     stack: e.stack,
                 });
+                if (functionState === 'decorate') {
+                    continue;
+                }
                 throw e;
             }
         }
@@ -1467,7 +1478,7 @@ class Extensions {
                 typeof result === 'object' &&
                 result.result === true;
 
-            if (decorated.trace) {
+            if (decorated.trace && decorated.result !== undefined) {
                 Extensions.log('source skipped by decorate', methodName);
                 result = decorated.result;
             } else if (innerAlreadyWrote) {
