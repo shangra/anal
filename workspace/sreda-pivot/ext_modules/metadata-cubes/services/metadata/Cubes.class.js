@@ -857,6 +857,8 @@ class CubesClass extends LevelClass {
             return dataTable;
         }
 
+        let boundToThisLayer = false;
+        let addedLayerMeasure = false;
         for (const fieldName in (settings.aggfunc || {})) {
             const func = settings.aggfunc[fieldName];
             (Array.isArray(func) ? func : [func]).forEach((val) => {
@@ -866,8 +868,19 @@ class CubesClass extends LevelClass {
                     func: val,
                     layer: layerId
                 });
-                res && attributes.push(res);
+                if (!res) return;
+                boundToThisLayer = true;
+                const physical = typeof res === 'object' ? res.field || fieldName : fieldName;
+                if (!layerFields[physical]) {
+                    return;
+                }
+                addedLayerMeasure = true;
+                attributes.push(res);
             });
+        }
+
+        if (boundToThisLayer && !addedLayerMeasure) {
+            return { rows: [], count: 0, totals: {} };
         }
 
         const newOptions = {
