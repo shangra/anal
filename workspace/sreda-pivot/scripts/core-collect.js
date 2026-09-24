@@ -34,7 +34,11 @@ const result = spawnSync(
     }
 );
 
-const { fixGeneratedIdents } = require('./fix-collect-idents');
-fixGeneratedIdents(root);
+try {
+    const { fixGeneratedIdents } = require('./fix-collect-idents');
+    fixGeneratedIdents(root);
+} catch (e) {
+    console.error('core:collect: postprocess ident fix failed', e);
+}
 
 process.exit(result.status === null ? 1 : result.status);

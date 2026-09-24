@@ -1,14 +1,14 @@
 /**
- * Collect схлопывает разные пути в одно const-имя.
- * Правим только строки `const X = require` и значения `{ key: X }`.
- * Глобальная замена \\bX\\b ломала require/module.exports.
+ * Collect даёт одно const-имя двум разным AbstractConnector.js.
+ * Разбор по строкам, без глобальной замены require/module.
  */
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
 
-const REQUIRE_RE = /^const (\w+) = require\((['"])(.+?)\2\);/gm;
+const LINE_RE =
+    /^const (\w+) = require\((['"])(.+?)\2\);?\s*$/;
 
 const RESERVED = new Set([
     'require',
@@ -26,9 +26,6 @@ const RESERVED = new Set([
     'undefined',
     'eval',
     'arguments',
-    'const',
-    'let',
-    'var',
 ]);
 
 function pascal(part) {
@@ -41,7 +38,7 @@ function pascal(part) {
 }
 
 function identFromRequire(req) {
-    const parts = req
+    const parts = String(req)
         .replace(/^\.\//, '')
         .replace(/\\/g, '/')
         .replace(/\.js$/i, '')
@@ -72,69 +69,60 @@ function fixFile(filePath) {
     if (!fs.existsSync(filePath)) {
         return 0;
     }
-    const src = fs.readFileSync(filePath, 'utf8');
-    const rows = [];
-    REQUIRE_RE.lastIndex = 0;
-    let match;
-    while ((match = REQUIRE_RE.exec(src))) {
-        rows.push({
-            oldName: match[1],
-            quote: match[2],
-            req: match[3],
-        });
+    const raw = fs.readFileSync(filePath, 'utf8');
+    const nl = raw.includes('\r\n') ? '\r\n' : '\n';
+    const lines = raw.split(/\r?\n/);
+    const used = new Set();
+    const firstReqByName = new Map();
+    const extras = {};
+
+    for (let i = 0; i < lines.length; i++) {
+        const matched = lines[i].match(LINE_RE);
+        if (!matched) {
+            continue;
+        }
+        const [, name, quote, req] = matched;
+        if (RESERVED.has(name)) {
+            continue;
+        }
+        if (!firstReqByName.has(name)) {
+            firstReqByName.set(name, req);
+            used.add(name);
+            continue;
+        }
+        const neu = uniqueIdent(identFromRequire(req), used);
+        lines[i] = `const ${neu} = require(${quote}${req}${quote});`;
+        extras[name] = extras[name] || [];
+        extras[name].push(neu);
     }
-    const counts = {};
-    for (const row of rows) {
-        counts[row.oldName] = (counts[row.oldName] || 0) + 1;
-    }
-    const dupes = new Set(
-        Object.keys(counts).filter(
-            (name) => counts[name] > 1 && !RESERVED.has(name)
-        )
-    );
-    if (!dupes.size) {
+
+    const names = Object.keys(extras);
+    if (!names.length) {
         return 0;
     }
 
-    const used = new Set(
-        rows.map((row) => row.oldName).filter((name) => !dupes.has(name))
-    );
-    const queues = {};
-    for (const row of rows) {
-        if (!dupes.has(row.oldName)) {
-            row.newName = row.oldName;
-            continue;
-        }
-        row.newName = uniqueIdent(identFromRequire(row.req), used);
-        queues[row.oldName] = queues[row.oldName] || [];
-        queues[row.oldName].push(row.newName);
-    }
-
-    let out = src.replace(REQUIRE_RE, (full, name, quote, req) => {
-        const row = rows.find(
-            (item) => item.oldName === name && item.req === req && !item.done
-        );
-        if (!row) {
-            return full;
-        }
-        row.done = true;
-        return `const ${row.newName} = require(${quote}${req}${quote});`;
-    });
-
-    for (const oldName of dupes) {
-        const queue = (queues[oldName] || []).slice();
-        out = out.replace(
+    let text = lines.join(nl);
+    for (const oldName of names) {
+        const queue = extras[oldName].slice();
+        let seen = 0;
+        text = text.replace(
             new RegExp(`(:\\s*)${oldName}\\b`, 'g'),
-            (_, prefix) => {
-                const next =
-                    queue.length > 1 ? queue.shift() : queue[0] || oldName;
-                return `${prefix}${next}`;
+            (all, prefix) => {
+                seen += 1;
+                if (seen === 1) {
+                    return all;
+                }
+                const next = queue.shift();
+                return next ? `${prefix}${next}` : all;
             }
         );
     }
 
-    fs.writeFileSync(filePath, out);
-    return dupes.size;
+    fs.writeFileSync(filePath, text);
+    console.log(
+        `core:collect: ${path.basename(filePath)} — дубли: ${names.join(', ')}`
+    );
+    return names.length;
 }
 
 function fixGeneratedIdents(root) {
@@ -144,9 +132,9 @@ function fixGeneratedIdents(root) {
     for (const name of files) {
         total += fixFile(path.join(ext, name));
     }
-    if (total) {
+    if (!total) {
         console.log(
-            `core:collect: исправлены дубли имён в сгенерированных файлах (${total}).`
+            'core:collect: дублей const в generated-файлах не найдено (проверьте, что postprocess вообще запустился).'
         );
     }
     return total;
@@ -155,5 +143,6 @@ function fixGeneratedIdents(root) {
 module.exports = { fixGeneratedIdents, fixFile };
 
 if (require.main === module) {
-    fixGeneratedIdents(path.join(__dirname, '..'));
+    const n = fixGeneratedIdents(path.join(__dirname, '..'));
+    process.exit(n < 0 ? 1 : 0);
 }
