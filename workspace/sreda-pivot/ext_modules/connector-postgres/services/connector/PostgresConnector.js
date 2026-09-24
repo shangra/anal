@@ -26,7 +26,7 @@ const { Sequelize, QueryTypes } = require('sequelize');
 const { b } = require('../../../query-builder');
 const { PostgresDialect } = require('../../../postgres-ext-query-builder');
 
-const AbstractConnector = require('../../../metadata-connector/services/connectors/AbstractConnectorAst');
+const AbstractConnector = require('../../../metadata-connector/services/connectors/AbstractConnector');
 const ApiError = require('../../../../core/exceptions/ApiError');
 
 class PostgresConnector extends AbstractConnector {
