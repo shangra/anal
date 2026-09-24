@@ -210,57 +210,6 @@
     },
     "platform": {
         "restmodule": "rest-express",
-        "memorysave": "memorysave-storage-redis",
-        "structure": {
-            "core": [
-                "core/app.js",
-                "core/class/Extensions.class.js",
-                "core/command/build/hooks.js",
-                "core/command/build/index.js",
-                "core/command/build/middlewares.js",
-                "core/command/build/models.js",
-                "core/command/build/platform.js",
-                "core/command/build/routers.js",
-                "core/command/build/services.js",
-                "core/command/build/utils/index.js",
-                "core/command/build/utils/toposort.js",
-                "core/command/dumpdb.js",
-                "core/command/extdb.js",
-                "core/command/patroni.js",
-                "core/command/readme.js",
-                "core/config/query-dto.js",
-                "core/console.js",
-                "core/crypto-env.js",
-                "core/db/config.js",
-                "core/db/connection.js",
-                "core/db/dto/Query.dto.js",
-                "core/db/models/index.js",
-                "core/db/models/types/index.d.ts",
-                "core/db/rls/DB.js",
-                "core/db/rls/rls.js",
-                "core/db/rls/RLSManager.js",
-                "core/db/rls/types/index.d.ts",
-                "core/db/rls/types/Options.d.ts",
-                "core/db/rls/types/rls.d.ts",
-                "core/exceptions/ApiError.js",
-                "core/hooks.js",
-                "core/index.js",
-                "core/resources-monitor.js",
-                "core/services/crypto.js",
-                "core/services/esb-api.js",
-                "core/services/Global.service.js",
-                "core/services/http-context.js",
-                "core/services/memory-save.js",
-                "core/services/object-memory.js",
-                "core/src/constants.js",
-                "core/sreda-env.js",
-                "core/types/index.d.ts",
-                "core/wrapper.js",
-                "server.js"
-            ]
-        },
-        "core": {
-            "core": "^1.5.16"
-        }
+        "memorysave": "memorysave-storage-redis"
     }
 }
