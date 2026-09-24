@@ -511,16 +511,16 @@ class PivotTableService extends Extensions {
             }
         }
 
-        json.data = table.rows;
+        json.data = table?.rows || [];
 
-        const { hierarchyFields } = table;
+        const hierarchyFields = table?.hierarchyFields || {};
 
         let pivoted = {
             columns: [],
             index: [],
             data: []
         };
-        if (table.rows.length > 0) {
+        if (json.data.length > 0) {
             const PivotPythonService = new PivotPythonServiceClass();
             pivoted = await PivotPythonService.get(json, table);
             pivoted.totals = table.totals;
@@ -536,10 +536,10 @@ class PivotTableService extends Extensions {
             index: {},
             columns: {}
         };
-        if (params.rows.length > 0 && hierarchyFields[params.rows[0].name].hierarchy) {
+        if (params.rows.length > 0 && hierarchyFields[params.rows[0].name]?.hierarchy) {
             pivoted.settings.index = { ...pivoted.settings.index, hierarchy: true };
         }
-        if (params.columns.length > 0 && hierarchyFields[params.columns[0].name].hierarchy) {
+        if (params.columns.length > 0 && hierarchyFields[params.columns[0].name]?.hierarchy) {
             pivoted.settings.columns = { ...pivoted.settings.columns, hierarchy: true };
         }
 
