@@ -88,10 +88,8 @@ class ConnectorClass extends LevelClass {
         if (!settings.database) {
             settings.database = process.env.DB_DATABASE;
         }
-        // Схему коробки (pivot15 и т.п.) нельзя использовать для фактов/справочников куба.
-        const boxSchema = String(process.env.DB_SCHEMA || '').trim();
-        if (boxSchema && String(settings.schema || '').trim() === boxSchema) {
-            delete settings.schema;
+        if (!settings.schema) {
+            settings.schema = process.env.DB_SCHEMA;
         }
 
         settings.pool =

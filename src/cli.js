@@ -378,6 +378,7 @@ sreda-builder ${VERSION}
 Использование:
   скопировать .env.example → .env, заполнить DB_*
   npm install
+  npm run env
   npm run db
   npm start
 
@@ -386,7 +387,7 @@ sreda-builder ${VERSION}
   ui          Только оболочка лаунчера (переходы аналитика / админка)
   install     Поставить зависимости во все модули
   env         Только переложить корневой .env в модули (start и db делают это сами)
-  db          Сгенерировать .env и заново накатить миграции в DB_SCHEMA
+  db          Миграции и дампы в DB_SCHEMA, ключ активации, вопрос про тестовый куб
   list        Показать состав коробки
   validate    Проверить, что пути модулей существуют
   build       Собрать пакеты
@@ -411,6 +412,7 @@ sreda-builder ${VERSION}
 
 Примеры:
   npm install
+  npm run env
   npm run db
   npm start
   npm start -- --only pivot,spreadsheet
