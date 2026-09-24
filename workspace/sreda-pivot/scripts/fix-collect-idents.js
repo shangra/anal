@@ -1,7 +1,7 @@
 /**
- * Collect схлопывает разные пути в одно const-имя
- * (два AbstractConnector.js → Identifier has already been declared).
- * Ядро не трогаем: правим уже сгенерированные index-файлы.
+ * Collect схлопывает разные пути в одно const-имя.
+ * Правим только строки `const X = require` и значения `{ key: X }`.
+ * Глобальная замена \\bX\\b ломала require/module.exports.
  */
 'use strict';
 
@@ -9,6 +9,27 @@ const fs = require('fs');
 const path = require('path');
 
 const REQUIRE_RE = /^const (\w+) = require\((['"])(.+?)\2\);/gm;
+
+const RESERVED = new Set([
+    'require',
+    'module',
+    'exports',
+    'import',
+    'export',
+    'default',
+    'global',
+    'process',
+    'Buffer',
+    '__dirname',
+    '__filename',
+    'console',
+    'undefined',
+    'eval',
+    'arguments',
+    'const',
+    'let',
+    'var',
+]);
 
 function pascal(part) {
     return String(part)
@@ -26,14 +47,20 @@ function identFromRequire(req) {
         .replace(/\.js$/i, '')
         .split('/')
         .filter((p) => p && p !== 'services');
-    const ident = parts.map(pascal).join('') || 'Module';
-    return /^\d/.test(ident) ? `M${ident}` : ident;
+    let ident = parts.map(pascal).join('') || 'CollectedModule';
+    if (/^\d/.test(ident)) {
+        ident = `M${ident}`;
+    }
+    if (RESERVED.has(ident)) {
+        ident = `Ident${ident}`;
+    }
+    return ident;
 }
 
 function uniqueIdent(base, used) {
     let name = base;
     let n = 2;
-    while (used.has(name)) {
+    while (used.has(name) || RESERVED.has(name)) {
         name = `${base}${n}`;
         n += 1;
     }
@@ -54,8 +81,6 @@ function fixFile(filePath) {
             oldName: match[1],
             quote: match[2],
             req: match[3],
-            index: match.index,
-            text: match[0],
         });
     }
     const counts = {};
@@ -63,13 +88,17 @@ function fixFile(filePath) {
         counts[row.oldName] = (counts[row.oldName] || 0) + 1;
     }
     const dupes = new Set(
-        Object.keys(counts).filter((name) => counts[name] > 1)
+        Object.keys(counts).filter(
+            (name) => counts[name] > 1 && !RESERVED.has(name)
+        )
     );
     if (!dupes.size) {
         return 0;
     }
 
-    const used = new Set(rows.map((row) => row.oldName).filter((name) => !dupes.has(name)));
+    const used = new Set(
+        rows.map((row) => row.oldName).filter((name) => !dupes.has(name))
+    );
     const queues = {};
     for (const row of rows) {
         if (!dupes.has(row.oldName)) {
@@ -93,13 +122,15 @@ function fixFile(filePath) {
     });
 
     for (const oldName of dupes) {
-        const queue = queues[oldName] || [];
-        out = out.replace(new RegExp(`\\b${oldName}\\b`, 'g'), () => {
-            if (queue.length > 1) {
-                return queue.shift();
+        const queue = (queues[oldName] || []).slice();
+        out = out.replace(
+            new RegExp(`(:\\s*)${oldName}\\b`, 'g'),
+            (_, prefix) => {
+                const next =
+                    queue.length > 1 ? queue.shift() : queue[0] || oldName;
+                return `${prefix}${next}`;
             }
-            return queue[0] || oldName;
-        });
+        );
     }
 
     fs.writeFileSync(filePath, out);
