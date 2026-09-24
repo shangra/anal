@@ -1,5 +1,5 @@
 /**
- * Обёртка npm run core:collect без правок ядра.
+ * Обёртка npm run core:collect в sreda-pivot, без правок ядра.
  * core/command/build/platform.js делает path.join(..., platform[key])
  * и падает, если в package.json.platform лежит объект (structure/core).
  */
@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 
-const root = process.cwd();
+const root = path.join(__dirname, '..');
 const pkgPath = path.join(root, 'package.json');
 const buildEntry = path.join(root, 'core', 'command', 'build');
 
@@ -43,7 +43,7 @@ const buildJs = fs.existsSync(buildEntry)
 
 if (!buildJs) {
     console.error(
-        'core:collect: нет core/command/build. Это штатный сборщик NodeCMS, его нельзя подменить правкой ядра. Скопируйте каталог core/command/build из исходного pivot и повторите npm run core:collect.'
+        'core:collect: нет core/command/build рядом с этим скриптом. Скопируйте каталог core/command/build из исходного pivot.'
     );
     process.exit(1);
 }

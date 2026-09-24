@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "core:collect": "node ../scripts/npm-core-collect.js",
+        "core:collect": "node core/command/build",
         "db:collect": "node core/command/extdb",
         "db:drop": "node ext_modules/test-cms/src/dropAllTables.js",
         "db:migrate:up": "npm run db:collect && node core/command/patroni -y db:migrate",
