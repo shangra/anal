@@ -146,6 +146,27 @@ function isClassBinding(binding) {
   return false;
 }
 
+/**
+ * CMS читает имена аргументов через fn.toString() (id, inputOptions, ConnectorList).
+ * Их нельзя переименовывать — хуки пишут functionParams.inputOptions и т.п.
+ */
+function isParamBinding(binding) {
+  if (!binding || binding.kind === 'param') {
+    return true;
+  }
+  let current = binding.path;
+  while (current) {
+    if (current.listKey === 'params') {
+      return true;
+    }
+    if (current.isFunction()) {
+      break;
+    }
+    current = current.parentPath;
+  }
+  return false;
+}
+
 function nextName(used, n) {
   let i = n;
   let name;
@@ -165,7 +186,7 @@ function renameScope(scope, used, counter) {
       continue;
     }
     const binding = scope.bindings[name];
-    if (!binding || isClassBinding(binding)) {
+    if (!binding || isClassBinding(binding) || isParamBinding(binding)) {
       continue;
     }
     if (
@@ -173,7 +194,6 @@ function renameScope(scope, used, counter) {
       binding.kind === 'let' ||
       binding.kind === 'var' ||
       binding.kind === 'hoisted' ||
-      binding.kind === 'param' ||
       binding.kind === 'local' ||
       binding.kind === 'module'
     ) {
