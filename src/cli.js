@@ -165,7 +165,10 @@ async function runRuntime(args) {
     if (!pivot?.exists) {
       throw new Error('Не найден модуль pivot (sreda-pivot).');
     }
-    await obfuscatePivotExtModules(pivot.absDir);
+    await obfuscatePivotExtModules(pivot.absDir, {
+      dryRun: args.dryRun,
+      force: args.force,
+    });
     return;
   }
 
@@ -275,6 +278,7 @@ function parseArgs(argv) {
     noRestart: false,
     doInstall: false,
     noOpen: false,
+    force: false,
     uiMode: null,
     envFile: null,
   };
@@ -352,6 +356,9 @@ function parseArgs(argv) {
       case '--no-open':
         args.noOpen = true;
         break;
+      case '--force':
+        args.force = true;
+        break;
       case '--ui':
         args.uiMode = needValue(token, tokens);
         if (args.uiMode !== 'launcher' && args.uiMode !== 'browser') {
@@ -414,6 +421,7 @@ sreda-builder ${VERSION}
   --only <id,id>          Только эти модули
   --skip <id,id>          Исключить модули
   --dry-run               Показать план, не запускать
+  --force                 Obfuscate: заново из ext_modules.bak
   --install               Перед стартом поставить недостающие зависимости
   --no-restart            Не перезапускать упавшие сервисы
   --verbose               Поток логов модулей в консоль
