@@ -7,6 +7,16 @@ const RlsCoreServiceClass = require('../../rls-core/services/RlsCore.service');
 const RlsCoreService = new RlsCoreServiceClass();
 const { GUID_ID, ADMINISTRATOR_ID, READALL_ID, TABLE_NAME } = require('../constants');
 
+function asText(value) {
+    if (value == null) {
+        return null;
+    }
+    if (typeof value === 'string') {
+        return value;
+    }
+    return JSON.stringify(value);
+}
+
 class SchemaService extends Extensions {
     async getAllSchemas(ownerId) {
         // ../api/metadata/guide/0b0595bb-d11e-49f7-8b76-15e2b6cd43a5?options=%7B%22limit%22%3A200%2C%22offset%22%3A0%7D
@@ -68,8 +78,8 @@ class SchemaService extends Extensions {
             schema_owner: ownerId,
             name: shemaInfo.name,
             standart_schema: shemaInfo.standart ?? false,
-            schema: schema ? schema : null,
-            snapshot: snapshot ? snapshot : null,
+            schema: asText(schema),
+            snapshot: asText(snapshot),
         };
         const metadata = await Service.update(id, values);
 
@@ -92,8 +102,8 @@ class SchemaService extends Extensions {
             schema_owner: ownerId,
             name: shemaInfo.name,
             standart_schema: shemaInfo.standart ?? false,
-            schema: schema ? schema : null,
-            snapshot: snapshot ? snapshot : null,
+            schema: asText(schema),
+            snapshot: asText(snapshot),
         };
         const metadata = await Service.create(id, values, { customRls: true });
         const row = Array.isArray(metadata?.data)
