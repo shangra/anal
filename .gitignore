@@ -19,8 +19,6 @@ workspace/**/coverage/
 workspace/**/@mf-types/
 workspace/**/bi_ui_build/
 workspace/**/build/
-!workspace/sreda-pivot/core/command/build/
-!workspace/sreda-pivot/core/command/build/**
 
 sbox-inbox/
 sbox-inbox-*/

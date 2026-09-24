@@ -4,7 +4,6 @@ const https = require('https');
 const timers = require('node:timers/promises');
 const { readFileSync } = require('fs');
 
-require('./fix-services-dupes').sync();
 require('./core');
 
 // временное решение с общим хранилищем в памяти кластера для всех воркеров

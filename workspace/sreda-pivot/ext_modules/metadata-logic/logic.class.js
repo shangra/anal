@@ -1,4 +1,4 @@
-const MemorySave = require('../../core/services/memory-save');
+const MemorySave = require('../core/services/memory-save');
 const crypto = require('crypto');
 const ApiError = require('../../core/exceptions/ApiError');
 
