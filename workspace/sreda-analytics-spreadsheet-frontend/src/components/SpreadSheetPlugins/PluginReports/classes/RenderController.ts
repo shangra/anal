@@ -279,13 +279,33 @@ export class RenderController {
                 ),
             ]);
 
+            const columnTitle = (column: string | Measure) => {
+                if (!isColumnMeasure(column)) {
+                    return String(columnsRef[column] ?? column ?? '');
+                }
+                for (const layer of data.params.layers || []) {
+                    const key = `${column.alias}:->:${layer.name}`;
+                    if (columnsRef[key]) {
+                        return columnsRef[key];
+                    }
+                }
+                const value = data.params.values.find((item) => item.name === column.field);
+                const child = value?.child?.find(
+                    (item) => String(item.sqlName || item.name).toUpperCase() === String(column.func).toUpperCase(),
+                );
+                if (value) {
+                    return child ? `${description(value)} / ${description(child)}` : description(value);
+                }
+                return column.alias;
+            };
+
             data.table.columns.forEach((c, i) => {
                 const styles: ICellStyles = {
                     backgroundColor: 'var(--primary-bg-color)',
                     horizontalAlign: 'start',
                 };
 
-                this.newRecord(cells, rowStart, i, columnsRef[c] ?? c, styles);
+                this.newRecord(cells, rowStart, i, columnTitle(c), styles);
             });
 
             rowStart++;
