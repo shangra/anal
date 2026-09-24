@@ -920,7 +920,7 @@ class AbstractConnector extends Extensions {
         const lFrom =
             typeof from == 'object'
                 ? b.subsrc(from.table, from.alias)
-                : b.table(from);
+                : b.table(from, { schema: this.settings?.schema || this.Model?.schema });
         return b.select({
             from: b.from(lFrom),
             projections,

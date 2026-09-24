@@ -803,12 +803,18 @@ class SelectClass {
             );
         }
 
+        // Строка — имя таблицы: findSQL сам подставит schema коннектора.
+        // Объект { table, alias } здесь нельзя: внутренний FROM станет
+        // (demo_car_sales) без схемы и уйдёт в public.
         const from =
             this.table && typeof this.table === 'object'
                 ? this.table
-                : { table: this.table, alias: this.table };
+                : this.table;
         const SQL = await this.connector.findSQL(from, base || {});
-        return { table: SQL, alias: from.alias || this.table || 't' };
+        const alias =
+            (from && typeof from === 'object' && from.alias) ||
+            (typeof this.table === 'string' ? this.table : 't');
+        return { table: SQL, alias };
     }
 
     sanitizeAttributes(attributes, attributesForDel) {

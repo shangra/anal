@@ -25,6 +25,10 @@ const DIM_PERIOD = '9c8e1a20-7d4b-4f3a-9b2e-000000000042';
 const FACT_TABLE = 'demo_car_sales';
 const PLAN_TABLE = 'demo_car_plan';
 
+const PAGE_ID = '9c8e1a20-7d4b-4f3a-9b2e-0000000000a0';
+const OLAP_PARENT = '6f9de64d-75e3-4ef4-9cdb-a6f07c31db2d';
+const OLAP_TEMPLATE = '4a46875c-5b6f-4aa2-8399-0d51e0588d7b';
+
 function quoteIdent(name) {
   return `"${String(name).replace(/"/g, '""')}"`;
 }
@@ -44,14 +48,26 @@ export async function seedDemoCube(client, env) {
   await createFactTable(client, schema, PLAN_TABLE);
   await fillFact(client, schema, FACT_TABLE, 1);
   await fillFact(client, schema, PLAN_TABLE, 0.92);
+  const factCount = await countRows(client, schema, FACT_TABLE);
+  const planCount = await countRows(client, schema, PLAN_TABLE);
+  if (!factCount || !planCount) {
+    throw new Error(
+      `тестовый куб: в ${schema}.${FACT_TABLE}/${PLAN_TABLE} нет строк (факт=${factCount}, план=${planCount})`,
+    );
+  }
 
   const now = new Date().toISOString();
   const rows = buildMetadata(schema, now);
   for (const row of rows) {
     await upsertMeta(client, schema, row);
   }
+  try {
+    await seedOlapPage(client, schema);
+  } catch (error) {
+    logger.warn(`страница аналитики не создана: ${error.message}`);
+  }
   logger.ok(
-    `тестовый куб «ПродажиАвтомобилей» в схеме ${schema}: таблицы ${FACT_TABLE}, ${PLAN_TABLE}`,
+    `тестовый куб «ПродажиАвтомобилей» в схеме ${schema}: ${FACT_TABLE}=${factCount}, ${PLAN_TABLE}=${planCount}`,
   );
   return { cubeId: CUBE_ID, schema, tables: [FACT_TABLE, PLAN_TABLE] };
 }
@@ -70,6 +86,16 @@ async function createFactTable(client, schema, table) {
   `);
 }
 
+async function countRows(client, schema, table) {
+  const q = `${quoteIdent(schema)}.${quoteIdent(table)}`;
+  const res = await client.query(`SELECT COUNT(*)::int AS n FROM ${q}`);
+  return res.rows[0]?.n || 0;
+}
+
+function tableSqlalias(schema, table) {
+  return `SELECT * FROM ${quoteIdent(schema)}.${quoteIdent(table)}`;
+}
+
 async function fillFact(client, schema, table, factor) {
   const q = `${quoteIdent(schema)}.${quoteIdent(table)}`;
   await client.query(`DELETE FROM ${q}`);
@@ -84,7 +110,11 @@ async function fillFact(client, schema, table, factor) {
     for (const brand of brands) {
       for (const period of periods) {
         n += 1;
-        const id = `9c8e1a20-7d4b-4f3a-9b2e-${String(table === FACT_TABLE ? 100000000000 + n : 200000000000 + n).padStart(12, '0')}`;
+        const suffix = String(100000000000 + n).padStart(12, '0');
+        const id =
+          table === FACT_TABLE
+            ? `9c8e1a20-7d4b-4f3a-9b2e-${suffix}`
+            : `9c8e1a20-7d4b-4f3a-9b2f-${suffix}`;
         const units = 8 + n;
         const revenue = Math.round((120000 + n * 17500) * factor);
         params.push(id, region, brand, period, revenue, units);
@@ -111,6 +141,7 @@ function buildMetadata(schema, now) {
       'ФактПродажАвто',
       {
         table: FACT_TABLE,
+        sqlalias: tableSqlalias(schema, FACT_TABLE),
         connector: { link: CONNECTOR_CLASS, value: CONNECTOR_ID },
         onoff: false,
       },
@@ -124,6 +155,7 @@ function buildMetadata(schema, now) {
       'ПланПродажАвто',
       {
         table: PLAN_TABLE,
+        sqlalias: tableSqlalias(schema, PLAN_TABLE),
         connector: { link: CONNECTOR_CLASS, value: CONNECTOR_ID },
         onoff: false,
       },
@@ -213,11 +245,11 @@ function owners(parent, name, factFieldId, planFieldId) {
   return [
     meta(factId, parent, OWNER_LIST_CLASS, 'InfoserviseList', `${name} / Факт`, {
       infoservice: { link: CUBE_LAYERS_CLASS, value: LAYER_FACT },
-      field: { link: FACT_IS, value: factFieldId },
+      field: { link: IS_FIELDS_CLASS, value: factFieldId },
     }),
     meta(planId, parent, OWNER_LIST_CLASS, 'InfoserviseList', `${name} / План`, {
       infoservice: { link: CUBE_LAYERS_CLASS, value: LAYER_PLAN },
-      field: { link: PLAN_IS, value: planFieldId },
+      field: { link: IS_FIELDS_CLASS, value: planFieldId },
     }),
   ];
 }
@@ -283,5 +315,82 @@ async function upsertMeta(client, schema, row) {
       row.createdAt,
       row.updatedAt,
     ],
+  );
+}
+
+async function seedOlapPage(client, schema) {
+  const pages = `${quoteIdent(schema)}."Pages"`;
+  const params = `${quoteIdent(schema)}."PageParams"`;
+  const tparams = `${quoteIdent(schema)}."TemplateParams"`;
+  const parent = await client.query(`SELECT id, uri FROM ${pages} WHERE id = $1 AND markdel = 0`, [
+    OLAP_PARENT,
+  ]);
+  if (!parent.rows[0]) {
+    logger.warn('страница-родитель OLAP не найдена — куб в дереве аналитики не повесил');
+    return;
+  }
+  const parentUri = String(parent.rows[0].uri || '').replace(/\/$/, '');
+  const uri = `${parentUri}/prodazhiautomobilej`;
+  const now = new Date().toISOString();
+  await client.query(
+    `INSERT INTO ${pages}
+       (id, markdel, rank, name, description, uri, urifind, parent, active, link, content_type, template, "createdAt", "updatedAt")
+     VALUES ($1, 0, 0, $2, $3, $4, $4, $5, 1, $8, 'application/json', $6, $7, $7)
+     ON CONFLICT (id) DO UPDATE SET
+       name = EXCLUDED.name,
+       description = EXCLUDED.description,
+       uri = EXCLUDED.uri,
+       urifind = EXCLUDED.urifind,
+       parent = EXCLUDED.parent,
+       active = 1,
+       markdel = 0,
+       template = EXCLUDED.template,
+       "updatedAt" = EXCLUDED."updatedAt"`,
+    [PAGE_ID, 'prodazhiautomobilej', 'ПродажиАвтомобилей', uri, OLAP_PARENT, OLAP_TEMPLATE, now, '00000000-0000-0000-0000-000000000000'],
+  );
+  const cubeParam = await client.query(
+    `SELECT id FROM ${tparams} WHERE template_id = $1 AND name = 'cubeId' AND markdel = 0 LIMIT 1`,
+    [OLAP_TEMPLATE],
+  );
+  if (!cubeParam.rows[0]) {
+    logger.warn('у шаблона OLAP нет параметра cubeId — страница без привязки к кубу');
+    return;
+  }
+  const paramId = '9c8e1a20-7d4b-4f3a-9b2e-0000000000a1';
+  await upsertPageParam(client, params, paramId, PAGE_ID, cubeParam.rows[0].id, CUBE_ID, now);
+  const serverParam = await client.query(
+    `SELECT id FROM ${tparams} WHERE template_id = $1 AND name = 'server' AND markdel = 0 LIMIT 1`,
+    [OLAP_TEMPLATE],
+  );
+  if (serverParam.rows[0]) {
+    await upsertPageParam(
+      client,
+      params,
+      '9c8e1a20-7d4b-4f3a-9b2e-0000000000a2',
+      PAGE_ID,
+      serverParam.rows[0].id,
+      'pivot',
+      now,
+    );
+  }
+  logger.ok(`страница аналитики ${uri}`);
+}
+
+async function upsertPageParam(client, table, id, pageId, templateParamId, value, now) {
+  const existing = await client.query(
+    `SELECT id FROM ${table} WHERE page_id = $1 AND template_param_id = $2 LIMIT 1`,
+    [pageId, templateParamId],
+  );
+  if (existing.rows[0]) {
+    await client.query(
+      `UPDATE ${table} SET value = $1, markdel = 0, "updatedAt" = $2 WHERE id = $3`,
+      [value, now, existing.rows[0].id],
+    );
+    return;
+  }
+  await client.query(
+    `INSERT INTO ${table} (id, markdel, page_id, template_param_id, value, "createdAt", "updatedAt")
+     VALUES ($1, 0, $2, $3, $4, $5, $5)`,
+    [id, pageId, templateParamId, value, now],
   );
 }

@@ -91,6 +91,9 @@ class ConnectorClass extends LevelClass {
         if (!settings.schema) {
             settings.schema = process.env.DB_SCHEMA;
         }
+        if (settings.schema && !settings.searchPath) {
+            settings.searchPath = settings.schema;
+        }
 
         settings.pool =
             typeof settings.pool === 'string' && settings.pool.trim()

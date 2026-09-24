@@ -4,6 +4,7 @@ import readline from 'node:readline/promises';
 import { loadEnvFile, upsertEnvKey } from './env-file.js';
 import { spawnCommand } from './exec.js';
 import { pathExists } from './fs-utils.js';
+import { logger } from './logger.js';
 import { envWantsDemoCube, seedDemoCube } from './demo-cube.js';
 
 /**
@@ -260,6 +261,7 @@ async function upsertSredaPivotConnector(client, env, schema) {
       database: env.DB_DATABASE || '',
       schema,
       user: env.DB_USER || '',
+      searchPath: schema,
       pool: '',
       cluster: '',
       connection_string: '',
