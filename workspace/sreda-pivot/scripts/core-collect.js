@@ -34,4 +34,7 @@ const result = spawnSync(
     }
 );
 
+const { fixGeneratedIdents } = require('./fix-collect-idents');
+fixGeneratedIdents(root);
+
 process.exit(result.status === null ? 1 : result.status);
