@@ -3,6 +3,25 @@
 const fs = require('fs');
 const path = require('path');
 
+const RESERVED = new Set([
+    'require',
+    'module',
+    'exports',
+    'eval',
+    'arguments',
+    'import',
+    'export',
+    'default',
+    'await',
+    'yield',
+    'undefined',
+    'global',
+    'process',
+    'Buffer',
+    '__dirname',
+    '__filename',
+]);
+
 function toPascal(part) {
     return String(part)
         .replace(/\.js$/i, '')
@@ -13,29 +32,48 @@ function toPascal(part) {
 }
 
 function nameFromRequire(req) {
-    const posix = String(req).replace(/^\.\//, '').replace(/\\/g, '/').replace(/\.js$/i, '');
+    const posix = String(req)
+        .replace(/^\.\//, '')
+        .replace(/\\/g, '/')
+        .replace(/\.js$/i, '');
     const parts = posix.split('/').filter(Boolean);
     const mod = parts[0] || 'Mod';
     const afterServices = posix.includes('/services/')
-        ? posix.split('/services/')[1]
+        ? posix.split('/services/').slice(1).join('_')
         : parts.slice(1).join('/');
     const segs = String(afterServices)
         .split('/')
         .filter(Boolean)
         .map(toPascal);
-    const ident = [toPascal(mod), ...segs].join('');
+    let ident = [toPascal(mod), ...segs].join('');
+    if (!ident || RESERVED.has(ident)) {
+        ident = `Svc${ident || 'Anon'}`;
+    }
     return /^\d/.test(ident) ? `M${ident}` : ident;
 }
 
 function uniqueName(base, used) {
     let name = base;
     let n = 2;
-    while (used.has(name)) {
+    while (used.has(name) || RESERVED.has(name)) {
         name = `${base}${n}`;
         n += 1;
     }
     used.add(name);
     return name;
+}
+
+function replaceObjectValues(text, oldName, queue, skipFirst) {
+    let seen = 0;
+    const colon = new RegExp(`(:\\s*)${oldName}\\b`, 'g');
+    return text.replace(colon, (all, prefix) => {
+        seen += 1;
+        if (seen <= skipFirst) {
+            return all;
+        }
+        const next = queue.shift();
+        return next ? `${prefix}${next}` : all;
+    });
 }
 
 function sync() {
@@ -49,6 +87,7 @@ function sync() {
     const lineRe = /^const (\w+) = require\((['"])(.+?)\2\);?\s*$/;
     const used = new Set();
     const extras = {};
+    const keptOriginal = {};
     let changed = false;
 
     for (let i = 0; i < lines.length; i++) {
@@ -57,8 +96,10 @@ function sync() {
             continue;
         }
         const [, name, quote, req] = matched;
-        if (!used.has(name)) {
+        const mustRename = used.has(name) || RESERVED.has(name);
+        if (!mustRename) {
             used.add(name);
+            keptOriginal[name] = true;
             continue;
         }
         const neu = uniqueName(nameFromRequire(req), used);
@@ -75,18 +116,8 @@ function sync() {
     let text = lines.join(nl);
     for (const oldName of Object.keys(extras)) {
         const queue = extras[oldName].slice();
-        let seen = 0;
-        text = text.replace(
-            new RegExp(`(:\\s*)${oldName}\\b`, 'g'),
-            (all, prefix) => {
-                seen += 1;
-                if (seen === 1) {
-                    return all;
-                }
-                const next = queue.shift();
-                return next ? `${prefix}${next}` : all;
-            }
-        );
+        const skipFirst = keptOriginal[oldName] ? 1 : 0;
+        text = replaceObjectValues(text, oldName, queue, skipFirst);
     }
     fs.writeFileSync(file, text);
     console.log(
