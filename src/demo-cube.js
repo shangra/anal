@@ -1,33 +1,21 @@
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { logger } from './logger.js';
-
-const CONNECTOR_ID = '5af041e3-6657-4064-a89a-390135440967';
-const CONNECTOR_CLASS = 'cce0463c-2dd3-4ee2-aef0-4b83c9c29970';
-const CUBES_CLASS = '4d0cb622-60fc-40db-97d6-be103b26051e';
-const INFOSERVICE_CLASS = 'b44b4843-f919-4362-b95c-4c354b2505bd';
-const IS_FIELDS_CLASS = '1fa330a3-4b65-42e4-b12f-1fabd0c08945';
-const CUBE_LAYERS_CLASS = '75960867-7c8d-486a-ad15-94d387cda86e';
-const MEASURES_CLASS = 'b8e2b31f-f36d-4b77-b13d-f391bd96c60a';
-const DIMENSIONS_CLASS = '00234649-8eaa-4a3d-9adb-280b01fa8437';
-const OWNER_LIST_CLASS = '4bc0bfd0-6fb5-4f85-8668-117a42604ddc';
-const AGG_CLASS = '0e71dd74-a34b-4a8a-a5f0-e730901e0e82';
-
-const CUBE_ID = '9c8e1a20-7d4b-4f3a-9b2e-000000000001';
-const FACT_IS = '9c8e1a20-7d4b-4f3a-9b2e-000000000010';
-const PLAN_IS = '9c8e1a20-7d4b-4f3a-9b2e-000000000011';
-const LAYER_FACT = '9c8e1a20-7d4b-4f3a-9b2e-000000000020';
-const LAYER_PLAN = '9c8e1a20-7d4b-4f3a-9b2e-000000000021';
-const MEAS_REV = '9c8e1a20-7d4b-4f3a-9b2e-000000000030';
-const MEAS_UNITS = '9c8e1a20-7d4b-4f3a-9b2e-000000000031';
-const DIM_REGION = '9c8e1a20-7d4b-4f3a-9b2e-000000000040';
-const DIM_BRAND = '9c8e1a20-7d4b-4f3a-9b2e-000000000041';
-const DIM_PERIOD = '9c8e1a20-7d4b-4f3a-9b2e-000000000042';
-
-const FACT_TABLE = 'demo_car_sales';
-const PLAN_TABLE = 'demo_car_plan';
+import {
+  buildEtalonMetadata,
+  CONNECTOR_PIVOT,
+  CUBE_ID,
+  CUBES_CLASS,
+  INFOSERVICE_CLASS,
+} from './demo-cube-meta.js';
 
 const PAGE_ID = '9c8e1a20-7d4b-4f3a-9b2e-0000000000a0';
 const OLAP_PARENT = '6f9de64d-75e3-4ef4-9cdb-a6f07c31db2d';
 const OLAP_TEMPLATE = '4a46875c-5b6f-4aa2-8399-0d51e0588d7b';
+
+const dumpsDir = join(dirname(fileURLToPath(import.meta.url)), 'demo-dumps');
+const TABLE_DATA = JSON.parse(readFileSync(join(dumpsDir, 'tables.json'), 'utf8'));
 
 function quoteIdent(name) {
   return `"${String(name).replace(/"/g, '""')}"`;
@@ -44,20 +32,84 @@ export function envWantsDemoCube(env = process.env) {
 export async function seedDemoCube(client, env) {
   const schema = env.DB_SCHEMA || 'pivot';
   await client.query(`CREATE SCHEMA IF NOT EXISTS ${quoteIdent(schema)}`);
-  await createFactTable(client, schema, FACT_TABLE);
-  await createFactTable(client, schema, PLAN_TABLE);
-  await fillFact(client, schema, FACT_TABLE, 1);
-  await fillFact(client, schema, PLAN_TABLE, 0.92);
-  const factCount = await countRows(client, schema, FACT_TABLE);
-  const planCount = await countRows(client, schema, PLAN_TABLE);
-  if (!factCount || !planCount) {
-    throw new Error(
-      `тестовый куб: в ${schema}.${FACT_TABLE}/${PLAN_TABLE} нет строк (факт=${factCount}, план=${planCount})`,
-    );
+  await createDimHierarchy(client, schema, 'dim_auto_car_hierarchy');
+  await createDimHierarchy(client, schema, 'dim_region_sales');
+  await createDimCalc(client, schema);
+  await createFactTable(client, schema, 'fact_car_sales');
+  await createFactTable(client, schema, 'plan_car_sales');
+  await fillRows(client, schema, 'dim_auto_car_hierarchy', TABLE_DATA.dim_auto_car_hierarchy, [
+    'id',
+    'parent_id',
+    'name',
+    'sort_order',
+    'level',
+  ]);
+  await fillRows(client, schema, 'dim_region_sales', TABLE_DATA.dim_region_sales, [
+    'id',
+    'parent_id',
+    'name',
+    'sort_order',
+    'level',
+  ]);
+  await fillRows(client, schema, 'dim_calculation_method', TABLE_DATA.dim_calculation_method, [
+    'id',
+    'name',
+    'description',
+  ]);
+  await fillRows(client, schema, 'fact_car_sales', TABLE_DATA.fact_car_sales, factColumns());
+  const planRows = TABLE_DATA.plan_car_sales?.length
+    ? TABLE_DATA.plan_car_sales
+    : TABLE_DATA.fact_car_sales.map((row) => ({
+        ...row,
+        quantity_sold: round2(row.quantity_sold * 0.92),
+        revenue_amount: round2(row.revenue_amount * 0.92),
+      }));
+  await fillRows(client, schema, 'plan_car_sales', planRows, factColumns());
+
+  const counts = {};
+  for (const table of [
+    'dim_auto_car_hierarchy',
+    'dim_region_sales',
+    'dim_calculation_method',
+    'fact_car_sales',
+    'plan_car_sales',
+  ]) {
+    counts[table] = await countRows(client, schema, table);
+  }
+  if (!counts.fact_car_sales) {
+    throw new Error(`тестовый куб: в ${schema}.fact_car_sales нет строк`);
   }
 
   const now = new Date().toISOString();
-  const rows = buildMetadata(schema, now);
+  const sqlalias = (table) => `SELECT * FROM ${quoteIdent(schema)}.${quoteIdent(table)}`;
+  const rows = buildEtalonMetadata(CONNECTOR_PIVOT).map((item) => {
+    const settings = { ...item.settings };
+    if (settings.table) {
+      settings.sqlalias = sqlalias(settings.table);
+    }
+    return {
+      id: item.id,
+      markdel: 0,
+      parent: item.parent,
+      class_id: item.class_id,
+      class: item.class,
+      name: item.name,
+      description: item.description,
+      manifest: JSON.stringify({
+        owner_id: item.parent,
+        class_id: item.class_id,
+        class: item.class,
+        name: item.name,
+        description: item.description,
+        settings,
+        events: {},
+        ...(settings.id ? { id: settings.id } : {}),
+      }),
+      rank: 0,
+      createdAt: now,
+      updatedAt: now,
+    };
+  });
   for (const row of rows) {
     await upsertMeta(client, schema, row);
     await copyMetadataRls(client, schema, row.parent, row.id);
@@ -74,225 +126,96 @@ export async function seedDemoCube(client, env) {
     [CUBE_ID],
   );
   logger.ok(
-    `тестовый куб «ПродажиАвтомобилей» в схеме ${schema}: ${FACT_TABLE}=${factCount}, ${PLAN_TABLE}=${planCount}, rls=${rlsCount.rows[0]?.n || 0}`,
+    `тестовый куб «ПродажиАвтомобилей» ${CUBE_ID} в ${schema}: fact=${counts.fact_car_sales}, plan=${counts.plan_car_sales}, auto=${counts.dim_auto_car_hierarchy}, region=${counts.dim_region_sales}, calc=${counts.dim_calculation_method}, meta=${rows.length}, rls=${rlsCount.rows[0]?.n || 0}`,
   );
-  return { cubeId: CUBE_ID, schema, tables: [FACT_TABLE, PLAN_TABLE] };
+  return {
+    cubeId: CUBE_ID,
+    schema,
+    tables: Object.keys(counts),
+  };
+}
+
+function factColumns() {
+  return [
+    'id',
+    'dim_auto_id',
+    'report_date',
+    'dim_region_id',
+    'dim_calc_method_id',
+    'quantity_sold',
+    'revenue_amount',
+    'avg_price',
+  ];
+}
+
+function round2(value) {
+  return Math.round(Number(value) * 100) / 100;
+}
+
+async function createDimHierarchy(client, schema, table) {
+  const q = `${quoteIdent(schema)}.${quoteIdent(table)}`;
+  await client.query(`
+    CREATE TABLE IF NOT EXISTS ${q} (
+      id integer PRIMARY KEY,
+      parent_id integer,
+      name text NOT NULL,
+      sort_order integer,
+      level integer
+    )
+  `);
+}
+
+async function createDimCalc(client, schema) {
+  const q = `${quoteIdent(schema)}.${quoteIdent('dim_calculation_method')}`;
+  await client.query(`
+    CREATE TABLE IF NOT EXISTS ${q} (
+      id integer PRIMARY KEY,
+      name text NOT NULL,
+      description text
+    )
+  `);
 }
 
 async function createFactTable(client, schema, table) {
   const q = `${quoteIdent(schema)}.${quoteIdent(table)}`;
   await client.query(`
     CREATE TABLE IF NOT EXISTS ${q} (
-      id uuid PRIMARY KEY,
-      region varchar(64) NOT NULL,
-      brand varchar(64) NOT NULL,
-      sale_period date NOT NULL,
+      id integer PRIMARY KEY,
+      dim_auto_id integer NOT NULL,
+      report_date date NOT NULL,
+      dim_region_id integer NOT NULL,
+      dim_calc_method_id integer NOT NULL,
+      quantity_sold numeric(18,2) NOT NULL,
       revenue_amount numeric(18,2) NOT NULL,
-      units_sold integer NOT NULL
+      avg_price numeric(18,2) NOT NULL
     )
   `);
+}
+
+async function fillRows(client, schema, table, rows, columns) {
+  const q = `${quoteIdent(schema)}.${quoteIdent(table)}`;
+  await client.query(`DELETE FROM ${q}`);
+  if (!rows.length) return;
+  const placeholders = [];
+  const params = [];
+  let i = 0;
+  for (const row of rows) {
+    const slice = [];
+    for (const col of columns) {
+      params.push(row[col] ?? null);
+      i += 1;
+      slice.push(`$${i}`);
+    }
+    placeholders.push(`(${slice.join(',')})`);
+  }
+  const cols = columns.map(quoteIdent).join(', ');
+  await client.query(`INSERT INTO ${q} (${cols}) VALUES ${placeholders.join(',')}`, params);
 }
 
 async function countRows(client, schema, table) {
   const q = `${quoteIdent(schema)}.${quoteIdent(table)}`;
   const res = await client.query(`SELECT COUNT(*)::int AS n FROM ${q}`);
   return res.rows[0]?.n || 0;
-}
-
-function tableSqlalias(schema, table) {
-  return `SELECT * FROM ${quoteIdent(schema)}.${quoteIdent(table)}`;
-}
-
-async function fillFact(client, schema, table, factor) {
-  const q = `${quoteIdent(schema)}.${quoteIdent(table)}`;
-  await client.query(`DELETE FROM ${q}`);
-  const regions = ['Москва', 'Санкт-Петербург', 'Казань'];
-  const brands = ['Lada', 'Kia', 'Toyota'];
-  const periods = ['2026-01-01', '2026-02-01', '2026-03-01'];
-  const values = [];
-  const params = [];
-  let n = 0;
-  let i = 0;
-  for (const region of regions) {
-    for (const brand of brands) {
-      for (const period of periods) {
-        n += 1;
-        const suffix = String(100000000000 + n).padStart(12, '0');
-        const id =
-          table === FACT_TABLE
-            ? `9c8e1a20-7d4b-4f3a-9b2e-${suffix}`
-            : `9c8e1a20-7d4b-4f3a-9b2f-${suffix}`;
-        const units = 8 + n;
-        const revenue = Math.round((120000 + n * 17500) * factor);
-        params.push(id, region, brand, period, revenue, units);
-        values.push(`($${i + 1}, $${i + 2}, $${i + 3}, $${i + 4}, $${i + 5}, $${i + 6})`);
-        i += 6;
-      }
-    }
-  }
-  await client.query(
-    `INSERT INTO ${q} (id, region, brand, sale_period, revenue_amount, units_sold) VALUES ${values.join(', ')}`,
-    params,
-  );
-}
-
-function buildMetadata(schema, now) {
-  const factFields = fieldSet(FACT_IS, '1');
-  const planFields = fieldSet(PLAN_IS, '2');
-  return [
-    meta(
-      FACT_IS,
-      INFOSERVICE_CLASS,
-      INFOSERVICE_CLASS,
-      'Infoservice',
-      'ФактПродажАвто',
-      {
-        table: FACT_TABLE,
-        sqlalias: tableSqlalias(schema, FACT_TABLE),
-        connector: { link: CONNECTOR_CLASS, value: CONNECTOR_ID },
-        onoff: false,
-      },
-      `Факт в ${schema}.${FACT_TABLE}`,
-    ),
-    meta(
-      PLAN_IS,
-      INFOSERVICE_CLASS,
-      INFOSERVICE_CLASS,
-      'Infoservice',
-      'ПланПродажАвто',
-      {
-        table: PLAN_TABLE,
-        sqlalias: tableSqlalias(schema, PLAN_TABLE),
-        connector: { link: CONNECTOR_CLASS, value: CONNECTOR_ID },
-        onoff: false,
-      },
-      `План в ${schema}.${PLAN_TABLE}`,
-    ),
-    ...factFields.rows,
-    ...planFields.rows,
-    meta(CUBE_ID, CUBES_CLASS, CUBES_CLASS, 'Cubes', 'ПродажиАвтомобилей', {}, 'Демо-куб коробки'),
-    meta(LAYER_FACT, CUBE_ID, CUBE_LAYERS_CLASS, 'Infoservices', 'Факт', {
-      ref: { link: INFOSERVICE_CLASS, value: FACT_IS },
-    }),
-    meta(LAYER_PLAN, CUBE_ID, CUBE_LAYERS_CLASS, 'Infoservices', 'План', {
-      ref: { link: INFOSERVICE_CLASS, value: PLAN_IS },
-    }),
-    meta(MEAS_REV, CUBE_ID, MEASURES_CLASS, 'Measures', 'Выручка', {
-      nameField: 'revenue_amount',
-      type: 'float',
-      format: 'money',
-      aggrFunc: 'SUM',
-      onoff: false,
-    }),
-    meta(MEAS_UNITS, CUBE_ID, MEASURES_CLASS, 'Measures', 'Количество', {
-      nameField: 'units_sold',
-      type: 'integer',
-      format: 'number',
-      aggrFunc: 'SUM',
-      onoff: false,
-    }),
-    meta(DIM_REGION, CUBE_ID, DIMENSIONS_CLASS, 'Dimensions', 'Регион', {
-      nameField: 'region',
-      type: 'string',
-      onoff: false,
-    }),
-    meta(DIM_BRAND, CUBE_ID, DIMENSIONS_CLASS, 'Dimensions', 'Марка', {
-      nameField: 'brand',
-      type: 'string',
-      onoff: false,
-    }),
-    meta(DIM_PERIOD, CUBE_ID, DIMENSIONS_CLASS, 'Dimensions', 'Период', {
-      nameField: 'sale_period',
-      type: 'date',
-      dimensionType: 'dateDimension',
-      onoff: false,
-    }),
-    agg(MEAS_REV),
-    agg(MEAS_UNITS),
-    ...owners(MEAS_REV, 'Выручка', factFields.ids.revenue_amount, planFields.ids.revenue_amount),
-    ...owners(MEAS_UNITS, 'Количество', factFields.ids.units_sold, planFields.ids.units_sold),
-    ...owners(DIM_REGION, 'Регион', factFields.ids.region, planFields.ids.region),
-    ...owners(DIM_BRAND, 'Марка', factFields.ids.brand, planFields.ids.brand),
-    ...owners(DIM_PERIOD, 'Период', factFields.ids.sale_period, planFields.ids.sale_period),
-  ].map((row) => ({ ...row, createdAt: now, updatedAt: now }));
-}
-
-function fieldSet(owner, series) {
-  const defs = [
-    ['region', 'Регион', 'string'],
-    ['brand', 'Марка', 'string'],
-    ['sale_period', 'Период', 'date'],
-    ['revenue_amount', 'Выручка', 'float'],
-    ['units_sold', 'Количество', 'integer'],
-  ];
-  const ids = {};
-  const rows = defs.map(([nameField, name, type], index) => {
-    const id = `9c8e1a20-7d4b-4f3a-9b2e-00000000${series}0${String(index + 1).padStart(2, '0')}`;
-    ids[nameField] = id;
-    return meta(id, owner, IS_FIELDS_CLASS, 'Fields', name, {
-      nameField,
-      type,
-      showfield: true,
-      onoff: false,
-    });
-  });
-  return { ids, rows };
-}
-
-const OWNER_SEQ = {
-  [MEAS_REV]: ['9c8e1a20-7d4b-4f3a-9b2e-000000000070', '9c8e1a20-7d4b-4f3a-9b2e-000000000071'],
-  [MEAS_UNITS]: ['9c8e1a20-7d4b-4f3a-9b2e-000000000072', '9c8e1a20-7d4b-4f3a-9b2e-000000000073'],
-  [DIM_REGION]: ['9c8e1a20-7d4b-4f3a-9b2e-000000000074', '9c8e1a20-7d4b-4f3a-9b2e-000000000075'],
-  [DIM_BRAND]: ['9c8e1a20-7d4b-4f3a-9b2e-000000000076', '9c8e1a20-7d4b-4f3a-9b2e-000000000077'],
-  [DIM_PERIOD]: ['9c8e1a20-7d4b-4f3a-9b2e-000000000078', '9c8e1a20-7d4b-4f3a-9b2e-000000000079'],
-};
-
-function owners(parent, name, factFieldId, planFieldId) {
-  const [factId, planId] = OWNER_SEQ[parent];
-  return [
-    meta(factId, parent, OWNER_LIST_CLASS, 'InfoserviseList', `${name} / Факт`, {
-      infoservice: { link: CUBE_LAYERS_CLASS, value: LAYER_FACT },
-      field: { link: IS_FIELDS_CLASS, value: factFieldId },
-    }),
-    meta(planId, parent, OWNER_LIST_CLASS, 'InfoserviseList', `${name} / План`, {
-      infoservice: { link: CUBE_LAYERS_CLASS, value: LAYER_PLAN },
-      field: { link: IS_FIELDS_CLASS, value: planFieldId },
-    }),
-  ];
-}
-
-function agg(parent) {
-  const id =
-    parent === MEAS_REV
-      ? '9c8e1a20-7d4b-4f3a-9b2e-000000000090'
-      : '9c8e1a20-7d4b-4f3a-9b2e-000000000091';
-  return meta(id, parent, AGG_CLASS, 'MeasuresAggregations', 'SUM', {
-    aggrFunc: 'SUM',
-    onoff: false,
-    onoffFilter: false,
-  });
-}
-
-function meta(id, parent, classId, className, name, settings, description = name) {
-  return {
-    id,
-    markdel: 0,
-    parent,
-    class_id: classId,
-    class: className,
-    name,
-    description,
-    manifest: JSON.stringify({
-      owner_id: parent,
-      class_id: classId,
-      class: className,
-      name,
-      description,
-      settings,
-      events: {},
-    }),
-    rank: 0,
-  };
 }
 
 async function upsertMeta(client, schema, row) {
@@ -428,8 +351,7 @@ async function seedOlapPage(client, schema) {
     logger.warn('у шаблона OLAP нет параметра cubeId — страница без привязки к кубу');
     return;
   }
-  const paramId = '9c8e1a20-7d4b-4f3a-9b2e-0000000000a1';
-  await upsertPageParam(client, params, paramId, PAGE_ID, cubeParam.rows[0].id, CUBE_ID, now);
+  await upsertPageParam(client, params, '9c8e1a20-7d4b-4f3a-9b2e-0000000000a1', PAGE_ID, cubeParam.rows[0].id, CUBE_ID, now);
   const serverParam = await client.query(
     `SELECT id FROM ${tparams} WHERE template_id = $1 AND name = 'server' AND markdel = 0 LIMIT 1`,
     [OLAP_TEMPLATE],
