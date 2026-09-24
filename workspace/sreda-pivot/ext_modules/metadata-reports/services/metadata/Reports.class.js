@@ -471,30 +471,6 @@ class ReportsClass extends LevelClass {
             const Infoservice = new exInfoservicesClass({ id: InfoserviceGUID });
             const layerTableInfo = await Infoservice.tableInfo(Infoservice, InfoserviceGUID);
 
-            const layerFieldSet = new Set(Object.keys(layerTableInfo?.Fields || {}));
-            const attrName = (attr) => {
-                if (attr == null) return null;
-                if (typeof attr === 'string') return attr;
-                return attr.field || attr.name || null;
-            };
-            const aggKeys = Object.keys(localOptions.settings.aggfunc || {});
-            const usableAgg = aggKeys.filter((key) => layerFieldSet.has(key));
-            if (aggKeys.length && !usableAgg.length) {
-                return { rows: [], count: 0, totals: {} };
-            }
-            if (usableAgg.length !== aggKeys.length) {
-                localOptions.settings.aggfunc = Object.fromEntries(
-                    usableAgg.map((key) => [key, localOptions.settings.aggfunc[key]])
-                );
-                localOptions.settings.values = (localOptions.settings.values || []).filter((value) =>
-                    layerFieldSet.has(typeof value === 'string' ? value : value.field)
-                );
-                localOptions.attributes = (localOptions.attributes || []).filter((attr) => {
-                    const field = attrName(attr);
-                    return field && layerFieldSet.has(field);
-                });
-            }
-
             localOptions.order = this.setOrder(layerTableInfo?.Fields || {}, localOptions.attributes || [], localOptions.order || []);
 
             const qb = new CubeQueryBuilderClass({ id: InfoserviceGUID, isProcessing: options.processing });
