@@ -22,6 +22,44 @@ const AbstractConnector = require('./AbstractConnector');
 const ApiError = require('../../../../../core/exceptions/ApiError');
 const constants = require('../../../constants');
 
+function isPlainObject(value) {
+    return (
+        value !== null &&
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        !(value instanceof Date) &&
+        !Buffer.isBuffer(value)
+    );
+}
+
+function serializeSqlValue(value) {
+    if (isPlainObject(value)) {
+        return JSON.stringify(value);
+    }
+    if (Array.isArray(value) && value.some(isPlainObject)) {
+        return JSON.stringify(value);
+    }
+    return value;
+}
+
+function serializeSqlRow(row) {
+    if (!row || typeof row !== 'object' || Array.isArray(row)) {
+        return row;
+    }
+    const out = {};
+    for (const key of Object.keys(row)) {
+        out[key] = serializeSqlValue(row[key]);
+    }
+    return out;
+}
+
+function serializeSqlValues(values) {
+    if (Array.isArray(values)) {
+        return values.map(serializeSqlRow);
+    }
+    return serializeSqlRow(values);
+}
+
 /**
  * @typedef {import('../Connector.class').Ifrom} Ifrom
  * @typedef {import('../types').IFieldRecursive} IFieldRecursive
@@ -319,7 +357,7 @@ class Postgres extends AbstractConnector {
 
         const SQL = await this.connector.dialect.queryGenerator.updateQuery(
             { schema: this.Model.schema, tableName: table },
-            values,
+            serializeSqlValues(values),
             options.where,
         );
 
@@ -342,7 +380,11 @@ class Postgres extends AbstractConnector {
         await this.connect(this.Model);
 
         /** @type {{ bind: any[], query: string }} */
-        const SQL = await this.queryGenerator.insertQuery({ schema: this.Model.schema, tableName: table }, values, {});
+        const SQL = await this.queryGenerator.insertQuery(
+            { schema: this.Model.schema, tableName: table },
+            serializeSqlValues(values),
+            {},
+        );
 
         if (!queue) {
             if (conflict) {
@@ -379,7 +421,10 @@ class Postgres extends AbstractConnector {
     async #bulkCreate(table, values, options) {
         await this.connect(this.Model);
 
-        let SQL = await this.queryGenerator.bulkInsertQuery({ schema: this.Model.schema, tableName: table }, values);
+        let SQL = await this.queryGenerator.bulkInsertQuery(
+            { schema: this.Model.schema, tableName: table },
+            serializeSqlValues(values),
+        );
         if (options.conflict) {
             const { fields, action } = options.conflict;
             const type = action === 'ignore' ? `NOTHING` : '';
@@ -435,7 +480,7 @@ class Postgres extends AbstractConnector {
             transaction,
             queue
         } = options;
-        let SQL = await this.queryGenerator.bulkInsertQuery(table, values).slice(0, -1);
+        let SQL = await this.queryGenerator.bulkInsertQuery(table, serializeSqlValues(values)).slice(0, -1);
 
         if (
             upsertKeys.length > 0 &&
