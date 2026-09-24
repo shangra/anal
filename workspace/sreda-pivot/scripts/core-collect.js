@@ -1,7 +1,5 @@
 /**
- * Обёртка npm run core:collect в sreda-pivot, без правок ядра.
- * core/command/build/platform.js делает path.join(..., platform[key])
- * и падает, если в package.json.platform лежит объект (structure/core).
+ * npm run core:collect в sreda-pivot без правок ядра и без записи package.json.
  */
 'use strict';
 
@@ -10,30 +8,8 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 
 const root = path.join(__dirname, '..');
-const pkgPath = path.join(root, 'package.json');
+const shim = path.join(__dirname, 'collect-platform-shim.js');
 const buildEntry = path.join(root, 'core', 'command', 'build');
-
-if (!fs.existsSync(pkgPath)) {
-    console.error('core:collect: нет package.json в', root);
-    process.exit(1);
-}
-
-const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-const platform = pkg.platform && typeof pkg.platform === 'object' ? pkg.platform : {};
-const cleaned = {};
-for (const [key, value] of Object.entries(platform)) {
-    if (typeof value === 'string' && value.trim()) {
-        cleaned[key] = value;
-    }
-}
-
-if (JSON.stringify(platform) !== JSON.stringify(cleaned)) {
-    pkg.platform = cleaned;
-    fs.writeFileSync(pkgPath, `${JSON.stringify(pkg, null, 4)}\n`);
-    console.log(
-        'core:collect: из package.json.platform убраны не-строки (structure/core), иначе path.join падает.'
-    );
-}
 
 const buildJs = fs.existsSync(buildEntry)
     ? buildEntry
@@ -43,15 +19,19 @@ const buildJs = fs.existsSync(buildEntry)
 
 if (!buildJs) {
     console.error(
-        'core:collect: нет core/command/build рядом с этим скриптом. Скопируйте каталог core/command/build из исходного pivot.'
+        'core:collect: нет core/command/build. Скопируйте каталог core/command/build из исходного pivot.'
     );
     process.exit(1);
 }
 
-const result = spawnSync(process.execPath, [buildJs, ...process.argv.slice(2)], {
-    cwd: root,
-    stdio: 'inherit',
-    env: process.env,
-});
+const result = spawnSync(
+    process.execPath,
+    ['-r', shim, buildJs, ...process.argv.slice(2)],
+    {
+        cwd: root,
+        stdio: 'inherit',
+        env: process.env,
+    }
+);
 
 process.exit(result.status === null ? 1 : result.status);
