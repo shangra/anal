@@ -32,13 +32,7 @@ class ConnectorsService extends DefaultMetaObject {
                                     name: 'dialect',
                                     description: 'Диалект',
                                     type: 'LIST',
-                                    list: {
-                                        postgres: 'POSTGRES',
-                                        greenplum: 'GREENPLUM',
-                                        clickhouse: 'CLICKHOUSE',
-                                        trino: 'TRINO',
-                                        rest: 'REST',
-                                    },
+                                    list: {},
                                 },
                                 {
                                     name: 'host',
