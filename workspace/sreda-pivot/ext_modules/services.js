@@ -62,7 +62,7 @@ const MetadataCmpModelMetadataModel = require("./metadata-cmp/services/model/Met
 const MiddlewareRestCheckAuthCheckAuth = require("./middleware-rest-check-auth/services/checkAuth");
 /** metadata-connector */
 const MetadataConnectorConnectorsService = require("./metadata-connector/services/Connectors.service");
-const MetadataConnectorConnectorsAbstractConnector = require("./metadata-connector/services/connectors/AbstractConnector");
+const MetadataConnectorConnectorsAbstractConnector = require("./metadata-connector/services/connectors/AbstractConnectorAst");
 const MetadataConnectorConnectorsQueuePoolQueue = require("./metadata-connector/services/connectors/QueuePool/Queue");
 const MetadataConnectorConnectorsQueuePoolQueuePool = require("./metadata-connector/services/connectors/QueuePool/QueuePool");
 const MetadataConnectorCredentialsCredentials = require("./metadata-connector/services/credentials/Credentials");
