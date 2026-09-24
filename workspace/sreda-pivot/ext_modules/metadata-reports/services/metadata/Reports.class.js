@@ -499,7 +499,16 @@ class ReportsClass extends LevelClass {
 
             const qb = new CubeQueryBuilderClass({ id: InfoserviceGUID, isProcessing: options.processing });
 
-            let data = await qb.read(InfoserviceGUID, localOptions, layerTableInfo, treeObject);
+            let data;
+            try {
+                data = await qb.read(InfoserviceGUID, localOptions, layerTableInfo, treeObject);
+            } catch (error) {
+                const CubesClass = require('../../../metadata-cubes/services/metadata/Cubes.class');
+                if (CubesClass.isRecoverableQueryError(error)) {
+                    return { rows: [], count: 0, totals: {} };
+                }
+                throw error;
+            }
 
             const { mapValues } = this.parseLayers(calculatedFields, localOptions);
 

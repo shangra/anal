@@ -194,16 +194,29 @@ class ReportService extends Extensions {
                 treeObject: table.treeObject
             };
         } catch (e) {
-            result = {
-                ...result,
-                status: 'error',
-                message: e.message,
-                stack: e.stack,
-                errors: [],
-                payload: {
-                    answerId: result.answerId
-                }
-            };
+            const CubesClass = require('../../metadata-cubes/services/metadata/Cubes.class');
+            if (CubesClass.isRecoverableQueryError(e)) {
+                result = {
+                    ...result,
+                    status: 'ok',
+                    table: { data: [], columns: [] },
+                    refs: {},
+                    refFields: {},
+                    totalRows: 0,
+                    warnings: [e.message || String(e)],
+                };
+            } else {
+                result = {
+                    ...result,
+                    status: 'error',
+                    message: e.message,
+                    stack: e.stack,
+                    errors: [],
+                    payload: {
+                        answerId: result.answerId
+                    }
+                };
+            }
         } finally {
             const answerKey = await this.getAnswerKey(result.answerId);
             await MemorySave.set(answerKey, result, { isLocal: false, ttl: sreda.env?.PIVOT_ANSWER_TTL || 1000 * 60 * 5 });

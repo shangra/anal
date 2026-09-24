@@ -23,6 +23,21 @@ const BlockedResourceError = require('../../../../core/exceptions/BlockedResourc
 const CalcFieldAggregateClass = require('../../../meta-aggregate-calc-field');
 const QueryClass = require('../../../metadata-cubes-query');
 const { generateKey } = require('../../../meta-aggregate-calc-field/helper');
+
+function isRecoverableQueryError(error) {
+    const code = error?.original?.code || error?.parent?.code || error?.code;
+    if (code === '42703' || code === '42P01') {
+        return true;
+    }
+    const parts = [
+        error?.message,
+        error?.original?.message,
+        ...(Array.isArray(error?.errors) ? error.errors : []),
+    ];
+    return parts.some((part) =>
+        /column .* does not exist|relation .* does not exist/i.test(String(part || ''))
+    );
+}
 const { ref_extract } = require('../../../metadata-cmp/util');
 
 /**
@@ -555,6 +570,9 @@ class CubesClass extends LevelClass {
                     }
                 }
             } catch (error) {
+                if (isRecoverableQueryError(error)) {
+                    continue;
+                }
                 if (error instanceof BlockedResourceError) {
                     const infoserviceMeta = Object.values(treeObject?.Infoservices || {}).find((i) => i.ref === InfoserviceGUID);
 
@@ -897,7 +915,14 @@ class CubesClass extends LevelClass {
             withOutOrder: true,
         };
 
-        dataTable = await qb.read(layerId, newOptions, layer, cube);
+        try {
+            dataTable = await qb.read(layerId, newOptions, layer, cube);
+        } catch (error) {
+            if (isRecoverableQueryError(error)) {
+                return { rows: [], count: 0, totals: {} };
+            }
+            throw error;
+        }
 
         if (!dataTable) {
             return dataTable;
@@ -1053,5 +1078,7 @@ class CubesClass extends LevelClass {
         return { mapValues, workInfoservice };
     }
 }
+
+CubesClass.isRecoverableQueryError = isRecoverableQueryError;
 
 module.exports = CubesClass;
