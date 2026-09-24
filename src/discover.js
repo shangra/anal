@@ -57,14 +57,16 @@ export function inferStart(dirName, scripts = {}) {
   return null;
 }
 
-export function inferSteps(scripts = {}) {
+export function inferSteps(scripts = {}, dirName = '') {
   if (scripts['build:bundle']) {
     const steps = [];
     if (scripts['core:collect']) {
       steps.push('npm run core:collect');
     }
     steps.push('npm run build:bundle');
-    if (scripts['build:obfuscate']) {
+    // Пивот: не обфусцируем целый бандл — только пофайлово ext_modules (src/obfuscate-ext-modules.js).
+    const isPivot = String(dirName).toLowerCase().includes('pivot');
+    if (scripts['build:obfuscate'] && !isPivot) {
       steps.push({ run: 'npm run build:obfuscate', when: ['release'] });
     }
     if (scripts['build:binary']) {
@@ -110,7 +112,7 @@ export async function discoverPackages(root, skipDirs = DEFAULT_SKIP) {
       dir: entry.name,
       group: inferGroup(entry.name, scripts),
       enabled: entry.name !== 'old-analytic',
-      steps: inferSteps(scripts),
+      steps: inferSteps(scripts, entry.name),
       start: inferStart(entry.name, scripts),
       artifacts: inferArtifacts(entry.name, scripts),
     });

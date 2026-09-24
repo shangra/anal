@@ -98,7 +98,7 @@ export async function resolvePackage(pkg, root, profile, configBuildInstallFlags
   const packageJson = hasPackageJson ? await readJson(packageJsonPath) : null;
   const configuredSteps = pkg.steps?.length
     ? pkg.steps
-    : inferSteps(packageJson?.scripts || {});
+    : inferSteps(packageJson?.scripts || {}, pkg.dir);
   const steps = configuredSteps
     .filter((step) => stepMatchesProfile(step, profile))
     .map(normalizeStep)

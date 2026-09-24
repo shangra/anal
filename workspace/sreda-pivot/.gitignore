@@ -149,6 +149,9 @@ __mocks__/
 # Sreda Core
 var/*
 
+# исходники ext_modules до обфускации (npm run obfuscate:pivot-ext)
+ext_modules.bak/
+
 .npmrc
 .DS_Store
 

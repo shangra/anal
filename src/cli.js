@@ -10,6 +10,7 @@ import { runMigrationsDb } from './migrate.js';
 import { logger } from './logger.js';
 import { startLauncherServer } from './launcher-server.js';
 import { printSummary, runBuild, writeReport } from './runner.js';
+import { obfuscatePivotExtModules } from './obfuscate-ext-modules.js';
 import { runBox } from './supervisor.js';
 
 const VERSION = '1.0.0';
@@ -25,7 +26,7 @@ export async function main(argv) {
     return;
   }
 
-  const runtimeCommands = new Set(['start', 'list', 'validate', 'install', 'ui', 'env', 'db']);
+  const runtimeCommands = new Set(['start', 'list', 'validate', 'install', 'ui', 'env', 'db', 'obfuscate']);
   if (runtimeCommands.has(args.command)) {
     await runRuntime(args);
     return;
@@ -158,6 +159,16 @@ async function runRuntime(args) {
     return;
   }
 
+  if (args.command === 'obfuscate') {
+    const pivot = all.find((mod) => mod.id === 'pivot')
+      || all.find((mod) => String(mod.path || mod.absDir || '').includes('sreda-pivot'));
+    if (!pivot?.exists) {
+      throw new Error('Не найден модуль pivot (sreda-pivot).');
+    }
+    await obfuscatePivotExtModules(pivot.absDir);
+    return;
+  }
+
   if (selected.length === 0) {
     throw new Error('Нет включённых модулей. Проверьте box.config.json, --only и --skip.');
   }
@@ -268,7 +279,7 @@ function parseArgs(argv) {
     envFile: null,
   };
 
-  const commands = new Set(['build', 'init', 'list', 'validate', 'start', 'install', 'ui', 'env', 'db']);
+  const commands = new Set(['build', 'init', 'list', 'validate', 'start', 'install', 'ui', 'env', 'db', 'obfuscate']);
   const tokens = [...argv];
 
   if (tokens[0] && !tokens[0].startsWith('-') && commands.has(tokens[0])) {
@@ -388,6 +399,7 @@ sreda-builder ${VERSION}
   install     Поставить зависимости во все модули
   env         Только переложить корневой .env в модули (start и db делают это сами)
   db          Миграции и дампы в DB_SCHEMA, ключ активации, вопрос про тестовый куб
+  obfuscate   Сохраняет ext_modules → ext_modules.bak и обфусцирует JS в ext_modules
   list        Показать состав коробки
   validate    Проверить, что пути модулей существуют
   build       Собрать пакеты

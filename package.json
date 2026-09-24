@@ -11,6 +11,7 @@
         "postinstall": "node bin/sreda-builder.js install --root workspace",
         "env": "node bin/sreda-builder.js env --root workspace",
         "db": "node bin/sreda-builder.js db --root workspace",
+        "obfuscate:pivot-ext": "node bin/sreda-builder.js obfuscate --root workspace",
         "start": "node bin/sreda-builder.js start --root workspace",
         "build": "node bin/sreda-builder.js build",
         "list": "node bin/sreda-builder.js list",
