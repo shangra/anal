@@ -6,7 +6,7 @@ import { killChildren } from './exec.js';
 import { pathExists } from './fs-utils.js';
 import { generateModuleEnvs } from './env-gen.js';
 import { installBox } from './install-box.js';
-import { runMigrationsDb } from './migrate.js';
+import { ensureLicenseKey, runMigrationsDb } from './migrate.js';
 import { logger } from './logger.js';
 import { startLauncherServer } from './launcher-server.js';
 import { printSummary, runBuild, writeReport } from './runner.js';
@@ -211,6 +211,7 @@ async function runRuntime(args) {
       skipIfReady: true,
       skipLicense: true,
     });
+    await ensureLicenseKey(box, all);
   }
 
   const missing = selected.filter((mod) => !mod.exists && !mod.optional);

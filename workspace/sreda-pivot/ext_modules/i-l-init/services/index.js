@@ -50,19 +50,22 @@ function getLicenseKeyData(signedToken) {
         const decodedP = Buffer.from(p, 'base64').toString('utf8');
         const isValid = verifier.verify(decodedP, signature, 'base64');
         if (isValid) {
-            console.log('✅ Подпись ВЕРНА. Токен валиден.');
+            console.log('✅ Подпись ВЕРНА.');
             const payload = JSON.parse(token);
             //Проверяем срок действия
             const now = Date.now();
             const expiration = payload.issuedAt + (payload.ttl || 0) * 1000;
             const licenseExpiration = payload.issuedAt + (payload.license_ttl || 0) * 1000;
 
-            if (now > expiration || now > licenseExpiration) {
-                console.warn('❌  Внимание: срок действия токена истёк!');
+            const isExpired = now > expiration;
+            const isExpiredLicense = now > licenseExpiration;
+
+            if (isExpiredLicense) {
+                console.warn('❌  Внимание: срок действия лицензии истёк!');
                 process.exit(1);
             }
 
-            return { payload }
+            return { payload, isExpired, isExpiredLicense }
         } else {
             console.error('❌ Подпись НЕ ВЕРНА');
             process.exit(1);
@@ -78,7 +81,53 @@ function getLicenseKeyData(signedToken) {
  * Инициализация и проверка лицензии
  */
 const initLicense = async () => {
-return
+    try {
+        // Получаем ключи из sreda.env
+        const encryptedLicenseKey = sreda.env.LICENSE_KEY;
+
+        if (!encryptedLicenseKey) {
+            console.error('LICENSE_KEY не найден в sreda.env');
+            process.exit(1);
+        }
+
+        const { payload, isExpired } = getLicenseKeyData(encryptedLicenseKey);
+
+        console.log(payload);
+
+        const metaRows = (await getMetaQuery(query)).filter(({ relname, relkind }) => tables.includes(relname) && relkind === 'r');
+
+        if (!metaRows?.length) {
+            process.exit(1);
+        }
+
+        const hash = lHash(metaRows.map((metaRow) => computeHash(metaRow)));
+
+        const existingRecord = await RuntimeConfigRepository.getByKey(encryptedLicenseKey);
+
+        if (!existingRecord && isExpired) {
+            console.warn('❌  Внимание: срок действия токена истёк!');
+            process.exit(1);
+        }
+
+        if (!existingRecord) {
+            console.log('✅ Активируем лицензию.');
+            await RuntimeConfigRepository.create({ key: encryptedLicenseKey, value: hash });
+        }
+
+        if (existingRecord) {
+            if (existingRecord.value !== hash) {
+                console.error(`❌  Проблемы с лицензией.`);
+
+                process.exit(1);
+            }
+        }
+
+        console.log('✅ Лицензия активна.');
+    } catch (error) {
+        console.error(error.message);
+
+        process.exit(1);
+    }
 };
 
 initLicense();

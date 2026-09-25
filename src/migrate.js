@@ -106,7 +106,7 @@ export async function runMigrationsDb(
   await ensurePlatformData(mod.absDir, env);
   logger.ok(`${mod.id}: схема "${schema}" создана и наполнена`);
   if (!skipLicense) {
-    const answers = await askDbSetup(modules);
+    const answers = await askDbSetup(box, modules);
     if (answers.demoCube) {
       await withPg(mod.absDir, env, (client) => seedDemoCube(client, env));
     } else {
@@ -307,29 +307,41 @@ async function createPivotSchemasTable(client, schema) {
   `);
 }
 
-async function askDbSetup(modules) {
+export async function ensureLicenseKey(box, modules) {
   const pivot = modules.find((item) => item.id === 'pivot');
   if (!pivot?.exists) {
-    logger.warn('модуль pivot не найден, LICENSE_KEY не записан');
-  } else {
-    const envPath = path.join(pivot.absDir, pivot.envFile || '.env');
-    if (!(await pathExists(envPath))) {
-      throw new Error(`Нет ${envPath}. Заполните корневой .env и выполните npm start.`);
-    }
-    const fromFile = await loadEnvFile(envPath);
-    let key = '';
-    if (process.stdin.isTTY) {
-      key = await promptText('введите лицензионный ключ: ');
-    } else {
-      logger.warn('нет интерактивной консоли, LICENSE_KEY не запрошен');
-    }
-    if (key) {
-      await upsertEnvKey(envPath, 'LICENSE_KEY', key);
-      logger.ok('pivot: LICENSE_KEY записан');
-    } else if (!fromFile.LICENSE_KEY) {
-      logger.warn('ключ не введён, LICENSE_KEY не изменён');
-    }
+    throw new Error('модуль pivot не найден: без LICENSE_KEY запуск невозможен');
   }
+
+  const pivotEnvPath = path.join(pivot.absDir, pivot.envFile || '.env');
+  if (!(await pathExists(pivotEnvPath))) {
+    throw new Error(`Нет ${pivotEnvPath}. Заполните корневой .env и выполните npm run env / npm run db.`);
+  }
+
+  const rootEnvPath = path.join(path.dirname(box.configPath), '.env');
+  const pivotEnv = await loadEnvFile(pivotEnvPath);
+  const rootEnv = await loadEnvFile(rootEnvPath);
+  let key = String(rootEnv.LICENSE_KEY || pivotEnv.LICENSE_KEY || process.env.LICENSE_KEY || '').trim();
+
+  if (!key && process.stdin.isTTY) {
+    key = await promptText('введите лицензионный ключ: ');
+  }
+  if (!key) {
+    throw new Error(
+      'LICENSE_KEY не задан. Пропишите ключ в корневой .env или выполните npm run db.',
+    );
+  }
+
+  if (await pathExists(rootEnvPath)) {
+    await upsertEnvKey(rootEnvPath, 'LICENSE_KEY', key);
+  }
+  await upsertEnvKey(pivotEnvPath, 'LICENSE_KEY', key);
+  logger.ok('LICENSE_KEY записан');
+  return key;
+}
+
+async function askDbSetup(box, modules) {
+  await ensureLicenseKey(box, modules);
 
   let demoCube = envWantsDemoCube(process.env);
   if (process.stdin.isTTY) {
