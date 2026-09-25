@@ -23,7 +23,7 @@
     "test:coverage:html": "craco test --watchAll=false --coverage --collect-coverage=true --coverage-reporter=html",
     "test:report:json": "craco test --watchAll=false --coverage --json --outputFile=reports/jest-results.json --coverageDirectory=reports/coverage --coverageReporters=text-summary --coverageReporters=lcov --coverageReporters=cobertura",
     "test:report:junit": "craco test --watchAll=false --coverage --reporters=default --reporters=jest-junit",
-    "docker:ci": "npm install --legacy-peer-deps",
+    "docker:ci": "npm ci --legacy-peer-deps",
     "docker:start": "cross-env npm run refresh-module-federation-files && ESLINT_NO_DEV_ERRORS=true craco start"
   },
   "dependencies": {
@@ -66,10 +66,8 @@
     "@opentelemetry/sdk-trace-base": "^2.2.0",
     "@opentelemetry/sdk-trace-web": "^2.2.0",
     "@opentelemetry/semantic-conventions": "^1.38.0",
-    "@popperjs/core": "^2.11.8",
     "@types/js-beautify": "^1.14.3",
     "@xyflow/react": "^12.11.0",
-    "ajv": "^6.12.6",
     "axios": "1.9.0",
     "bootstrap": "^5.3.0",
     "bootstrap-icons": "^1.11.2",
@@ -85,7 +83,6 @@
     "fflate": "^0.8.2",
     "gridstack": "^5.0.0",
     "handy-svg": "1.0.8",
-    "immutable": "^4.3.5",
     "joi": "^17.13.3",
     "js-beautify": "^1.15.4",
     "json2jsx": "^1.1.0",
@@ -118,11 +115,9 @@
     "uuid": "8.3.2",
     "web-vitals": "^2.1.4",
     "webpack": "^5.97.1",
-    "xml-js": "^1.6.11",
-    "zone.js": "^0.16.2"
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.5",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@craco/craco": "^7.1.0",
     "@module-federation/enhanced": "^2.5.0",
@@ -155,10 +150,6 @@
     "eslint": "^8.57.1",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-jsx-a11y": "^6.8.0",
-    "eslint-plugin-react": "^7.34.1",
-    "eslint-plugin-react-hooks": "^4.6.2",
     "husky": "^9.1.7",
     "jest-junit": "^16.0.0",
     "path-browserify": "^1.0.1",

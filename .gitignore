@@ -20,9 +20,6 @@ workspace/**/@mf-types/
 workspace/**/bi_ui_build/
 workspace/**/build/
 
-package-lock.json
-**/package-lock.json
-npm-shrinkwrap.json
 **/.npmrc
 
 sbox-inbox/

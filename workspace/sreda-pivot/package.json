@@ -35,7 +35,7 @@
         "updatedb": "npm run core:collect && npm run db:up",
         "docker:db": "npm run db:renew",
         "docker:updatedb": "npm run db:up",
-        "docker:ci": "npm install --legacy-peer-deps",
+        "docker:ci": "npm ci --legacy-peer-deps",
         "docker:start": "node server.js"
     },
     "keywords": [],
@@ -52,7 +52,6 @@
         "@clickhouse/client": "^1.9.1",
         "@opentelemetry/api": "^1.9.0",
         "@opentelemetry/auto-instrumentations-node": "^0.76.0",
-        "@opentelemetry/core": "^2.7.1",
         "@opentelemetry/exporter-trace-otlp-http": "^0.218.0",
         "@opentelemetry/resources": "^2.7.1",
         "@opentelemetry/sdk-logs": "^0.218.0",
