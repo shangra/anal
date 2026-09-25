@@ -32,7 +32,7 @@
         "build:binary2": "BOXEDNODE_CONFIGURE_ARGS='[\"--without-npm\"]' npx boxednode -s dist-temp/bundle-obf.js -t dist/pivot",
         "docker:db": "npm run db:renew",
         "docker:updatedb": "npm run db:up",
-        "docker:ci": "npm ci --legacy-peer-deps",
+        "docker:ci": "npm install",
         "docker:start": "node server.js"
     },
     "keywords": [],

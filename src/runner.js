@@ -1,21 +1,12 @@
 import fs from 'node:fs/promises';
-import path from 'node:path';
 import { assembleArtifacts } from './assemble.js';
 import { runCommand } from './exec.js';
-import { pathExists } from './fs-utils.js';
 import { formatDuration, logger } from './logger.js';
 
 export async function installCommandFor(dir, extraFlags) {
   const flags = extraFlags || process.env.BUILD_INSTALL_FLAGS || '';
   const extra = Array.isArray(flags) ? flags.filter(Boolean).join(' ') : String(flags).trim();
   const suffix = extra ? ` ${extra}` : '';
-
-  if (await pathExists(path.join(dir, 'package-lock.json'))) {
-    return `npm ci --no-audit --no-fund --ignore-scripts${suffix}`;
-  }
-  if (await pathExists(path.join(dir, 'npm-shrinkwrap.json'))) {
-    return `npm ci --no-audit --no-fund --ignore-scripts${suffix}`;
-  }
   return `npm install --no-audit --no-fund --ignore-scripts${suffix}`;
 }
 

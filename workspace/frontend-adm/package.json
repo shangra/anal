@@ -23,7 +23,7 @@
     "test:coverage:html": "craco test --watchAll=false --coverage --collect-coverage=true --coverage-reporter=html",
     "test:report:json": "craco test --watchAll=false --coverage --json --outputFile=reports/jest-results.json --coverageDirectory=reports/coverage --coverageReporters=text-summary --coverageReporters=lcov --coverageReporters=cobertura",
     "test:report:junit": "craco test --watchAll=false --coverage --reporters=default --reporters=jest-junit",
-    "docker:ci": "npm ci --legacy-peer-deps",
+    "docker:ci": "npm install --legacy-peer-deps",
     "docker:start": "cross-env npm run refresh-module-federation-files && ESLINT_NO_DEV_ERRORS=true craco start"
   },
   "dependencies": {

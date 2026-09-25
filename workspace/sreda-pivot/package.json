@@ -35,7 +35,7 @@
         "updatedb": "npm run core:collect && npm run db:up",
         "docker:db": "npm run db:renew",
         "docker:updatedb": "npm run db:up",
-        "docker:ci": "npm ci --legacy-peer-deps",
+        "docker:ci": "npm install",
         "docker:start": "node server.js"
     },
     "keywords": [],
