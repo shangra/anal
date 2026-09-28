@@ -12,6 +12,7 @@
  *
  * to-b64 режет текст на части ~50 KB, чтобы влезало в одно сообщение.
  * Один файл без нарезки:  node scripts/sbox.js to-b64 in.sbox out.txt --split 0
+ * 8 частей в один файл для вставки:  node scripts/sbox.js batch frontend-adm.sbox.txt
  */
 import crypto from 'node:crypto';
 import fsp from 'node:fs/promises';
@@ -55,6 +56,7 @@ function usage(code = 0) {
   node scripts/sbox.js from-b64 <in.txt> <out.sbox>
   node scripts/sbox.js ingest  <dump.txt> [inboxDir]
   node scripts/sbox.js status  [inboxDir]
+  node scripts/sbox.js batch   <parts.txt|partsDir> [outDir] [--size 8]
 `);
   process.exit(code);
 }
@@ -221,20 +223,28 @@ function wrapBase64(b64, width = B64_WRAP) {
   return lines.join('\n');
 }
 
-function parseSplit(args) {
-  const index = args.indexOf('--split');
+function parseFlagNumber(args, flag, fallback, { min = 0 } = {}) {
+  const index = args.indexOf(flag);
   if (index === -1) {
-    return DEFAULT_SPLIT;
+    return fallback;
   }
   const raw = args[index + 1];
   if (raw === undefined || raw.startsWith('--')) {
-    throw new Error('укажите размер после --split, например --split 50000');
+    throw new Error(`укажите число после ${flag}`);
   }
   const value = Number(raw);
-  if (!Number.isFinite(value) || value < 0) {
-    throw new Error(`некорректный --split: ${raw}`);
+  if (!Number.isFinite(value) || value < min) {
+    throw new Error(`некорректный ${flag}: ${raw}`);
   }
   return Math.floor(value);
+}
+
+function parseSplit(args) {
+  return parseFlagNumber(args, '--split', DEFAULT_SPLIT, { min: 0 });
+}
+
+function parseBatchSize(args) {
+  return parseFlagNumber(args, '--size', 8, { min: 1 });
 }
 
 function looksLikeBase64Text(buf) {
@@ -449,6 +459,23 @@ async function pathExists(target) {
   }
 }
 
+async function collectPartFiles(inputPath) {
+  const abs = path.resolve(inputPath);
+  if (await pathExists(abs)) {
+    const stat = await fsp.stat(abs);
+    if (stat.isDirectory()) {
+      const names = (await fsp.readdir(abs)).filter((name) => name.includes('.part')).sort();
+      if (names.length === 0) {
+        throw new Error(`в ${abs} нет файлов .part*`);
+      }
+      return names.map((name) => path.join(abs, name));
+    }
+  }
+  const files = await collectB64Sources(inputPath);
+  const parts = files.filter((file) => path.basename(file).includes('.part'));
+  return parts.length > 0 ? parts : files;
+}
+
 async function collectB64Sources(inputPath) {
   const abs = path.resolve(inputPath);
   if (await pathExists(abs)) {
@@ -593,6 +620,74 @@ async function toB64(inFile, outFile, splitChars) {
   await writeBase64(blob, outFile, splitChars);
 }
 
+function formatPartBody(part) {
+  const body = part.body.endsWith('\n') ? part.body : `${part.body}\n`;
+  return `SBOX-B64 sha256=${part.sha256} bytes=${part.bytes} part=${part.index}/${part.total}\n${body}`;
+}
+
+async function batchParts(inputPath, outDirArg, size) {
+  const files = await collectPartFiles(inputPath);
+  const byIndex = new Map();
+  let meta = null;
+  for (const file of files) {
+    const parts = splitB64Parts(await fsp.readFile(file, 'utf8'));
+    for (const part of parts) {
+      if (!meta) {
+        meta = part;
+      } else if (
+        part.sha256 !== meta.sha256 ||
+        part.bytes !== meta.bytes ||
+        part.total !== meta.total
+      ) {
+        throw new Error(`смешаны разные архивы: ${path.basename(file)}`);
+      }
+      if (byIndex.has(part.index)) {
+        throw new Error(`часть ${part.index} встретилась дважды`);
+      }
+      byIndex.set(part.index, part);
+    }
+  }
+  if (!meta) {
+    throw new Error('не нашёл частей SBOX-B64');
+  }
+
+  const absInput = path.resolve(inputPath);
+  const inputStat = await fsp.stat(absInput).catch(() => null);
+  const siblingDir = inputStat?.isDirectory() ? absInput : path.dirname(absInput);
+  const outDir = path.resolve(outDirArg || path.join(siblingDir, 'sbox-batches'));
+  await fsp.mkdir(outDir, { recursive: true });
+
+  const batchCount = Math.ceil(meta.total / size);
+  const pad = String(batchCount).length;
+  let written = 0;
+  let skipped = 0;
+  for (let batch = 0; batch < batchCount; batch += 1) {
+    const start = batch * size + 1;
+    const end = Math.min(start + size - 1, meta.total);
+    const missing = [];
+    const chunk = [];
+    for (let i = start; i <= end; i += 1) {
+      const part = byIndex.get(i);
+      if (!part) {
+        missing.push(i);
+        continue;
+      }
+      chunk.push(part);
+    }
+    if (missing.length > 0) {
+      skipped += 1;
+      process.stdout.write(`пакет ${batch + 1}: нет ${formatRanges(missing)}, пропуск\n`);
+      continue;
+    }
+    const name = `batch-${String(batch + 1).padStart(pad, '0')}.txt`;
+    const dest = path.join(outDir, name);
+    await fsp.writeFile(dest, chunk.map(formatPartBody).join(''), 'utf8');
+    written += 1;
+    process.stdout.write(`пакет ${batch + 1}: части ${start}-${end} → ${name}\n`);
+  }
+  process.stdout.write(`готово: ${written} пакет(ов), пропущено: ${skipped} → ${outDir}\n`);
+}
+
 async function fromB64(inFile, outFile) {
   const blob = await blobFromInput(inFile);
   if (blob.subarray(0, 4).toString() !== 'SBOX') {
@@ -636,6 +731,11 @@ try {
     await ingestDump(src, dst);
   } else if (cmd === 'status') {
     await statusInbox(src);
+  } else if (cmd === 'batch') {
+    if (!src) {
+      usage(1);
+    }
+    await batchParts(src, dst, parseBatchSize(rest));
   } else {
     usage(1);
   }
