@@ -3,9 +3,18 @@
     createRef,
     type CSSProperties,
     type KeyboardEvent as ReactKeyboardEvent,
+    type MouseEvent as ReactMouseEvent,
     type PointerEvent as ReactPointerEvent,
     type ReactNode,
 } from 'react';
+import { ArrowLeftIcon, IconButton, PlusIcon } from 'ui-kit';
+import HooksManager from '../../../helpers/lite-react-hooks';
+import { createEditForm } from '../Buttons/Edit/edit.helper';
+import $windows from '../../ui/windows.helper';
+import $confirm from '../../ui/MyConfirmMDM/confirm';
+import { HookKeyManager } from '../ElementsList/utils/HookKeyManager';
+import { handleTableSelection } from '../ElementsList/ReactWindowWrapperCombined/utils/tableSelectionHelper';
+import { transformRowsForHook } from '../ElementsList/ReactWindowWrapperCombined/utils/transformRowsForHook';
 import './ConfigurableNestedTable.css';
 import { isTreeRow } from './utils/treeRows';
 import { buildListTableModel } from './utils/buildListTableModel';
@@ -71,6 +80,7 @@ interface DisplayRow {
     leafCount?: number;
     expanded?: boolean;
     substringHit?: boolean;
+    recordId?: string;
 }
 
 interface RowGeometry {
@@ -109,11 +119,18 @@ interface ConfigurableNestedTableState {
     editingCell: CellRef | null;
     draft: string;
     listEpoch: number;
+    hierarchyHistory: string[];
+    hierarchyLoading: boolean;
+    selectedRecordIds: string[];
+    lastSelectedRecordId: string | null;
 }
 
 const ROW_BUFFER = 10;
 const DRAG_START_PIXELS = 4;
 const CHECK_WIDTH = 28;
+const HIERARCHY_COLUMN_WIDTH = 150;
+const ROOT_PARENT_UUID = '00000000-0000-0000-0000-000000000000';
+const RELOAD_LOCAL_KEY = 'reloadElementsList';
 
 function formatCellValue(value: unknown): string {
     if (value === null || value === undefined) {
@@ -458,7 +475,40 @@ function columnDragging(drag: DragState | null, rootId: string): boolean {
     return drag?.kind === 'col' && drag.fromRootId === rootId;
 }
 
+function entityId(value: unknown): string {
+    if (value == null || value === '') {
+        return '';
+    }
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'bigint') {
+        return String(value);
+    }
+    if (typeof value === 'object') {
+        const record = value as Record<string, unknown>;
+        if ('value' in record) {
+            return entityId(record.value);
+        }
+        if ('id' in record) {
+            return entityId(record.id);
+        }
+    }
+    return '';
+}
+
+function recordIdOf(cells: ICell[]): string {
+    for (const cell of cells) {
+        const recordId = cell?.recordId;
+        if (recordId != null && recordId !== '') {
+            return String(recordId);
+        }
+    }
+    return '';
+}
+
 function leafRowId(item: TableItem, cells: ICell[], depth: number, index: number): string {
+    const recordId = recordIdOf(cells);
+    if (recordId) {
+        return recordId;
+    }
     const { sourceId } = item as { sourceId?: string };
     if (sourceId) {
         return String(sourceId);
@@ -510,11 +560,13 @@ function flattenRows(
                 return;
             }
             const cells = getLeafCells(item) ?? [];
+            const recordId = recordIdOf(cells);
             into.push({
                 id: leafRowId(item, cells, depth, index),
                 kind: 'leaf',
                 depth,
                 cells,
+                recordId: recordId || undefined,
             });
         });
     };
@@ -621,7 +673,16 @@ function reorderColumns(columns: GroupedColumn[], fromRootId: string, toRootId: 
     return next;
 }
 
-function cellText(row: DisplayRow, field: string, rules: CfRule[]): { text: string; style?: CSSProperties } {
+function withoutEmptyMark(style: CSSProperties | undefined): CSSProperties | undefined {
+    if (!style || style.borderBottom !== '2px solid #ef4444') {
+        return style;
+    }
+    const next = { ...style };
+    delete next.borderBottom;
+    return Object.keys(next).length > 0 ? next : undefined;
+}
+
+function cellText(row: DisplayRow, field: string, rules: CfRule[]): { text: string; style?: CSSProperties; empty: boolean } {
     const cell =
         row.cells.find((item) => item.columnName === field) ??
         row.cells.find((item) => item.columnName?.toLowerCase() === field.toLowerCase());
@@ -629,9 +690,12 @@ function cellText(row: DisplayRow, field: string, rules: CfRule[]): { text: stri
     const fallback = formatCellValue(raw);
     const rowData = rowDataFromCells(row.cells);
     const decoration = resolveConditionalCellDecoration(rowData, field, rules as never);
+    const text = String(decoration?.text ?? decoration?.formattedValue ?? fallback);
+    const empty = text.trim() === '';
     return {
-        text: String(decoration?.text ?? decoration?.formattedValue ?? fallback),
-        style: decoration?.style as CSSProperties | undefined,
+        text,
+        style: empty ? withoutEmptyMark(decoration?.style as CSSProperties | undefined) : (decoration?.style as CSSProperties | undefined),
+        empty,
     };
 }
 
@@ -648,6 +712,10 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
     private inputRef = createRef<HTMLInputElement>();
 
     private resizeObserver: ResizeObserver | null = null;
+    private reloadWithResetKey = '';
+    private reloadWithoutResetKey = '';
+    /** После загрузки данных выделить первую строку, как ElementsList.setDefaultSelection. */
+    private preferFirstSelection = false;
     private createdTimer = 0;
     private scrollTimer = 0;
     private frame = 0;
@@ -679,6 +747,10 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
             editingCell: null,
             draft: '',
             listEpoch: 0,
+            hierarchyHistory: [ROOT_PARENT_UUID],
+            hierarchyLoading: false,
+            selectedRecordIds: [],
+            lastSelectedRecordId: null,
         };
         subscribeListSettingsRevision(this.subscriberName, () => {
             this.setState({
@@ -697,7 +769,319 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
     };
 
     changeMasterData = (_value?: unknown): void => {
+        this.preferFirstSelection = true;
         this.setState((prev) => ({ listEpoch: prev.listEpoch + 1 }));
+    };
+
+    private dataManagerInstance(): {
+        metadata?: { manifest?: { settings?: { hierarchical?: boolean } } };
+        options?: {
+            where?: Record<string, unknown>;
+            limit?: number;
+            offset?: number;
+            withHierarchy?: boolean;
+            order?: unknown;
+        };
+        currentSort?: { column: string; direction: 'ASC' | 'DESC' } | null;
+        modalUUID?: string;
+        formId?: string;
+        primaryKey?: string;
+        data?: { list?: unknown };
+        selectedRows?: Record<string, unknown>[];
+        ReloadData?: () => Promise<unknown>;
+        Delete?: () => Promise<unknown>;
+    } | undefined {
+        return (this.props.DataManager ?? this.DataManager) as ReturnType<ConfigurableNestedTable['dataManagerInstance']>;
+    }
+
+    private isHierarchical(): boolean {
+        return Boolean(this.dataManagerInstance()?.metadata?.manifest?.settings?.hierarchical);
+    }
+
+    private loadHierarchyLevel = async (parentId: string): Promise<void> => {
+        const dataManager = this.dataManagerInstance();
+        if (!dataManager?.ReloadData) {
+            return;
+        }
+        const where = { ...(dataManager.options?.where ?? {}) };
+        delete where.id;
+        where.parent = parentId;
+        dataManager.currentSort = null;
+        dataManager.options = {
+            ...dataManager.options,
+            where,
+            limit: dataManager.options?.limit ?? 200,
+            offset: 0,
+            withHierarchy: true,
+            order: undefined,
+        };
+        await dataManager.ReloadData();
+    };
+
+    private listRecords(): Record<string, unknown>[] {
+        const list = this.dataManagerInstance()?.data?.list;
+        if (!Array.isArray(list)) {
+            return [];
+        }
+        return list.filter((item): item is Record<string, unknown> => Boolean(item) && typeof item === 'object');
+    }
+
+    private rowKey(row: DisplayRow): string {
+        return row.recordId || row.id;
+    }
+
+    private publishSelection(ids: string[]): void {
+        const dataManager = this.dataManagerInstance();
+        if (!dataManager) {
+            return;
+        }
+        const primaryKey = dataManager.primaryKey ?? 'id';
+        const byId = new Map<string, Record<string, unknown>>();
+        for (const row of this.listRecords()) {
+            const id = entityId(row[primaryKey]) || entityId(row.id);
+            if (id) {
+                byId.set(id, row);
+            }
+        }
+        const selected = ids
+            .map((id) => {
+                const found = byId.get(id);
+                if (!found) {
+                    return null;
+                }
+                const recordId = entityId(found[primaryKey]) || entityId(found.id);
+                return recordId ? { ...found, id: recordId } : null;
+            })
+            .filter((row): row is Record<string, unknown> => row != null);
+        dataManager.selectedRows = selected;
+        const modalUUID = dataManager.modalUUID ?? 'list';
+        const formId = dataManager.formId ?? '';
+        HooksManager.setHook(HookKeyManager.selectRows(modalUUID, formId, transformRowsForHook(selected)));
+    }
+
+    private clearSelection(): void {
+        this.preferFirstSelection = false;
+        this.setState({ selectedRecordIds: [], lastSelectedRecordId: null });
+        this.publishSelection([]);
+    }
+
+    private selectFirstLeaf(): void {
+        const first = this.layout?.rows.find((row) => row.kind === 'leaf');
+        const field =
+            this.layout?.leaves.find((leaf) => leaf.field)?.field ??
+            this.layout?.leaves.find((leaf) => leaf.stackLeaves?.[0]?.name)?.stackLeaves?.[0]?.name;
+        if (!first) {
+            this.clearSelection();
+            return;
+        }
+        const key = this.rowKey(first);
+        this.setState({
+            selectedRecordIds: [key],
+            lastSelectedRecordId: key,
+            ...(field ? { activeCell: { rowId: first.id, field } } : {}),
+        });
+        this.publishSelection([key]);
+    }
+
+    private leafRows(): DisplayRow[] {
+        return (this.layout?.rows ?? []).filter((row) => row.kind === 'leaf');
+    }
+
+    handleRowSelect = (event: ReactMouseEvent<HTMLElement>, row: DisplayRow, field?: string): void => {
+        if (row.kind !== 'leaf') {
+            return;
+        }
+        const leaves = this.leafRows();
+        const index = leaves.findIndex((item) => this.rowKey(item) === this.rowKey(row));
+        if (index < 0) {
+            return;
+        }
+        const indexById = new Map<string, number>();
+        leaves.forEach((item, itemIndex) => {
+            indexById.set(this.rowKey(item), itemIndex);
+        });
+        const selectedIndexes = this.state.selectedRecordIds
+            .map((id) => indexById.get(id))
+            .filter((value): value is number => value != null);
+        const lastIndex = this.state.lastSelectedRecordId == null ? null : indexById.get(this.state.lastSelectedRecordId) ?? null;
+        const next = handleTableSelection(
+            index,
+            { selectedRows: selectedIndexes, lastSelectedRow: lastIndex },
+            { ctrlKey: event.ctrlKey, metaKey: event.metaKey, shiftKey: event.shiftKey },
+        );
+        const ids = next.selectedRows.map((itemIndex) => (leaves[itemIndex] ? this.rowKey(leaves[itemIndex]) : '')).filter(Boolean);
+        const lastId = next.lastSelectedRow == null || !leaves[next.lastSelectedRow] ? null : this.rowKey(leaves[next.lastSelectedRow]);
+        const activeField = field ?? this.state.activeCell?.field ?? this.layout?.leaves.find((leaf) => leaf.field)?.field;
+        this.setState({
+            selectedRecordIds: ids,
+            lastSelectedRecordId: lastId,
+            activeCell: activeField ? { rowId: row.id, field: activeField } : this.state.activeCell,
+        });
+        this.publishSelection(ids);
+        this.scrollerRef.current?.focus({ preventScroll: true });
+    };
+
+    openRowEditor = (row: DisplayRow): void => {
+        if (row.kind !== 'leaf') {
+            return;
+        }
+        const key = this.rowKey(row);
+        this.setState({
+            selectedRecordIds: [key],
+            lastSelectedRecordId: key,
+        });
+        this.publishSelection([key]);
+        const dataManager = this.dataManagerInstance();
+        if (!dataManager?.selectedRows?.length) {
+            console.warn('ElementsList: нет выбранной строки, форма элемента не открыта');
+            return;
+        }
+        try {
+            const formConfig = createEditForm(dataManager);
+            $windows.open(formConfig.title, formConfig.content, formConfig.options);
+        } catch (error) {
+            console.error('Error opening edit form:', error);
+        }
+    };
+
+    deleteSelectedRows = (): void => {
+        const dataManager = this.dataManagerInstance();
+        if (!dataManager || typeof dataManager.Delete !== 'function') {
+            return;
+        }
+        if (!dataManager.selectedRows?.length && this.state.selectedRecordIds.length) {
+            this.publishSelection(this.state.selectedRecordIds);
+        }
+        if (!dataManager.selectedRows?.length) {
+            return;
+        }
+        $confirm('Удалить?', (isYes: boolean) => {
+            if (!isYes) {
+                return;
+            }
+            void dataManager
+                .Delete?.()
+                .then(() => this.handleReload(true))
+                .catch((error: unknown) => {
+                    console.error(error);
+                });
+        });
+    };
+
+    openSelectedEditor = (): void => {
+        const dataManager = this.dataManagerInstance();
+        if (!dataManager?.selectedRows?.length) {
+            console.warn('No rows selected for editing');
+            return;
+        }
+        try {
+            const formConfig = createEditForm(dataManager);
+            $windows.open(formConfig.title, formConfig.content, formConfig.options);
+        } catch (error) {
+            console.error('Error opening edit form:', error);
+        }
+    };
+
+    onHierarchyExpand = async (recordId: string): Promise<void> => {
+        if (!recordId || this.state.hierarchyLoading) {
+            return;
+        }
+        this.setState({ hierarchyLoading: true });
+        try {
+            await this.loadHierarchyLevel(recordId);
+            this.preferFirstSelection = false;
+            this.publishSelection([]);
+            this.setState((prev) => ({
+                hierarchyHistory: [...prev.hierarchyHistory, recordId],
+                hierarchyLoading: false,
+                listEpoch: prev.listEpoch + 1,
+                scrollTop: 0,
+                activeCell: null,
+                editingCell: null,
+                selectedRecordIds: [],
+                lastSelectedRecordId: null,
+            }));
+        } catch (error) {
+            console.error(error);
+            this.setState({ hierarchyLoading: false });
+        }
+    };
+
+    private renderHierarchyHeader(drilled: boolean): ReactNode {
+        return (
+            <span className="data-table__hierarchy">
+                {drilled ? (
+                    <IconButton
+                        variant="outlined"
+                        icon={ArrowLeftIcon}
+                        size="small"
+                        onClick={(event: { stopPropagation: () => void }) => {
+                            event.stopPropagation();
+                            void this.onHierarchyBack();
+                        }}
+                    />
+                ) : null}
+                <span className="data-table__hierarchy-label">Иерархия</span>
+            </span>
+        );
+    }
+
+    handleReload = async (resetPagination = false): Promise<void> => {
+        const dataManager = this.dataManagerInstance();
+        if (!dataManager?.ReloadData) {
+            return;
+        }
+        try {
+            const hierarchical = this.isHierarchical();
+            if (hierarchical) {
+                const parentId = this.state.hierarchyHistory[this.state.hierarchyHistory.length - 1] ?? ROOT_PARENT_UUID;
+                await this.loadHierarchyLevel(parentId);
+                this.preferFirstSelection = false;
+                this.publishSelection([]);
+            } else {
+                dataManager.options = {
+                    ...dataManager.options,
+                    offset: resetPagination ? 0 : dataManager.options?.offset,
+                };
+                await dataManager.ReloadData();
+            }
+            this.setState((prev) => ({
+                listEpoch: prev.listEpoch + 1,
+                scrollTop: resetPagination ? 0 : prev.scrollTop,
+                activeCell: null,
+                editingCell: null,
+                ...(hierarchical ? { selectedRecordIds: [], lastSelectedRecordId: null } : {}),
+            }));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    onHierarchyBack = async (): Promise<void> => {
+        if (this.state.hierarchyHistory.length < 2 || this.state.hierarchyLoading) {
+            return;
+        }
+        const hierarchyHistory = this.state.hierarchyHistory.slice(0, -1);
+        const parentId = hierarchyHistory[hierarchyHistory.length - 1] ?? ROOT_PARENT_UUID;
+        this.setState({ hierarchyLoading: true });
+        try {
+            await this.loadHierarchyLevel(parentId);
+            this.preferFirstSelection = false;
+            this.publishSelection([]);
+            this.setState((prev) => ({
+                hierarchyHistory,
+                hierarchyLoading: false,
+                listEpoch: prev.listEpoch + 1,
+                scrollTop: 0,
+                activeCell: null,
+                editingCell: null,
+                selectedRecordIds: [],
+                lastSelectedRecordId: null,
+            }));
+        } catch (error) {
+            console.error(error);
+            this.setState({ hierarchyLoading: false });
+        }
     };
 
     publishColumnCatalog = (columns: GroupedColumn[]): void => {
@@ -710,6 +1094,21 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
     };
 
     componentDidMount(): void {
+        const modalUUID = this.dataManagerInstance()?.modalUUID;
+        if (modalUUID) {
+            this.reloadWithResetKey = `${modalUUID}__reload_with_pagination_reset`;
+            this.reloadWithoutResetKey = `${modalUUID}__reload_without_pagination_reset`;
+            HooksManager.subscribeHook({
+                [this.reloadWithResetKey]: {
+                    [RELOAD_LOCAL_KEY]: () => this.handleReload(true),
+                },
+            });
+            HooksManager.subscribeHook({
+                [this.reloadWithoutResetKey]: {
+                    [RELOAD_LOCAL_KEY]: () => this.handleReload(false),
+                },
+            });
+        }
         this.createdTimer = window.setTimeout(() => this.setState({ afterCreated: true }), 1000);
         const el = this.scrollerRef.current;
         if (!el) {
@@ -749,6 +1148,16 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
     }
 
     componentWillUnmount(): void {
+        if (this.reloadWithResetKey) {
+            HooksManager.unsubscribeHook({
+                [this.reloadWithResetKey]: [RELOAD_LOCAL_KEY],
+            });
+        }
+        if (this.reloadWithoutResetKey) {
+            HooksManager.unsubscribeHook({
+                [this.reloadWithoutResetKey]: [RELOAD_LOCAL_KEY],
+            });
+        }
         unsubscribeListSettingsRevision(this.subscriberName);
         window.clearTimeout(this.createdTimer);
         window.clearTimeout(this.scrollTimer);
@@ -768,6 +1177,10 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
     }
 
     componentDidUpdate(_prevProps: ConfigurableNestedTableProps, prevState: ConfigurableNestedTableState): void {
+        if (prevState.listEpoch !== this.state.listEpoch && this.preferFirstSelection) {
+            this.preferFirstSelection = false;
+            this.selectFirstLeaf();
+        }
         if (this.state.editingCell && !prevState.editingCell) {
             const input = this.inputRef.current;
             if (input) {
@@ -873,12 +1286,33 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
         if (this.state.editingCell) {
             return;
         }
+        if (event.key === 'Delete') {
+            event.preventDefault();
+            this.deleteSelectedRows();
+            return;
+        }
         const active = this.state.activeCell;
         if (!active) {
             return;
         }
 
-        if (event.key === 'Enter' || event.key === 'F2') {
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'a') {
+            event.preventDefault();
+            const leaves = this.leafRows();
+            const ids = leaves.map((row) => this.rowKey(row));
+            this.setState({
+                selectedRecordIds: ids,
+                lastSelectedRecordId: ids[ids.length - 1] ?? null,
+            });
+            this.publishSelection(ids);
+            return;
+        }
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            this.openSelectedEditor();
+            return;
+        }
+        if (event.key === 'F2') {
             event.preventDefault();
             this.startEditing(active.rowId, active.field);
             return;
@@ -902,13 +1336,6 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
             event.preventDefault();
             this.moveActiveCell(0, 1);
             return;
-        }
-        if (event.key === 'Delete' || event.key === 'Backspace') {
-            if (!this.isCellEditable(active.rowId, active.field)) {
-                return;
-            }
-            event.preventDefault();
-            this.writeCellValue(active.rowId, active.field, '');
         }
     };
 
@@ -949,7 +1376,13 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
         let colIndex = fields.indexOf(active.field);
         colIndex = colIndex < 0 ? 0 : Math.max(0, Math.min(fields.length - 1, colIndex + deltaCol));
 
-        this.setState({ activeCell: { rowId: row.id, field: fields[colIndex] } });
+        const key = this.rowKey(row);
+        this.setState({
+            activeCell: { rowId: row.id, field: fields[colIndex] },
+            selectedRecordIds: [key],
+            lastSelectedRecordId: key,
+        });
+        this.publishSelection([key]);
         this.scrollRowIntoView(targetRow);
     };
 
@@ -1197,7 +1630,10 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
         const scope = this.settingsScope();
         const rules = (getConditionalFormattingSettingsState(scope).conditionalFormattingRules ?? []) as CfRule[];
         const grouping = data.length > 0 && isTreeRow(data[0]) && Boolean((data[0] as ITreeRow).isGroup);
-        const treeWidth = (grouping ? 260 : 32) + CHECK_WIDTH;
+        const hierarchy = this.isHierarchical();
+        const hierarchyWidth = hierarchy ? HIERARCHY_COLUMN_WIDTH : 0;
+        const drilledHierarchy = hierarchy && this.state.hierarchyHistory.length > 1;
+        const treeWidth = hierarchyWidth + (grouping ? 260 : 32) + CHECK_WIDTH;
         const leafHeight = Math.max(36, getConfigCellHeight(columns));
         const built = buildLeaves(columns);
         const sortRules = readSortRules(scope);
@@ -1246,14 +1682,16 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
                 <div className="data-table__header" ref={this.headerRef}>
                     {built.hasGroupHeader && (
                         <div className="data-table__header-row" style={{ width: totalWidth, height: 36 }}>
-                            <div className="data-table__hcell data-table__pinned" style={{ left: 0, width: treeWidth }}>
+                            <div className={`data-table__hcell data-table__pinned${hierarchy ? ' has-hierarchy' : ''}`} style={{ left: 0, width: treeWidth }}>
+                                {hierarchy ? this.renderHierarchyHeader(drilledHierarchy) : null}
                                 {grouping ? 'Группа' : ''}
                             </div>
                             {renderBands(leaves, colWidths, paintedLefts, treeWidth, titles, this.state.drag, this.startColDrag, this.startResize)}
                         </div>
                     )}
                     <div className="data-table__header-row" style={{ width: totalWidth, height: 36 }}>
-                        <div className="data-table__hcell data-table__pinned" style={{ left: 0, width: treeWidth }}>
+                        <div className={`data-table__hcell data-table__pinned${hierarchy ? ' has-hierarchy' : ''}`} style={{ left: 0, width: treeWidth }}>
+                            {hierarchy ? (built.hasGroupHeader ? <span className="data-table__hierarchy" /> : this.renderHierarchyHeader(drilledHierarchy)) : null}
                             {grouping ? (built.hasGroupHeader ? '' : 'Группа') : ''}
                         </div>
                         {leaves.map((leaf, index) => {
@@ -1312,6 +1750,7 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
                                     return null;
                                 }
                                 const dragging = Boolean(rowDrag && rowDrag.fromId === row.id);
+                                const selected = row.kind === 'leaf' && this.state.selectedRecordIds.includes(this.rowKey(row));
                                 const groupStyle = row.substringHit ? substringGroupStyle(rules) : {};
                                 return (
                                     <div
@@ -1319,6 +1758,7 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
                                         className={[
                                             'data-table__row',
                                             row.kind === 'group' ? 'is-group-row' : '',
+                                            selected ? 'is-selected' : '',
                                             dragging ? 'is-dragging' : '',
                                         ]
                                             .filter(Boolean)
@@ -1329,19 +1769,51 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
                                             transform: `translateY(${geo.top}px)`,
                                             ...(row.kind === 'group' ? groupStyle : {}),
                                         }}
-                                        onClick={() => {
+                                        onClick={(event) => {
                                             if (row.kind === 'group' && row.groupKey) {
                                                 this.handleToggleGroup(row.groupKey);
+                                                return;
                                             }
+                                            const target = event.target;
+                                            if (target instanceof Element && target.closest('button')) {
+                                                return;
+                                            }
+                                            this.handleRowSelect(event, row);
+                                        }}
+                                        onDoubleClick={(event) => {
+                                            const target = event.target;
+                                            if (target instanceof Element && target.closest('button')) {
+                                                return;
+                                            }
+                                            this.openRowEditor(row);
                                         }}
                                     >
-                                        <div className="data-table__cell data-table__pinned" style={{ left: 0, width: treeWidth, ...(row.kind === 'group' ? groupStyle : {}) }}>
+                                        <div className={`data-table__cell data-table__pinned${hierarchy ? ' has-hierarchy' : ''}`} style={{ left: 0, width: treeWidth, ...(row.kind === 'group' ? groupStyle : {}) }}>
+                                            {hierarchy ? (
+                                                <span className="data-table__hierarchy">
+                                                    {row.kind === 'leaf' ? (
+                                                        <IconButton
+                                                            variant="outlined"
+                                                            icon={PlusIcon}
+                                                            size="small"
+                                                            onClick={(event: { stopPropagation: () => void }) => {
+                                                                event.stopPropagation();
+                                                                if (row.recordId) {
+                                                                    void this.onHierarchyExpand(row.recordId);
+                                                                }
+                                                            }}
+                                                            onDoubleClick={(event: { stopPropagation: () => void }) => event.stopPropagation()}
+                                                        />
+                                                    ) : null}
+                                                </span>
+                                            ) : null}
                                             {row.kind === 'leaf' && (
                                                 <button
                                                     type="button"
                                                     className="data-table__row-drag"
                                                     onPointerDown={(event) => this.startRowDrag(event, row, rows, geometry)}
                                                     onClick={(event) => event.stopPropagation()}
+                                                    onDoubleClick={(event) => event.stopPropagation()}
                                                 >
                                                     <RowDragIcon />
                                                 </button>
@@ -1375,11 +1847,20 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
                                                 );
                                             }
                                             if (leaf.kind === 'stack') {
+                                                const stackField = leaf.stackLeaves?.[0]?.name;
                                                 return (
                                                     <div
                                                         key={leaf.id}
                                                         className="data-table__cell"
                                                         style={{ left: treeWidth + paintedLefts[leafIndex], width: colWidths[leafIndex] }}
+                                                        onClick={(event) => {
+                                                            event.stopPropagation();
+                                                            this.handleRowSelect(event, row, stackField);
+                                                        }}
+                                                        onDoubleClick={(event) => {
+                                                            event.stopPropagation();
+                                                            this.openRowEditor(row);
+                                                        }}
                                                     >
                                                         <div className="data-table__stack">
                                                             {(leaf.stackLeaves ?? []).map((column) => {
@@ -1419,14 +1900,20 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
                                                     className={cellClassName}
                                                     data-row-id={row.id}
                                                     data-field={field}
-                                                    title={painted.text || leaf.title}
+                                                    title={painted.empty ? 'Нет значения' : painted.text || leaf.title}
                                                     style={{
                                                         left: treeWidth + paintedLefts[leafIndex],
                                                         width: colWidths[leafIndex],
                                                         ...painted.style,
                                                     }}
-                                                    onClick={() => this.activateCell(row.id, field)}
-                                                    onDoubleClick={() => this.startEditing(row.id, field)}
+                                                    onClick={(event) => {
+                                                        event.stopPropagation();
+                                                        this.handleRowSelect(event, row, field);
+                                                    }}
+                                                    onDoubleClick={(event) => {
+                                                        event.stopPropagation();
+                                                        this.openRowEditor(row);
+                                                    }}
                                                 >
                                                     {isEditing ? (
                                                         <input
@@ -1439,6 +1926,8 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
                                                             onClick={(event) => event.stopPropagation()}
                                                             onDoubleClick={(event) => event.stopPropagation()}
                                                         />
+                                                    ) : painted.empty ? (
+                                                        <span className="data-table__empty-value">—</span>
                                                     ) : (
                                                         <span className="data-table__value">{painted.text}</span>
                                                     )}

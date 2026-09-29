@@ -21,6 +21,7 @@ type MetaColumn = IDataColumn & { label?: string };
 
 type DataManagerLike = {
     metaOwner?: string;
+    primaryKey?: string;
     data?: { list?: unknown };
     meta?: { list?: { cols?: MetaColumn[]; refs?: Record<string, Record<string, string>>; count?: number } };
     metadata?: { treeObject?: { Fields?: Record<string, Partial<MetaColumn> & { type?: string }> } };
@@ -258,6 +259,47 @@ function applyRefLabels(rows: ICell[][], refs: Record<string, Record<string, str
     }
 }
 
+function entityId(value: unknown): string {
+    if (value == null || value === '') {
+        return '';
+    }
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'bigint') {
+        return String(value);
+    }
+    if (typeof value === 'object') {
+        const record = value as Record<string, unknown>;
+        if ('value' in record) {
+            return entityId(record.value);
+        }
+        if ('id' in record) {
+            return entityId(record.id);
+        }
+    }
+    return '';
+}
+
+function stampRecordIds(
+    rows: ICell[][],
+    sourceRows: Record<string, unknown>[],
+    indexToId: Record<string, string>,
+    primaryKey: string,
+): void {
+    for (const row of rows) {
+        const rowIndex = row.find((cell) => cell?.rowIndex != null)?.rowIndex;
+        const source = rowIndex == null ? undefined : sourceRows[rowIndex];
+        const recordId =
+            entityId(source?.[primaryKey]) ||
+            entityId(source?.id) ||
+            (rowIndex == null ? '' : entityId(indexToId[String(rowIndex)]));
+        if (!recordId) {
+            continue;
+        }
+        for (const cell of row) {
+            cell.recordId = recordId;
+        }
+    }
+}
+
 function toTableColumn(col: IColumnData | (IColumnData[] & { title?: string; orientation?: 'horizontal' | 'vertical' })): GroupedColumn {
     return col as GroupedColumn;
 }
@@ -281,6 +323,7 @@ function fromRecords(rows: Record<string, unknown>[], cols: MetaColumn[], refs: 
         getFieldType: (fieldName) => dm?.metadata?.treeObject?.Fields?.[fieldName]?.type ?? '',
     });
     const prepared = flattenPreparedRows(transformed.data);
+    stampRecordIds(prepared, sorted, transformed.indexToId, dm?.primaryKey ?? 'id');
     applyRefLabels(prepared, hydrateRefs(refs, visible));
     return {
         data: applyView(prepared, scope, visible, dm),
@@ -301,7 +344,7 @@ export function buildListTableModel(options: {
     const dm = options.dataManager;
     const metaCols = dm?.meta?.list?.cols;
     const list = dm?.data?.list;
-    if (Array.isArray(list) && list.length > 0 && isRecordRow(list[0]) && Array.isArray(metaCols) && metaCols.length > 0) {
+    if (Array.isArray(list) && Array.isArray(metaCols) && metaCols.length > 0 && (list.length === 0 || isRecordRow(list[0]))) {
         return fromRecords(list as Record<string, unknown>[], metaCols, dm?.meta?.list?.refs, dm, options.scope);
     }
 
