@@ -28,6 +28,7 @@ export function applySelectionToRows<
 export function applySortToRows<T extends Record<string, unknown>>(
     data: T[],
     view: ActiveListView = getActiveListView(),
+    fieldTypes?: ReturnType<typeof getSortSettingsState>['fieldTypes'],
 ): T[] {
     const { activeSortRules } = view
     if (activeSortRules.length === 0) {
@@ -39,8 +40,7 @@ export function applySortToRows<T extends Record<string, unknown>>(
         return data
     }
 
-    const sortState = getSortSettingsState()
-    const fieldTypesMap = sortState.fieldTypes
+    const fieldTypesMap = fieldTypes ?? getSortSettingsState().fieldTypes
 
     const sorted = [...data].sort((a, b) => {
         for (const rule of activeSortRules) {

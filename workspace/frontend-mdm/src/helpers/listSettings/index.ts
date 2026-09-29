@@ -6,6 +6,12 @@ export {
     unsubscribeListSettingsRevision,
     getListSettingsRevision,
 } from './core/revisionBus'
+export {
+    getActiveListSettingsScope,
+    listSettingsScopeKey,
+    setActiveListSettingsScope,
+    withListSettingsScope,
+} from './core/activeScope'
 export type { FacetStore } from './core/createFacetStore'
 
 export { attachListSettingsRevision } from './react/attachRevision'

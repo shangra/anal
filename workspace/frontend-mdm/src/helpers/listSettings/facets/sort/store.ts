@@ -20,8 +20,8 @@ const store = createFacetStore<SortSettingsState>({
 
 export { store as sortSettingsStore }
 
-export function getSortSettingsState(): SortSettingsState {
-    return store.getState()
+export function getSortSettingsState(scope?: string): SortSettingsState {
+    return store.getState(scope)
 }
 
 export function getActiveSortRules(): SortRule[] {

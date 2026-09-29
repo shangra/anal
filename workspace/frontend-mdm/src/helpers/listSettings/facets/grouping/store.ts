@@ -17,12 +17,12 @@ const store = createFacetStore<GroupingSettingsState>({
     clone: cloneGroupingSettingsState,
 })
 
-export function getGroupingSettingsState(): GroupingSettingsState {
-    return store.getState()
+export function getGroupingSettingsState(scope?: string): GroupingSettingsState {
+    return store.getState(scope)
 }
 
-export function getActiveGroupFields(): string[] {
-    return resolveActiveGroupFields(store.getState())
+export function getActiveGroupFields(scope?: string): string[] {
+    return resolveActiveGroupFields(store.getState(scope))
 }
 
 export { cloneGroupingSettingsState }

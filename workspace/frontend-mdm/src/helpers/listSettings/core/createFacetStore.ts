@@ -1,5 +1,12 @@
 import StateManager from 'lite-react-statemanager'
-import { emitListSettingsRevision } from './revisionBus'
+import {
+    getActiveListSettingsScope,
+    isListSettingsBatch,
+    noteListSettingsWrite,
+    registerListSettingsFacet,
+    resolveListSettingsScope,
+} from './activeScope'
+import { GLOBAL_LIST_SETTINGS_SCOPE } from './types'
 
 export type FaceStateShape = object
 
@@ -15,7 +22,7 @@ export interface FacetStoreConfig<T extends FaceStateShape> {
 
 export interface FacetStore<T extends FaceStateShape>{
     readonly id: string
-    getState: () => T
+    getState: (scope?: string) => T
     commit: (partial: Partial<T>) => void
     replace: (next: T) => void
     clone: (state: T) => T
@@ -37,12 +44,24 @@ function readRaw(storageKey: string, legacyKeys: string[] = []): string | null {
     return null
 }
 
+function storageKeyFor(base: string, scope: string): string {
+    if (scope === GLOBAL_LIST_SETTINGS_SCOPE.key) {
+        return base
+    }
+    return `${base}::${scope}`
+}
+
 export function createFacetStore <T extends FaceStateShape>(
      config : FacetStoreConfig<T>,
 ): FacetStore<T> {
-    const load = (): T => {
+    const cache = new Map<string, T>()
+
+    const load = (scope: string): T => {
         try {
-            const raw = readRaw(config.storageKey, config.legacyStorageKeys)
+            const key = storageKeyFor(config.storageKey, scope)
+            const raw = scope === GLOBAL_LIST_SETTINGS_SCOPE.key
+                ? readRaw(key, config.legacyStorageKeys)
+                : localStorage.getItem(key)
             if (!raw) return config.empty()
             return config.parse(JSON.parse(raw))
         } catch {
@@ -50,48 +69,70 @@ export function createFacetStore <T extends FaceStateShape>(
         }
     }
 
-    const persist = (state: T): void => {
+    const persist = (scope: string, state: T): void => {
         try {
-            localStorage.setItem(config.storageKey, JSON.stringify(state))
+            localStorage.setItem(storageKeyFor(config.storageKey, scope), JSON.stringify(state))
         } catch (e) {
             console.error('[createFacetStore] persist error:', e)
         }
     }
 
-    const readState = (): T => {
-        const bag = StateManager.state
-        const result = { ...config.empty() }
-        for (const key of config.keys) {
-            const value = bag[key]
-            if (value !== undefined) {
-                ;(result as Record<string, unknown>)[key] = value
-            }
+    const materialize = (scope: string): T => {
+        const cached = cache.get(scope)
+        if (cached) {
+            return cached
         }
-        return result
+        const loaded = config.clone(load(scope))
+        cache.set(scope, loaded)
+        return loaded
     }
 
-    const initial = load()
-    StateManager.setState({ ...initial })
+    const publish = (state: T): void => {
+        const payload: Record<string, unknown> = {}
+        for (const key of config.keys) {
+            payload[key] = state[key]
+        }
+        StateManager.setState(payload)
+    }
+
+    const write = (scope: string, next: T): void => {
+        const cloned = config.clone(next)
+        cache.set(scope, cloned)
+        persist(scope, cloned)
+        if (!isListSettingsBatch() && scope === getActiveListSettingsScope()) {
+            publish(cloned)
+        }
+        noteListSettingsWrite()
+    }
+
+    const read = (scope?: string): T => materialize(resolveListSettingsScope(scope))
+
+    const initial = materialize(GLOBAL_LIST_SETTINGS_SCOPE.key)
+    publish(initial)
+
+    registerListSettingsFacet({
+        hydrateActive: () => {
+            publish(materialize(getActiveListSettingsScope()))
+        },
+    })
 
     const commit = (partial: Partial<T>): void => {
-        StateManager.setState({ ...partial })
-        persist(readState())
-        emitListSettingsRevision()
+        const scope = resolveListSettingsScope()
+        write(scope, { ...read(scope), ...partial })
     }
 
     const replace = (next: T): void => {
-        const payload: Record<string, unknown> = {}
+        const scope = resolveListSettingsScope()
+        const payload = { ...config.empty() }
         for (const key of config.keys) {
-            payload[key] = next[key]
+            ;(payload as Record<string, unknown>)[key] = next[key]
         }
-        StateManager.setState(payload)
-        persist(readState())
-        emitListSettingsRevision()
+        write(scope, payload)
     }
 
     return {
         id: config.id,
-        getState: readState,
+        getState: read,
         commit,
         replace,
         clone: config.clone,

@@ -104,7 +104,8 @@
     padding: 16px;
     margin: 0px;
     gap: 8px;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .settings-content--column .right-panel.right-panel--column {
@@ -112,18 +113,20 @@
     margin: 0;
     padding: 16px;
     min-width: 0;
-    overflow: hidden;
+    min-height: 0;
+    flex: 0 0 auto;
+    overflow: visible;
     box-sizing: border-box;
 }
 
 .settings-content--column .left-panel.left-panel--column {
-    min-height: 96px;
+    min-height: 0;
     width: 100%;
     margin: 0;
     border-right: none;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: visible;
     box-sizing: border-box;
 }
 
@@ -1421,20 +1424,19 @@ border: 1px solid rgba(124, 137, 171, 0.637);
 .column-grouping-table {
     background-color: transparent !important;
     border: none !important;
-    display: flex !important;
-    flex-direction: column !important;
-    flex: 1 !important;
-    min-height: 0 !important;
+    display: block;
+    flex: none;
+    min-height: 0;
     overflow: visible !important;
 }
 
-/* ColumnGroupingTab: скролл только внутри .grouping-body */
 .settings-content--column .right-panel--column > .selected-list-wrapper {
-    overflow-y: hidden !important;
+    display: block;
+    flex: none;
+    min-height: 0;
+    overflow: visible;
 }
 
-/* ColumnGroupingTab: панель «Настройки» не должна показывать вертикальный скролл —
-   высота панели растёт под контент, а не прокручивается внутри. */
 .settings-content--column .left-panel .tree-list {
     flex: none;
     overflow: visible;
@@ -1443,9 +1445,10 @@ border: 1px solid rgba(124, 137, 171, 0.637);
 .column-grouping-table .grouping-body {
     display: flex;
     flex-direction: column;
-    flex: 1 !important;
-    min-height: 0 !important;
-    overflow-y: auto;
+    flex: none;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
 }
 
 /* ColumnGroupingTab: строки без ограничений */

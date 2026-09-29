@@ -18,8 +18,8 @@ const store = createFacetStore<ConditionalFormattingSettingsState>({
     clone: cloneConditionalFormattingSettingsState,
 })
 
-export function getConditionalFormattingSettingsState(): ConditionalFormattingSettingsState {
-    return store.getState()
+export function getConditionalFormattingSettingsState(scope?: string): ConditionalFormattingSettingsState {
+    return store.getState(scope)
 }
 
 export { cloneConditionalFormattingSettingsState }

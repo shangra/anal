@@ -1,5 +1,5 @@
+import { resolveListSettingsScope, noteListSettingsWrite } from '../../core/activeScope';
 import { createFacetStore } from '../../core/createFacetStore';
-import { emitListSettingsRevision } from '../../core/revisionBus';
 import { getSortSettingsState } from '../sort/store';
 import type { GroupingFieldTreeNode } from '../../../../components/MetadataForms/Buttons/Group/ListSettingsModal/shared/types';
 import {
@@ -39,27 +39,26 @@ const store = createFacetStore<ColumnGroupingSettingsState>({
     clone: cloneColumnGroupingSettingsState,
 });
 
-export function getColumnGroupingSettingsState(): ColumnGroupingSettingsState {
-    return store.getState();
+export function getColumnGroupingSettingsState(scope?: string): ColumnGroupingSettingsState {
+    return store.getState(scope);
 }
 
-// Каталог доступных колонок берётся из ElementList (DataManager.meta.list.cols) —
-// это не user-settings, поэтому хранится в памяти и заполняется при инициализации списка.
-let columnCatalog: GroupingFieldTreeNode[] = [];
+// Каталог колонок свой у каждой таблицы: иначе «Добавить колонку» подмешивает чужой список.
+const columnCatalogs = new Map<string, GroupingFieldTreeNode[]>();
 
-// Основной источник — колонки из ElementList. Если каталог не заполнен (например, при
-// открытии минуя Group.loadFields), используем те же поля, что подаются в «Сортировку».
-function effectiveColumnCatalog(): GroupingFieldTreeNode[] {
-    return columnCatalog.length > 0 ? columnCatalog : getSortSettingsState().availableFields;
+function effectiveColumnCatalog(scope?: string): GroupingFieldTreeNode[] {
+    const key = resolveListSettingsScope(scope);
+    const catalog = columnCatalogs.get(key) ?? [];
+    return catalog.length > 0 ? catalog : getSortSettingsState(key).availableFields;
 }
 
 export function setColumnGroupingCatalog(fields: GroupingFieldTreeNode[]): void {
-    columnCatalog = Array.isArray(fields) ? fields : [];
-    emitListSettingsRevision();
+    columnCatalogs.set(resolveListSettingsScope(), Array.isArray(fields) ? fields : []);
+    noteListSettingsWrite();
 }
 
-export function getColumnGroupingCatalog(): GroupingFieldTreeNode[] {
-    return effectiveColumnCatalog();
+export function getColumnGroupingCatalog(scope?: string): GroupingFieldTreeNode[] {
+    return effectiveColumnCatalog(scope);
 }
 
 export { cloneColumnGroupingSettingsState };
@@ -82,7 +81,7 @@ function clampIndex(index: number, length: number): number {
 }
 
 function columnLabel(fieldId: string): string | undefined {
-    return columnCatalog.find((column) => column.value === fieldId)?.label;
+    return effectiveColumnCatalog().find((column) => column.value === fieldId)?.label;
 }
 
 export const columnGroupingSettingsActions = {

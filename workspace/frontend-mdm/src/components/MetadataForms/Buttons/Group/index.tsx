@@ -8,6 +8,7 @@ import type { Props, State } from './types'
 import type { GroupingFieldTreeNode } from './types'
 import { listSettingsActions } from '../../../../helpers/grouping.helper'
 import { setColumnGroupingCatalog } from '../../../../helpers/listSettings/facets/columnGrouping/store'
+import { listSettingsScopeKey, setActiveListSettingsScope } from '../../../../helpers/listSettings'
 import { ListSettingsModal } from './ListSettingsModal/ListSettingsModal'
 import { IDataColumn } from '../../ElementsList/types'
 import { sortSettingsActions } from '../../../../helpers/listSettings/facets/sort/store'
@@ -38,6 +39,8 @@ export class Group extends Component<Props, State> {
     handleClick = async (): Promise<void> => {
         const { DataManager } = this.props
         if (!DataManager) return
+
+        setActiveListSettingsScope(listSettingsScopeKey({ metaOwner: DataManager.metaOwner, name: 'list' }))
 
         let fields = this.state.fields
 

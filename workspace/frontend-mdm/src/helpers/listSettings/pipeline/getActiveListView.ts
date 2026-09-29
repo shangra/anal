@@ -8,14 +8,14 @@ import {
 } from '../facets/selection/types'
 import type { ActiveListView } from './types'
 
-export function getActiveListView(): ActiveListView {
-    const selectionState = getSelectionSettingsState()
-    const sortState = getSortSettingsState()
-    const cfState = getConditionalFormattingSettingsState()
+export function getActiveListView(scope?: string): ActiveListView {
+    const selectionState = getSelectionSettingsState(scope)
+    const sortState = getSortSettingsState(scope)
+    const cfState = getConditionalFormattingSettingsState(scope)
     return {
         activeSelectionNodes: getActiveSelectionNodes(selectionState),
         activeSelectionConditions: getActiveSelectionConditions(selectionState),
-        activeGroupFields: getActiveGroupFields(),
+        activeGroupFields: getActiveGroupFields(scope),
         activeSortRules: sortState.sortRules.filter((rule) => rule.enabled),
         activeConditionalFormattingRules: cfState.conditionalFormattingRules.filter((r) => r.enabled),
     }

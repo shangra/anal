@@ -7,7 +7,9 @@
     type ReactNode,
 } from 'react';
 import './ConfigurableNestedTable.css';
-import { isTreeRow, normalizeCells } from './utils/treeRows';
+import { isTreeRow } from './utils/treeRows';
+import { buildListTableModel } from './utils/buildListTableModel';
+import { syncListSettingsCatalogFromTable } from './utils/syncListSettingsCatalog';
 import type { ICell } from '../ElementsList/types';
 import { GroupMarkerDown } from './Icons/groupMarkerDown';
 import { GroupMarkerRight } from './Icons/groupMarkerRight';
@@ -15,9 +17,11 @@ import type { ConfigurableNestedTableProps, ExtraTableProps, IColumnData, ITreeR
 import * as ListSettings from '../../../helpers/listSettings';
 import {
     getConditionalFormattingSettingsState,
+    listSettingsScopeKey,
     subscribeListSettingsRevision,
     unsubscribeListSettingsRevision,
     getListSettingsRevision,
+    withListSettingsScope,
 } from '../../../helpers/listSettings';
 import {
     resolveConditionalCellDecoration,
@@ -104,10 +108,12 @@ interface ConfigurableNestedTableState {
     activeCell: CellRef | null;
     editingCell: CellRef | null;
     draft: string;
+    listEpoch: number;
 }
 
 const ROW_BUFFER = 10;
 const DRAG_START_PIXELS = 4;
+const CHECK_WIDTH = 28;
 
 function formatCellValue(value: unknown): string {
     if (value === null || value === undefined) {
@@ -123,11 +129,14 @@ function isVerticalGroup(col: GroupedColumn): boolean {
     return Array.isArray(col) && (col as GroupedColumn[] & { orientation?: string }).orientation === 'vertical';
 }
 
-function flattenCellList(item: ICell | ICell[]): ICell[] {
+function flattenCellList(item: ICell | ICell[] | unknown): ICell[] {
     if (Array.isArray(item)) {
-        return item.flatMap((child) => flattenCellList(child as ICell | ICell[]));
+        return item.flatMap((child) => flattenCellList(child));
     }
-    return item ? [item] : [];
+    if (item && typeof item === 'object' && 'columnName' in item && 'value' in item) {
+        return [item as ICell];
+    }
+    return [];
 }
 
 function getLeafCells(item: ICell | ICell[] | ITreeRow | Record<string, unknown>[]): ICell[] | null {
@@ -135,17 +144,13 @@ function getLeafCells(item: ICell | ICell[] | ITreeRow | Record<string, unknown>
         if (item.isGroup) {
             return null;
         }
-        return normalizeCells(item.cells);
+        return flattenCellList(item.cells);
     }
     if (Array.isArray(item)) {
-        if (item.length === 0) {
-            return [];
-        }
-        const first = item[0] as { columnName?: unknown; cells?: unknown };
-        if (first && typeof first === 'object' && 'columnName' in first) {
-            return flattenCellList(item as ICell | ICell[]);
-        }
-        return null;
+        return flattenCellList(item);
+    }
+    if (item && typeof item === 'object' && 'columnName' in item && 'value' in item) {
+        return [item as ICell];
     }
     return null;
 }
@@ -180,7 +185,7 @@ function buildLeaves(columns: GroupedColumn[]): { leaves: LeafTrack[]; hasGroupH
                 rootId,
                 title: col.label ?? col.name,
                 width: col.cellWidth ?? 140,
-                flexGrow: Boolean(col.cellFlexGrow),
+                flexGrow: col.cellFlexGrow !== false,
                 kind: 'field',
                 field: col.name,
             });
@@ -194,7 +199,7 @@ function buildLeaves(columns: GroupedColumn[]): { leaves: LeafTrack[]; hasGroupH
                 rootId,
                 title: collapsedGroupTitle(col, stacked),
                 width: stacked[0]?.cellWidth ?? 180,
-                flexGrow: Boolean(stacked[0]?.cellFlexGrow),
+                flexGrow: stacked[0]?.cellFlexGrow !== false,
                 kind: 'stack',
                 stackLeaves: stacked,
             });
@@ -215,7 +220,7 @@ function buildLeaves(columns: GroupedColumn[]): { leaves: LeafTrack[]; hasGroupH
                         rootId,
                         title: leaf.label ?? leaf.name,
                         width: leaf.cellWidth ?? 140,
-                        flexGrow: Boolean(leaf.cellFlexGrow),
+                        flexGrow: leaf.cellFlexGrow !== false,
                         kind: 'field',
                         field: leaf.name,
                     });
@@ -227,7 +232,7 @@ function buildLeaves(columns: GroupedColumn[]): { leaves: LeafTrack[]; hasGroupH
                     rootId,
                     title: leaf.label ?? leaf.name,
                     width: leaf.cellWidth ?? 140,
-                    flexGrow: Boolean(leaf.cellFlexGrow),
+                    flexGrow: leaf.cellFlexGrow !== false,
                     kind: 'field',
                     field: leaf.name,
                 });
@@ -265,9 +270,14 @@ function prefixOffsets(widths: number[]): number[] {
 function allocateColumnWidths(leaves: LeafTrack[], available: number, overrides: Record<string, number>): number[] {
     const min = leaves.map((leaf) => overrides[leaf.id] ?? leaf.width);
     const fixed = min.reduce((sum, width) => sum + width, 0);
-    const flexIndexes = leaves.map((leaf, index) => (leaf.flexGrow && overrides[leaf.id] == null ? index : -1)).filter((index) => index >= 0);
-    if (flexIndexes.length === 0 || available <= fixed) {
+    if (available <= fixed || leaves.length === 0) {
         return min;
+    }
+    let flexIndexes = leaves
+        .map((leaf, index) => (leaf.flexGrow && overrides[leaf.id] == null ? index : -1))
+        .filter((index) => index >= 0);
+    if (flexIndexes.length === 0) {
+        flexIndexes = leaves.map((_, index) => index);
     }
     const extra = (available - fixed) / flexIndexes.length;
     return min.map((width, index) => (flexIndexes.includes(index) ? width + extra : width));
@@ -528,12 +538,12 @@ function cycleSortRules(rules: SortRule[], field: string): SortRule[] {
     return rules.filter((_, itemIndex) => itemIndex !== index);
 }
 
-function readSortRules(): SortRule[] {
+function readSortRules(scope?: string): SortRule[] {
     const helpers = ListSettings as typeof ListSettings & {
-        getActiveListView?: () => { activeSortRules?: SortRule[] };
-        getSortSettingsState?: () => { sortRules?: SortRule[] };
+        getActiveListView?: (scope?: string) => { activeSortRules?: SortRule[] };
+        getSortSettingsState?: (scope?: string) => { sortRules?: SortRule[] };
     };
-    return helpers.getSortSettingsState?.()?.sortRules ?? helpers.getActiveListView?.()?.activeSortRules ?? [];
+    return helpers.getSortSettingsState?.(scope)?.sortRules ?? helpers.getActiveListView?.(scope)?.activeSortRules ?? [];
 }
 
 function commitSortRules(rules: SortRule[]): void {
@@ -612,7 +622,9 @@ function reorderColumns(columns: GroupedColumn[], fromRootId: string, toRootId: 
 }
 
 function cellText(row: DisplayRow, field: string, rules: CfRule[]): { text: string; style?: CSSProperties } {
-    const cell = row.cells.find((item) => item.columnName === field);
+    const cell =
+        row.cells.find((item) => item.columnName === field) ??
+        row.cells.find((item) => item.columnName?.toLowerCase() === field.toLowerCase());
     const raw = cell?.value.viewedData ?? cell?.value.originalData;
     const fallback = formatCellValue(raw);
     const rowData = rowDataFromCells(row.cells);
@@ -623,8 +635,12 @@ function cellText(row: DisplayRow, field: string, rules: CfRule[]): { text: stri
     };
 }
 
+let nestedTableSubscriberSeq = 0;
+
 export class ConfigurableNestedTable extends Component<ConfigurableNestedTableProps, ConfigurableNestedTableState> {
-    static SUBSCRIBER = 'ConfigurableNestedTable';
+    private readonly subscriberName = `ConfigurableNestedTable-${++nestedTableSubscriberSeq}`;
+
+    DataManager: unknown;
 
     private scrollerRef = createRef<HTMLDivElement>();
     private headerRef = createRef<HTMLDivElement>();
@@ -640,6 +656,14 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
 
     constructor(props: ConfigurableNestedTableProps) {
         super(props);
+        this.DataManager = props.DataManager;
+        const dataManager = props.DataManager as
+            | { hookChangeFieldData?: (path: string, instance: unknown) => void }
+            | undefined;
+        dataManager?.hookChangeFieldData?.(String(props.name ?? 'list'), this);
+        if (props.name && props.name !== 'list') {
+            dataManager?.hookChangeFieldData?.('list', this);
+        }
         this.state = {
             expandedGroups: 'all',
             listSettingsRevision: getListSettingsRevision(),
@@ -654,11 +678,36 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
             activeCell: null,
             editingCell: null,
             draft: '',
+            listEpoch: 0,
         };
-        subscribeListSettingsRevision(ConfigurableNestedTable.SUBSCRIBER, () => {
-            this.setState({ listSettingsRevision: getListSettingsRevision() });
+        subscribeListSettingsRevision(this.subscriberName, () => {
+            this.setState({
+                listSettingsRevision: getListSettingsRevision(),
+                expandedGroups: 'all',
+            });
         });
     }
+
+    settingsScope = (): string => {
+        const dataManager = (this.props.DataManager ?? this.DataManager) as { metaOwner?: string } | undefined;
+        return listSettingsScopeKey({
+            metaOwner: dataManager?.metaOwner,
+            name: this.props.name == null ? undefined : String(this.props.name),
+        });
+    };
+
+    changeMasterData = (_value?: unknown): void => {
+        this.setState((prev) => ({ listEpoch: prev.listEpoch + 1 }));
+    };
+
+    publishColumnCatalog = (columns: GroupedColumn[]): void => {
+        const scope = this.settingsScope();
+        queueMicrotask(() => {
+            withListSettingsScope(scope, () => {
+                syncListSettingsCatalogFromTable(columns);
+            });
+        });
+    };
 
     componentDidMount(): void {
         this.createdTimer = window.setTimeout(() => this.setState({ afterCreated: true }), 1000);
@@ -687,15 +736,20 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
         };
         el.addEventListener('scroll', onScroll, { passive: true });
         this.resizeObserver = new ResizeObserver(() => {
-            this.setState({ viewportHeight: el.clientHeight, viewportWidth: el.clientWidth });
+            const height = Math.max(el.clientHeight, 180);
+            const width = Math.max(el.clientWidth, 1);
+            this.setState({ viewportHeight: height, viewportWidth: width });
         });
         this.resizeObserver.observe(el);
-        this.setState({ viewportHeight: el.clientHeight, viewportWidth: el.clientWidth });
+        this.setState({
+            viewportHeight: Math.max(el.clientHeight, 180),
+            viewportWidth: Math.max(el.clientWidth, 1),
+        });
         (this as unknown as { _onScroll: () => void })._onScroll = onScroll;
     }
 
     componentWillUnmount(): void {
-        unsubscribeListSettingsRevision(ConfigurableNestedTable.SUBSCRIBER);
+        unsubscribeListSettingsRevision(this.subscriberName);
         window.clearTimeout(this.createdTimer);
         window.clearTimeout(this.scrollTimer);
         if (this.frame) {
@@ -934,14 +988,22 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
     };
 
     tableModel() {
-        const raw = this.props as unknown as {
-            data: (ICell | ICell[] | ITreeRow | Record<string, unknown>[])[];
-            columns: GroupedColumn[];
-        };
+        void this.state.listEpoch;
+        void this.state.listSettingsRevision;
+        const built = buildListTableModel({
+            data: this.props.data,
+            columns: this.props.columns as (IColumnData | IColumnData[])[] | undefined,
+            dataManager: (this.props.DataManager ?? this.DataManager) as Parameters<typeof buildListTableModel>[0]['dataManager'],
+            scope: this.settingsScope(),
+        });
         const columns = this.state.rootOrder
-            ? reorderByRootOrder(raw.columns ?? [], this.state.rootOrder)
-            : (raw.columns ?? []);
-        return { data: raw.data ?? [], columns };
+            ? reorderByRootOrder(built.columns, this.state.rootOrder)
+            : built.columns;
+        return {
+            data: built.data,
+            columns,
+            sourceColumns: built.sourceColumns,
+        };
     }
 
     handleToggleGroup = (groupKey: string) => {
@@ -958,10 +1020,13 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
     };
 
     handleColumnSort = (field: string) => {
-        const current = readSortRules();
+        const scope = this.settingsScope();
+        const current = readSortRules(scope);
         const next = cycleSortRules(current, field);
         const last = next.find((rule) => rule.field === field);
-        commitSortRules(next);
+        withListSettingsScope(scope, () => {
+            commitSortRules(next);
+        });
         this.extra().onSortRulesChange?.(next);
         this.extra().onSort?.({ column: field, direction: last && last.enabled ? last.direction : null });
         this.setState({ listSettingsRevision: getListSettingsRevision() });
@@ -1128,12 +1193,14 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
 
     render(): ReactNode {
         const { data, columns } = this.tableModel();
-        const rules = (getConditionalFormattingSettingsState().conditionalFormattingRules ?? []) as CfRule[];
+        this.publishColumnCatalog(columns);
+        const scope = this.settingsScope();
+        const rules = (getConditionalFormattingSettingsState(scope).conditionalFormattingRules ?? []) as CfRule[];
         const grouping = data.length > 0 && isTreeRow(data[0]) && Boolean((data[0] as ITreeRow).isGroup);
-        const treeWidth = grouping ? 260 : 32;
+        const treeWidth = (grouping ? 260 : 32) + CHECK_WIDTH;
         const leafHeight = Math.max(36, getConfigCellHeight(columns));
         const built = buildLeaves(columns);
-        const sortRules = readSortRules();
+        const sortRules = readSortRules(scope);
         const enabledSort = sortRules.filter((rule) => rule.enabled);
         const sortState = new Map(enabledSort.map((rule, index) => [rule.field, { direction: rule.direction, index, count: enabledSort.length }]));
 
@@ -1161,6 +1228,7 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
 
         const className = [
             'data-table',
+            'cnt-nested-table',
             'is-row-animation',
             this.state.afterCreated ? 'is-after-created' : '',
             this.state.scrolling && !drag ? 'is-prevent-animation' : '',
@@ -1171,8 +1239,10 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
 
         this.layout = { rows: paintedRows, leaves, geometry };
 
+        const tableHeight = typeof this.props.height === 'number' && this.props.height > 0 ? this.props.height : undefined;
+
         return (
-            <div className={className}>
+            <div className={className} style={tableHeight ? { height: tableHeight } : undefined}>
                 <div className="data-table__header" ref={this.headerRef}>
                     {built.hasGroupHeader && (
                         <div className="data-table__header-row" style={{ width: totalWidth, height: 36 }}>
@@ -1189,6 +1259,7 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
                         {leaves.map((leaf, index) => {
                             const field = leaf.field ?? leaf.stackLeaves?.[0]?.name;
                             const sort = field ? sortState.get(field) : undefined;
+                            const headerText = leaf.kind === 'stack' && built.hasGroupHeader ? '' : leaf.title;
                             const dragging = this.state.drag?.kind === 'col' && this.state.drag.fromRootId === leaf.rootId;
                             const over = this.state.drag?.kind === 'col' && this.state.drag.overRootId === leaf.rootId;
                             return (
@@ -1196,9 +1267,10 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
                                     key={leaf.id}
                                     className={`data-table__hcell${over ? ' is-drop' : ''}${dragging ? ' is-col-dragging' : ''}${sort ? ' is-sorted' : ''}`}
                                     style={{ left: treeWidth + paintedLefts[index], width: colWidths[index] }}
+                                    title={headerText || leaf.title}
                                     onPointerDown={(event) => this.startColDrag(event, leaf, built.leaves, colWidths, treeWidth)}
                                 >
-                                    <span className="data-table__hlabel">{leaf.kind === 'stack' && built.hasGroupHeader ? '' : leaf.title}</span>
+                                    <span className="data-table__hlabel">{headerText}</span>
                                     {field && (
                                         <button
                                             type="button"
@@ -1231,7 +1303,7 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
                     {data.length === 0 ? (
                         <div className="data-table__empty">Нет данных</div>
                     ) : (
-                        <div className="data-table__body" style={{ height: geometry.totalHeight, width: totalWidth }}>
+                        <div className="data-table__body" style={{ minHeight: geometry.totalHeight, width: totalWidth }}>
                             {dropTop != null && <div className="data-table__drop-line" style={{ transform: `translateY(${dropTop}px)` }} />}
                             {visible.map((row, offset) => {
                                 const index = range.first + offset;
@@ -1347,7 +1419,7 @@ export class ConfigurableNestedTable extends Component<ConfigurableNestedTablePr
                                                     className={cellClassName}
                                                     data-row-id={row.id}
                                                     data-field={field}
-                                                    title={leaf.title}
+                                                    title={painted.text || leaf.title}
                                                     style={{
                                                         left: treeWidth + paintedLefts[leafIndex],
                                                         width: colWidths[leafIndex],
@@ -1430,9 +1502,10 @@ function renderBands(
                 key={band.rootId}
                 className={`data-table__hcell data-table__hband${dragging ? ' is-col-dragging' : ''}${over ? ' is-drop' : ''}`}
                 style={{ left: treeWidth + paintedLefts[band.start], width }}
+                title={band.title}
                 onPointerDown={(event) => owner && onDragStart(event, owner, leaves, colWidths, treeWidth)}
             >
-                {band.title}
+                <span className="data-table__hlabel">{band.title}</span>
                 {owner && (
                     <span className="data-table__resize" onPointerDown={(event) => onResize(event, owner, width)} />
                 )}
@@ -1455,3 +1528,5 @@ function RowDragIcon() {
 }
 
 export type { ExtraTableProps, ConfigurableNestedTableProps } from './types';
+
+export default ConfigurableNestedTable;

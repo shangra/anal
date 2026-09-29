@@ -36,8 +36,8 @@ const store = createFacetStore<SelectionSettingsState>({
     clone: cloneSelectionSettingsState,
 })
 
-export function getSelectionSettingsState(): SelectionSettingsState {
-    return store.getState()
+export function getSelectionSettingsState(scope?: string): SelectionSettingsState {
+    return store.getState(scope)
 }
 
 export { cloneSelectionSettingsState }

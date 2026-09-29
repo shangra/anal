@@ -9,6 +9,7 @@ import {
     getGroupingSettingsState,
     getSelectionSettingsState,
     getSortSettingsState,
+    getActiveListSettingsScope,
     groupingSettingsActions,
     selectionSettingsActions,
     conditionalFormattingSettingsActions,
@@ -17,6 +18,7 @@ import {
 } from '../../../../../helpers/listSettings'
 import { ColumnGroupingTab, GroupingTab, SelectionTab, ConditionalFormattingTab } from './tabs'
 import { generateTitleId, serializeColumnGroupTree, serializeSelection, serializeSort, takeSnapshots } from './shared/utils'
+import { GLOBAL_LIST_SETTINGS_SCOPE } from '../../../../../helpers/listSettings/core/types'
 import { SUBSCRIBER, TABS } from './types'
 import type {
     ListSettingsModalProps,
@@ -85,7 +87,10 @@ export class ListSettingsModal extends Component<ListSettingsModalProps, ListSet
     private onModalOpened = (): void => {
         const initialTab = this.props.initialTab ?? 'grouping'
         const currentGrouping = getGroupingSettingsState()
-        if (currentGrouping.selectedGroupFields.length === 0) {
+        if (
+            getActiveListSettingsScope() === GLOBAL_LIST_SETTINGS_SCOPE.key &&
+            currentGrouping.selectedGroupFields.length === 0
+        ) {
             try {
                 const raw = localStorage.getItem('list-settings-grouping')
                 if (raw) {
