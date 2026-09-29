@@ -1,0 +1,7 @@
+:root {
+    --header-page-title-color: var(--ui-kit-colors-text-primary);
+}
+
+:root[data-theme='light'] {
+    --header-page-title-color: var(--ui-kit-colors-text-secondary);
+}

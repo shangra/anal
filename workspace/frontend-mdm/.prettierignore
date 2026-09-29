@@ -1,0 +1,10 @@
+build
+coverage
+node_modules
+storybook-static
+settings/*
+*.html
+*.css
+*.scss
+*.json
+*.sql

@@ -1,0 +1,14 @@
+.commonInputWrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    min-width: 200px;
+    width: 100%;
+}
+
+.resetCommonInputWrapper {
+    width: 100% !important;
+}
+
+.resetCommonInput {
+    width: auto;
+}

@@ -1,0 +1,28 @@
+{
+    "name": "MetadataGuideList",
+    "version": "1.0.1",
+    "typeSBR": "ReactCMS",
+    "codeName": "MetadataGuideList",
+    "description": "Модуль `metadataguidelist` отвечает за визуализацию списка элементов метаданных конкретной группы (определяемой параметром `groupsId`), используя данные, полученные от сервера через API-запрос с помощью библиотеки Axios. Он предоставляет возможность взаимодействия пользователей с элементами списка — каждый пункт может быть выделен или активирован путем нажатия. Стилизация компонентов осуществляется посредством CSS-модулей, поддерживающих тему оформления приложения.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "react": "^18.2.0"
+    },
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {}
+}

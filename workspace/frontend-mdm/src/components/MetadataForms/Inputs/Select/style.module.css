@@ -1,0 +1,15 @@
+@import "./theme.css";
+
+.selectContainer {
+    position: relative;
+}
+
+.selectCustom {
+    outline-width: var(--ui-kit-select-focused-outlined-size);
+    width: 100%;
+}
+
+.commonInputReset {
+    min-width: 64px;
+    width: fit-content;
+}

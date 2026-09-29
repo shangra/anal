@@ -1,0 +1,6 @@
+@import "./MyModal.theme.css";
+
+.modal-content {
+    background-color: var(--my-modal-bg-color) !important;
+    box-shadow: 0 0 2px var(--my-modal-bg-color) ;
+}

@@ -1,0 +1,29 @@
+:root {
+    --ui-kit-date-picker-background: var(--ui-kit-colors-background-popup);
+    --ui-kit-date-picker-day-ranging-background-color: var(--ui-kit-colors-background-highlighted);
+    --ui-kit-date-picker-day-border-radius: var(--ui-kit-spacing-6);
+    --ui-kit-date-picker-tr-top-margin: var(--ui-kit-spacing-1);
+    --ui-kit-date-picker-presets-max-height: var(--ui-kit-spacing-131);
+    --ui-kit-date-range-picker-input: var(--ui-kit-spacing-122);
+    --ui-kit-date-picker-input: var(--ui-kit-spacing-80);
+
+    --ui-kit-date-picker-date-panel-border-radius: var(--ui-kit-spacing-6);
+    --ui-kit-date-picker-date-panel-gap: var(--ui-kit-spacing-8);
+    --ui-kit-date-picker-date-panel-padding: var(--ui-kit-spacing-6);
+    --ui-kit-date-picker-days-table-height: var(--ui-kit-spacing-102);
+    --ui-kit-date-picker-margin-10: var(--ui-kit-spacing-5);
+    --ui-kit-date-picker-weekday-height: var(--ui-kit-spacing-16);
+    --ui-kit-date-picker-weekday-width: var(--ui-kit-spacing-16);
+    --ui-kit-date-picker-weekday-color: var(--ui-kit-colors-text-tertiary);
+    --ui-kit-date-picker-years-gap: var(--ui-kit-spacing-4);
+    --ui-kit-date-picker-months-main-container-width: var(--ui-kit-spacing-121);
+    --ui-kit-date-picker-months-main-container-height: var(--ui-kit-spacing-119);
+    --ui-kit-date-picker-months-horizontal-gap: var(--ui-kit-spacing-12);
+    --ui-kit-date-picker-months-vertical-gap: var(--ui-kit-spacing-2);
+    --ui-kit-date-picker-year-main-container-height: var(--ui-kit-spacing-119);
+    --ui-kit-date-picker-months-container-width: var(--ui-kit-spacing-112);
+    --ui-kit-date-picker-months-container-height: var(--ui-kit-spacing-107);
+    --ui-kit-date-picker-month-container-width: var(--ui-kit-spacing-35);
+    --ui-kit-date-picker-year-container-width: var(--ui-kit-spacing-27);
+    --ui-kit-date-picker-presets-padding-right: var(--ui-kit-spacing-8);
+}

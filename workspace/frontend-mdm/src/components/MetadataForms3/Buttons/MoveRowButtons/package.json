@@ -1,0 +1,31 @@
+{
+    "name": "metadataforms/buttons/moverowbuttons",
+    "version": "1.0.0",
+    "description": "",
+    "typeSBR": "ReactCMS",
+    "codeName": "MoveRowButtons",
+    "modulePath": "MetadataForms/Buttons/MoveRowButtons",
+    "lazy": false,
+    "rootComponent": false,
+    "main": "index.tsx",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "filenameWithConstantsForTemplate": "",
+    "filenameWithUtilitiesForTemplate": ""
+}

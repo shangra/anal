@@ -1,0 +1,14 @@
+:root {
+    --list-wrapper-background-color: var(--tile-bg-color);
+    --list-wrapper-border-radius: var(--ui-kit-spacing-4);
+    --list-wrapper-width: 300px;
+    --list-item-background-hover: rgba(255, 255, 255, 0.15);
+    --list-item-color: var(--ui-kit-colors-text-primary);
+    --list-wrapper-title-color: var(--ui-kit-colors-text-primary);
+}
+
+:root[data-theme='light'] {
+    --list-item-background-hover: var(--ui-kit-colors-iconHover);
+    --list-item-color: var(--ui-kit-colors-text-secondary);
+    --list-wrapper-title-color: var(--ui-kit-colors-text-secondary);
+}

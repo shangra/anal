@@ -1,0 +1,9 @@
+.loader {
+    color: var(--main-active-color, #7c95ab);
+    border: 1px solid #7c95ab00;
+    cursor: pointer;
+    padding: 5px;
+    height: 30px;
+    user-select: none;
+    width: 100%;
+}

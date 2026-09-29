@@ -1,0 +1,37 @@
+node_modules
+.idea
+.gigaide
+.npmrc
+.env
+*.log
+
+# Generated files for templates
+/src/components/index.js
+/src/components/constants.js
+/src/components/routes.js
+/src/components/utilities.js
+/src/components/rootComponents.js
+
+# Module Federation directories
+/*build*
+/*build*/**
+@mf-types/
+
+# test 
+/coverage
+/reports
+/junit.xml
+src/components/HOC
+src/components/CommonInput
+src/components/DynPage
+src/components/FormMetadata
+src/components/UiUtils
+src/components/ErrorBoundary
+src/components/WindowsCMP
+src/components/DRQueryBuilder
+ext_modules/statistics-agent-ui
+ext_modules/ApiError
+ext_modules/AuthForm
+src/components/statistics-agent-ui
+src/components/ApiError
+src/components/AuthForm

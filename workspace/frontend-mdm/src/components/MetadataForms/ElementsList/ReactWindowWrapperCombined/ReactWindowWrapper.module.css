@@ -1,0 +1,47 @@
+.table {
+    font-size: 14px;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    box-sizing: border-box;
+    background-color: var(--table-container-background-color);
+}
+
+.table:focus {
+    outline: none;
+}
+
+:root {
+    /*TODO Включить когда ui-kit будет обновлен
+    --table-container-background-color: var(--ui-kit-table-container-background-color)
+    --table-header-background-color: var(--ui-kit-table-header-background-color);
+    --table-row-selected-background: var(--ui-kit-table-row-selected-background);
+    --table-row-hover-background: var(--ui-kit-table-row-hover-background);
+    --table-row-zebra-background: var(--ui-kit-table-row-zebra-background); 
+    */
+}
+/*TODO Выключить переопределение цветов после того как будет обновлен ui-kit */
+:root[data-theme='dark'] {
+    --table-container-background-color: #222632;
+    --table-header-background-color: #222632;
+    --table-row-selected-background: #4786ff4d;
+    --table-row-hover-background: #7C89AB33;
+    --table-row-zebra-background: #7C89AB0F;
+}
+
+:root[data-theme='light'] {
+    --table-container-background-color: #F2F5FA;
+    --table-header-background-color: #F2F5FA;
+    --table-row-selected-background: #318FEC40;
+    --table-row-hover-background: #7C95AB33;
+    --table-row-zebra-background: #7C95AB1a;
+}
+
+:root[data-theme='galaxy'] {
+    --table-container-background-color: #222632;
+    --table-header-background-color: #222632;
+    --table-row-selected-background: #4786FF4D;
+    --table-row-hover-background: #7C89AB33;
+    --table-row-zebra-background: #7C89AB0F;
+}

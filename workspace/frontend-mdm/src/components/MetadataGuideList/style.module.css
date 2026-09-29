@@ -1,0 +1,58 @@
+@import url('./theme.module.css');
+
+.list_wrapper {
+    background-color: var(--list-wrapper-background-color);
+    border-radius: var(--list-wrapper-border-radius);
+    padding: 16px 6px 16px 16px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    display: block;
+    margin-bottom: 24px;
+    width: 100%;
+}
+
+.list_header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+
+.list_buttons {
+    display: flex;
+    gap: 8px;
+    padding-right: 10px;
+}
+
+.list_title {
+    padding-bottom: 16px;
+    color: var(--list-wrapper-title-color) !important;
+}
+
+.list_scrollable {
+    max-height: 500px;
+    overflow: auto;
+    padding: 0;
+}
+
+.list_item {
+    border-radius: var(--list-wrapper-border-radius);
+    padding: 14px 12px;
+    width: calc(100% - 10px);
+    box-sizing: border-box;
+}
+.list_item:hover {
+    background-color: var(--list-item-background-hover) !important;
+    cursor: pointer;
+}
+.list_item:hover * {
+    color: var(--list-item-color);
+}
+
+.list_item_link {
+    display: inline-block;
+    color: var(--list-item-color) !important;
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -1,0 +1,19 @@
+.my-btn {
+    width: max-content;
+    height: max-content;
+    --bs-btn-active-color: var(--main-text-color, #7c95ab) !important;
+    --bs-btn-active-bg: var(--primary-bg-color, rgba(124, 149, 171, 0.8)) !important;
+    --bs-btn-active-border-color: var(--main-text-color, #7c95ab) !important;
+}
+
+.my-btn[disabled] {
+    color: var(--main-text-color, #7c95ab) !important;
+    background-color: var(--primary-bg-color, rgba(124, 149, 171, 0.8)) !important;
+    border-color: var(--main-text-color, #7c95ab) !important;
+    border-width: 1px;
+    opacity: 0.4;
+}
+
+/*.my-btn:active {*/
+/*    background-color: var(--primary-bg-color, rgba(124, 149, 171, .8)) !important;*/
+/*}*/

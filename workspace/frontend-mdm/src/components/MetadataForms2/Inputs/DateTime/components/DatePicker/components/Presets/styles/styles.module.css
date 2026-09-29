@@ -1,0 +1,8 @@
+.preset-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-right: var(--ui-kit-date-picker-presets-padding-right);
+    overflow-y: auto;
+    max-height: var(--ui-kit-date-picker-presets-max-height);
+}

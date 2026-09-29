@@ -1,0 +1,86 @@
+.btnsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ui-kit-spacing-6);
+    width: 100%;
+    padding: 12px;
+}
+
+.unitName {
+    display: block;
+    width: 58px;
+    flex-shrink: 0;
+    color: var(--ui-kit-colors-text-secondary);
+}
+
+.btnBlock .btn:first-child {
+    height: 32px;
+    width: 39px;
+}
+
+.btnBlock .btn:last-child {
+    height: 32px;
+    width: 39px;
+}
+
+.unit {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-kit-spacing-4);
+    width: 100%;
+}
+
+.input > input {
+    width: 20px; 
+    font-size: 13px;
+    line-height: 16px;
+}
+
+.input > label {
+    padding: var(--ui-kit-spacing-4);
+}
+
+.input {
+    width: 84px;
+    height: 32px;
+    border: 0;
+    cursor: pointer;
+}
+
+.btnBlock {
+    display: flex;
+    align-items: center;  
+    justify-content: center;  
+    gap: var(--ui-kit-spacing-2);
+    width: 100%;
+    max-width: 200px;
+}
+
+.input_medium {
+    width: 141px;
+}
+.input_small {
+    width: 136px;
+    font-size: 16px;
+}
+.input_large {
+    width: 148px;
+}
+.input_x-large {
+    width: 154px;
+}
+
+.input_small svg {
+    height: 16px !important;
+    width: 16px !important;
+}
+
+.input-main {
+    cursor: pointer !important;
+}
+
+.input-main__disabled {
+    cursor: default !important;
+}

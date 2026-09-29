@@ -1,0 +1,13 @@
+export const TYPE_MAPPING = {
+    GREF: 'REF',
+    REF: 'REF',
+    DATE: 'DATE',
+    DATETIME: 'DATETIME',
+    TIMESTAMP: 'DATETIME',
+    INTEGER: 'INTEGER',
+    FLOAT: 'FLOAT',
+    VARCHAR: 'STRING',
+    STRING: 'STRING',
+    BOOLEAN: 'BOOL',
+    COMPOSITE: 'COMPOSITE',
+};

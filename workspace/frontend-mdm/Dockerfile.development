@@ -1,0 +1,41 @@
+FROM --platform=linux/amd64 sberosc.sigma.sbrf.ru/docker.io/node:22.10-alpine3.19 AS install
+
+ARG PORT=3000
+ENV PORT=${PORT}
+
+WORKDIR /app
+
+COPY package*.json .
+COPY vendors/ ./vendors
+
+RUN --mount=type=ssh --mount=type=secret,id=npmrc,dst=/root/.npmrc \
+    npm ci --frozen-lockfile --legacy-peer-deps && \
+    npm cache clean --force
+
+COPY . .
+
+EXPOSE ${PORT}
+
+FROM install AS build
+
+ARG NODE_ENV=development
+ENV NODE_ENV=${NODE_ENV}
+
+ENV NODE_OPTIONS=--max-old-space-size=4096
+
+ARG BUILD_PATH=build
+ENV BUILD_PATH=${BUILD_PATH}
+
+ARG PUBLIC_URL=/
+ENV PUBLIC_URL=${PUBLIC_URL}
+
+ENV DISABLE_ESLINT_PLUGIN=true
+
+RUN npm run build
+
+FROM --platform=linux/amd64 sberosc.sigma.sbrf.ru/docker.io/nginx:stable-alpine-slim AS nginx
+
+COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/docker/nginx/default.conf.template /etc/nginx/templates/default.conf.template
+
+CMD ["nginx", "-g", "daemon off;"]

@@ -1,0 +1,1 @@
+export { hasRule } from './access';

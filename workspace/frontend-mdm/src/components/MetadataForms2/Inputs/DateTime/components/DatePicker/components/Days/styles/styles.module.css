@@ -1,0 +1,42 @@
+.arrow_disabled {
+    pointer-events: none;
+    cursor: default; 
+}
+.arrow {
+  cursor: pointer;
+}
+
+.table {
+  table-layout: fixed;
+  border-spacing: 0;
+  height: var(--ui-kit-date-picker-days-table-height);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: var(--ui-kit-date-picker-margin-10);
+}
+
+.weekday {
+  color: var(--ui-kit-date-picker-weekday-color);
+  text-transform: uppercase;
+  box-sizing: border-box;
+  padding: 3px 5px;
+  height: var(--ui-kit-date-picker-weekday-height);
+  width: var(--ui-kit-date-picker-weekday-width);
+}
+
+.td {
+  padding: 0;
+}
+
+.month-name {
+  text-transform: capitalize;
+}

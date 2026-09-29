@@ -1,0 +1,33 @@
+{
+    "name": "MetadataForms",
+    "version": "1.5.2",
+    "description": "Модуль `metadataforms` предоставляет набор высокоуровневых компонентов для создания форм ввода метаданных в приложениях на основе React. Он включает такие элементы как поля ввода текста (`TextField`), чисел (`NumberField`) и дат (`DateField`), которые поддерживают обработку пользовательского ввода и форматирование значений. Компоненты модуля позволяют гибко настраивать внешний вид и поведение полей формы, а также предоставляют возможность интеграции с системой валидаторов и обработчиков событий для улучшения UX-интерфейса приложения.",
+    "typeSBR": "ReactCMS",
+    "codeName": "MetadataForms",
+    "lazy": false,
+    "rootComponent": false,
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {
+        "CommonInput": "^1.0.0",
+        "FormMetadata": "^1.0.0"
+    },
+    "extensions": {},
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "filenameWithConstantsForTemplate": "",
+    "filenameWithUtilitiesForTemplate": ""
+}

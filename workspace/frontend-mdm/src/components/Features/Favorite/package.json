@@ -1,0 +1,30 @@
+{
+    "name": "favorites",
+    "version": "1.0.0",
+    "description": "",
+    "typeSBR": "ReactCMS",
+    "codeName": "Favorite",
+    "lazy": false,
+    "rootComponent": false,
+    "filenameWithConstantsForTemplate": "",
+    "filenameWithUtilitiesForTemplate": "utils.ts",
+    "main": "index.tsx",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {},
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": ""
+}

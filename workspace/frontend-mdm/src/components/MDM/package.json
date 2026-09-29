@@ -1,0 +1,27 @@
+{
+    "name": "MDM",
+    "version": "1.0.1",
+    "typeSBR": "ReactCMS",
+    "codeName": "MDM",
+    "description": "Модуль `mdm` реализует компонент для работы с метаданными (Metadata Guide) в системе ReactCMS версии 1.0.0. Он отправляет запросы к API для получения списка доступных метаданных и предоставляет возможность просмотра каждой сущности отдельно либо в новых вкладках браузера. Основной функционал модуля заключается в обработке логики взаимодействия пользователя со списком метаданных, а также визуализации интерфейса с использованием компонентов `MetadataGuideList`.",
+    "lazy": true,
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {},
+    "dependenciesNodeCMS": {},
+    "dependenciesReactCMS": {},
+    "extensions": {}
+}

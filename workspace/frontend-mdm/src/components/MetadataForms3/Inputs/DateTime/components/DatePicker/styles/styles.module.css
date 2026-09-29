@@ -1,0 +1,6 @@
+.range_input {
+    width: var(--ui-kit-date-range-picker-input);
+}
+.input {
+    width: var(--ui-kit-date-picker-input);
+}
