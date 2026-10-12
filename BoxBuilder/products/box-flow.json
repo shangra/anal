@@ -11,6 +11,7 @@
         "repository": "https://api.sc-ci.sber.ru/Export/backend-flow.git",
         "branch": "mvp"
       },
+      "assembleAfter": "npx sbr i",
       "commands": {
         "start": "node server.js",
         "db": "npm run db:renew",

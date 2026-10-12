@@ -56,6 +56,10 @@
         },
         "commands": {
           "$ref": "#/$defs/commands"
+        },
+        "assembleAfter": {
+          "type": "string",
+          "minLength": 1
         }
       }
     },
