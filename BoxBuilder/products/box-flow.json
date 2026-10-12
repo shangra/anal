@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "name": "box-flow",
+  "output": "box.Flow",
+  "packages": [
+    {
+      "name": "backend-flow",
+      "destination": "backend-flow",
+      "source": {
+        "type": "git",
+        "repository": "https://api.sc-ci.sber.ru/Export/backend-flow.git",
+        "branch": "mvp"
+      },
+      "commands": {
+        "prepare": "node __core/command/build",
+        "start": "node server.js",
+        "db": "npm run db",
+        "updatedb": "npm run updatedb"
+      }
+    },
+        {
+      "name": "frontend-flow",
+      "destination": "frontend-flow",
+      "source": {
+        "type": "git",
+        "repository": "https://api.sc-ci.sber.ru/Export/frontend-flow.git",
+        "branch": "main"
+      },
+      "commands": {
+        "start": "npm run start"
+      }
+    },
+        {
+      "name": "frontend-admin",
+      "destination": "frontend-admin",
+      "source": {
+        "type": "git",
+        "repository": "https://api.sc-ci.sber.ru/Export/frontend-admin.git",
+        "branch": "develop"
+      },
+      "commands": {
+        "clean": ["build", "@mf-types"],
+        "start": "npm exec -- craco start",
+        "env": {
+          "ESLINT_NO_DEV_ERRORS": "true",
+          "DISABLE_ESLINT_PLUGIN": "true",
+          "BROWSER": "none"
+        }
+      }
+    }
+  ]
+}

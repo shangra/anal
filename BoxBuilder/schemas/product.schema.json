@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sreda.local/schemas/box-builder/product.schema.json",
+  "title": "BoxBuilder product descriptor",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "name", "output", "packages"],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "name": {
+      "$ref": "#/$defs/identifier"
+    },
+    "output": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "packages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/package"
+      }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "destination": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$"
+    },
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "destination", "source"],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/identifier"
+        },
+        "destination": {
+          "$ref": "#/$defs/destination"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "commands": {
+          "$ref": "#/$defs/commands"
+        }
+      }
+    },
+    "commands": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "prepare": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start": {
+          "type": "string",
+          "minLength": 1
+        },
+        "db": {
+          "type": "string",
+          "minLength": 1
+        },
+        "updatedb": {
+          "type": "string",
+          "minLength": 1
+        },
+        "clean": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "env": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "source": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/gitSource"
+        },
+        {
+          "$ref": "#/$defs/hubSource"
+        }
+      ]
+    },
+    "gitSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "repository", "branch"],
+      "properties": {
+        "type": {
+          "const": "git"
+        },
+        "repository": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^(https?://|ssh://|git://|git@)[^\\s]+$"
+        },
+        "branch": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "hubSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "module", "version"],
+      "properties": {
+        "type": {
+          "const": "hub"
+        },
+        "module": {
+          "$ref": "#/$defs/identifier"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "\\S"
+        }
+      }
+    }
+  }
+}
