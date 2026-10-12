@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const { listWorkspaces, loadServiceCommands, serviceEnv, runConfigured, spawnConfigured, cleanDirs } = require('./_utils');
+const { listWorkspaces, loadServiceCommands, serviceEnv, runConfigured, spawnConfigured, cleanDirs, readRootEnv } = require('./_utils');
 
 /** Построчный вывод потока процесса с префиксом имени сервиса */
 function pipeWithPrefix(stream, prefix, target) {
@@ -69,7 +69,7 @@ async function startServices(ctx) {
     for (const dir of services) {
         const name = path.basename(dir);
         const spec = commands[name] || {};
-        const env = serviceEnv(process.env, spec);
+        const env = serviceEnv(process.env, spec, readRootEnv(ctx.rootDir));
         if (spec.clean && spec.clean.length) {
             console.log(`[${name}] очистка: ${spec.clean.join(', ')}`);
             cleanDirs(dir, spec.clean);

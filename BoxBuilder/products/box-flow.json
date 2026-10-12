@@ -11,8 +11,9 @@
         "repository": "https://api.sc-ci.sber.ru/Export/backend-flow.git",
         "branch": "mvp"
       },
-      "assembleAfter": "npx sbr i",
+      "assembleAfter": "npx sbr i --core",
       "commands": {
+        "prepare": "node core/command/build",
         "start": "node server.js",
         "db": "npm run db:renew",
         "updatedb": "npm run db:collect && npm run db:migrate:up && npm run db:dumps:restorewin"

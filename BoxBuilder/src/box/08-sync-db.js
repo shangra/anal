@@ -29,7 +29,7 @@ async function syncDb(ctx) {
     for (const dir of services) {
         const name = path.basename(dir);
         const spec = commands[name] || {};
-        const env = serviceEnv(process.env, spec);
+        const env = serviceEnv(process.env, spec, readRootEnv(ctx.rootDir));
         if (spec.prepare) {
             console.log(`${name}: подготовка ${spec.prepare}`);
             const prepared = runConfigured(spec.prepare, { cwd: dir, env });

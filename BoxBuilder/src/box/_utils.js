@@ -158,8 +158,14 @@ function cleanDirs(cwd, names) {
     }
 }
 
-function serviceEnv(baseEnv, spec) {
-    return { ...(baseEnv || process.env), ...(spec && spec.env) };
+function serviceEnv(baseEnv, spec, rootEnv) {
+    const env = {
+        ...(baseEnv || process.env),
+        ...(rootEnv || {}),
+        ...(spec && spec.env),
+    };
+    if (!env.DB_DIALECT) env.DB_DIALECT = 'postgres';
+    return env;
 }
 
 function runOne(command, options = {}) {
