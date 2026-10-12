@@ -12,10 +12,9 @@
         "branch": "mvp"
       },
       "commands": {
-        "prepare": "node __core/command/build",
         "start": "node server.js",
-        "db": "npm run db",
-        "updatedb": "npm run updatedb"
+        "db": "npm run db:renew",
+        "updatedb": "npm run db:collect && npm run db:migrate:up && npm run db:dumps:restorewin"
       }
     },
         {
