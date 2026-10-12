@@ -16,7 +16,10 @@
         "prepare": "node core/command/build",
         "start": "node server.js",
         "db": "npm run db:renew",
-        "updatedb": "npm run db:collect && npm run db:migrate:up && npm run db:dumps:restorewin"
+        "updatedb": "npm run db:collect && npm run db:migrate:up && npm run db:dumps:restorewin",
+        "env": {
+          "PORT": "3080"
+        }
       }
     },
         {
@@ -28,7 +31,11 @@
         "branch": "main"
       },
       "commands": {
-        "start": "npm run start"
+        "start": "npm run start",
+        "env": {
+          "PORT": "3000",
+          "BROWSER": "none"
+        }
       }
     },
         {
@@ -43,6 +50,7 @@
         "clean": ["build", "@mf-types"],
         "start": "npm exec -- craco start",
         "env": {
+          "PORT": "3001",
           "ESLINT_NO_DEV_ERRORS": "true",
           "DISABLE_ESLINT_PLUGIN": "true",
           "BROWSER": "none"
