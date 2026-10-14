@@ -7,11 +7,13 @@ const readline = require('readline/promises');
 
 const DB_KEYS = ['DB_HOST', 'DB_DATABASE', 'DB_USER', 'DB_PASS'];
 
-/** Список каталогов сервисов из workspaces корневого package.json */
+/** Список каталогов сервисов: workspaces из package.json или packages/* */
 function listWorkspaces(rootDir) {
-    const pkg = require(path.join(rootDir, 'package.json'));
+    const pkgPath = path.join(rootDir, 'package.json');
+    const pkg = fs.existsSync(pkgPath) ? JSON.parse(fs.readFileSync(pkgPath, 'utf8')) : {};
+    const patterns = pkg.workspaces && pkg.workspaces.length ? pkg.workspaces : ['packages/*'];
     const dirs = [];
-    for (const pattern of pkg.workspaces || []) {
+    for (const pattern of patterns) {
         const parts = String(pattern).split('/');
         if (parts[parts.length - 1] !== '*') {
             const dir = path.join(rootDir, ...parts);

@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const REMOVED_DIRECTORIES = new Set(['.git', 'node_modules']);
-const REMOVED_FILES = new Set(['.env', '.LICENSE_KEY', '.LICENSE.KEY', 'package-lock.json']);
+const REMOVED_FILES = new Set(['.env', '.LICENSE_KEY', '.LICENSE.KEY']);
 
 function cleanupTree(root) {
   const removed = [];

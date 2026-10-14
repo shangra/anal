@@ -125,10 +125,9 @@ function writeProductPackage(stagingPath) {
     name: 'box.analytic',
     version: '1.5.0',
     main: 'index.js',
-    workspaces: ['packages/*'],
     scripts: {
       setup: 'node index.js',
-      boxi: 'npm i --legacy-peer-deps --workspaces',
+      boxi: 'node box/07-install-deps.js',
       box: 'node box/09-start-services.js',
       start: 'node box/09-start-services.js',
       test: 'echo "Error: no test specified" && exit 1',
