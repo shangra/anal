@@ -11,7 +11,6 @@
         "repository": "https://api.sc-ci.sber.ru/Export/backend-flow.git",
         "branch": "mvp"
       },
-      "assembleAfter": "npx sbr i --core",
       "commands": {
         "prepare": "node core/command/build",
         "start": "node server.js",
