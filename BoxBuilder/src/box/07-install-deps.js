@@ -1,9 +1,17 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
 const { runNpm } = require('./_utils');
 
-/** Этап 7. Установка всех зависимостей проекта через npm run boxi */
+/** Этап 7. Зависимости с registry банка уже лежат в node_modules после сборки. */
 async function installDeps(ctx) {
+    const installed = path.join(ctx.rootDir, 'node_modules');
+    if (fs.existsSync(installed)) {
+        console.log('Зависимости уже установлены при сборке коробки.');
+        return;
+    }
+
     console.log('Выполняется: npm run boxi');
     const result = runNpm(['run', 'boxi'], {
         cwd: ctx.rootDir,

@@ -10,6 +10,7 @@ const { fetchHubPackage } = require('../sources/hub');
 const { cleanupTree } = require('../assemble/cleanup');
 const { writeManifest } = require('../assemble/manifest');
 const { runAssembleAfter } = require('../assemble/after');
+const { installWorkspaceDeps } = require('../assemble/deps');
 const {
   createStaging,
   pathExists,
@@ -77,6 +78,7 @@ async function assembleProduct(productId, options = {}) {
     writeManifest(stagingPath, descriptor, packageResults, { now: options.now });
     writeProductInstaller(stagingPath, descriptor);
     await runAssembleAfter(stagingPath, descriptor);
+    await installWorkspaceDeps(stagingPath);
     publishStaging(stagingPath, outputPath, { force: options.force });
 
     return {
