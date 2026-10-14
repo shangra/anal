@@ -5,6 +5,8 @@ const path = require('path');
 const { listWorkspaces, runNpm } = require('./_utils');
 
 const MISSING_VERSION = /No matching version found for (@?[^\s@]+)@/g;
+const PUBLIC_REGISTRY = 'https://registry.npmjs.org/';
+const BANK_REGISTRY = 'https://sberosc.sigma.sbrf.ru/repo/npm/';
 const DEP_FIELDS = ['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies'];
 const MAX_SKIPS = 40;
 
@@ -61,6 +63,24 @@ function walkPackages(dir, visit) {
     }
 }
 
+/** Ссылки из lock больше не ведут на registry банка, иначе npm качает пакеты оттуда. */
+function pointLocksAtPublicNpm(installRoot) {
+    walkPackages(installRoot, (file) => {
+        if (path.basename(file) !== 'package-lock.json') return;
+        const text = fs.readFileSync(file, 'utf8');
+        if (!text.includes(BANK_REGISTRY)) return;
+        fs.writeFileSync(file, text.split(BANK_REGISTRY).join(PUBLIC_REGISTRY), 'utf8');
+    });
+}
+
+function publicNpmEnv() {
+    return {
+        ...process.env,
+        npm_config_registry: PUBLIC_REGISTRY,
+        NPM_CONFIG_REGISTRY: PUBLIC_REGISTRY,
+    };
+}
+
 function skipPackage(installRoot, name) {
     const id = name.replace(/[^a-zA-Z0-9._-]+/g, '_');
     const stubDir = path.join(installRoot, '.box-skipped', id);
@@ -95,12 +115,14 @@ function skipPackage(installRoot, name) {
 
 function installOne(dir, boxRoot) {
     const installRoot = findInstallRoot(dir, boxRoot);
+    pointLocksAtPublicNpm(installRoot);
     const skipped = new Set();
     for (let attempt = 0; attempt <= MAX_SKIPS; attempt += 1) {
-        const result = runNpm(['i', '--legacy-peer-deps'], {
+        const result = runNpm(['i', '--legacy-peer-deps', '--registry', PUBLIC_REGISTRY], {
             cwd: installRoot,
             encoding: 'utf8',
             stdio: 'pipe',
+            env: publicNpmEnv(),
         });
         const output = `${result.stdout || ''}${result.stderr || ''}`;
         if (output) process.stdout.write(output.endsWith('\n') ? output : `${output}\n`);
